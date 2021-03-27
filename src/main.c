@@ -8,15 +8,17 @@
 int main(){
   TabPts kppv;
   TabPts tab;
+  TabPts essai;
 
-  printf("%d\n", tab.taille);
   tab = chargement_fichier("test");
-  printf("%d\n", tab.taille);
 
   afficher_tab_pts(tab);
-  printf("bonjour\n");
   putchar('\n');
   kppv = trouver_kppv(tab, tab.tab[1], 2);
   afficher_tab_pts(kppv);
+  sauvegarde_fichier(tab, "test_save");
+  essai = chargement_fichier("test_save");
+  putchar('\n');
+  afficher_tab_pts(essai);
   exit(0);
 }

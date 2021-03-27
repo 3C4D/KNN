@@ -2,7 +2,7 @@
 #include "erreur.h"
 
 TabPts trouver_kppv(TabPts tab_pts, point pt, int k){
-  TabPts kppv = creer_tab_pts(tab_pts.dimension);
+  TabPts kppv = creer_tab_pts(tab_pts.dimension, tab_pts.nbclasse);
   int i, j;
 
   if(k <= 0){

@@ -39,7 +39,7 @@ double calc_distance(point p1, point p2, int dimension){
 }
 
 /* Permet d'ajouter un point au tableau de points */
-TabPts creer_tab_pts(int dimension){
+TabPts creer_tab_pts(int dimension, int nbclasse){
   TabPts tab;
   /*on alloue un espace mémoire pour pouvoir utiliser realloc*/
   tab.tab = (point *)malloc(0);
@@ -49,8 +49,9 @@ TabPts creer_tab_pts(int dimension){
   }
   /*le tableau ne comporte pas d'élements, sa taille est donc 0*/
   tab.taille = 0;
-  /*la dimension du tableau de point correspond a celle de tous les points*/
+  /*on insère les champs dans les emplacements correspondants*/
   tab.dimension = dimension;
+  tab.nbclasse = nbclasse;
   return tab;
 }
 
