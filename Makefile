@@ -8,7 +8,7 @@ OBJ := $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
 CC := gcc
 CPPFLAGS := -Iinc -MMD -MP
-CFLAGS   := -Wall -pedantic-g -O2 `pkg-config --cflags MLV`
+CFLAGS   := -Wall -pedantic -g -O2 `pkg-config --cflags MLV`
 LDFLAGS  := `pkg-config --libs-only-other --libs-only-L MLV`
 LDLIBS   := -lm `pkg-config --libs-only-l MLV`
 
