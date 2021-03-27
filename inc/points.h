@@ -38,4 +38,7 @@ void afficher_pt(point pt, int dimension);
 /* Affiche un tableau de points */
 void afficher_tab_pts(TabPts tab_pts);
 
+/* Retourne la classe la plus présente dans un tableau de points */
+int classe_majoritaire(TabPts tab);
+
 #endif

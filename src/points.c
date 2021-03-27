@@ -110,3 +110,41 @@ void afficher_tab_pts(TabPts tab_pts){
     afficher_pt(tab_pts.tab[i], tab_pts.dimension);
   }
 }
+
+/* Retourne la classe la plus présente dans un tableau de points */
+int classe_majoritaire(TabPts tab){
+  int *eff_classe, i, max = 0, val_max = 0;
+
+  /*on alloue à un tableau autant de cases que le tableau possède de classes*/
+  /*ce tableau repertoriera l'effectif des classes dans le tableau*/
+  eff_classe = (int *)calloc(0, tab.nbclasse * sizeof(int));
+  /*on vérifie l'allocation*/
+  if(eff_classe == NULL){
+    erreur("Erreur d'allocation dans la fonction classe_majoritaire");
+  }
+
+  /*ici on part du postulat que si il y a 5 classes, les classes vont de
+    1 à 5*/
+  for(i = 0; i < tab.taille; i++){
+    eff_classe[tab.tab[i].classe-1]++;
+  }
+
+  /*on calcule l'effectif maximal*/
+  for(i = 0; i < tab.nbclasse; i++){
+    /*si l'effectif est supérieur au max, on remplace le max*/
+    if(eff_classe[i] > val_max){
+      val_max = eff_classe[i];
+      max = i+1;
+    }
+    /*si il y a égalité, on choisit au hasard un des deux nombre*/
+    if(val_max != 0 && val_max == eff_classe[i]){
+      if(rand()%2 == 0){
+        val_max = eff_classe[i];
+        max = i+1;
+      }
+    }
+  }
+
+  /*on retourne la classe maximale*/
+  return max;
+}
