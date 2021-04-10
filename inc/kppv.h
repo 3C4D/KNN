@@ -1,3 +1,7 @@
+/* Fichier header contenant les prototypes des fonctions concernant les kppv */
+/* à savoir trouver les kppv et trouver la classe d'un point par rapport */
+/* à ses kppv */
+
 #ifndef KNN_H_
 #define KNN_H_
 

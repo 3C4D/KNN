@@ -1,3 +1,6 @@
+/* Fichier source contenant les fonctions relatives à la manipulation de */
+/* points et de tableaux de point */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>

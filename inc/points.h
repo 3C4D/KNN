@@ -1,12 +1,17 @@
+/* Fichier header contenant les prototypes des fonctions de manipulation */
+/* de points et tableaux de point, contient aussi la fonction pouvant */
+/* déterminer la classe majoritaire d'un tableau de point */
+
 #ifndef POINTS_H_
 #define POINTS_H_
 
-/* Structure permettant de représenter un point dans le plan ainsi que sa classe */
+/* Structure permettant de représenter un point */
 typedef struct point{
   double *coord;
   int classe;
 }point;
 
+/* Structure permettant de représenter un tableau de point */
 typedef struct TabPts{
   point *tab;
   int taille;

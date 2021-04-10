@@ -1,3 +1,6 @@
+/* Fichier header contenant les prototypes des fonctions de sauvegarde */
+/* et de chargement de tableaux de points */
+
 #ifndef SAUVEGARDE_H
 #define SAUVEGARDE_H
 

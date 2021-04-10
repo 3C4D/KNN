@@ -1,3 +1,6 @@
+/* Fichier source contenant les  fonctions concernant les kppv à savoir */
+/* trouver les kppv et trouver la classe d'un point par rapport à ses kppv */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include "points.h"
@@ -10,6 +13,9 @@ TabPts trouver_kppv(TabPts tab_pts, point pt, int k){
 
   if(k <= 0){
     erreur("Erreur, k doit être supérieur à 0 dans la fonction trouver_kppv");
+  }
+  if(k > tab_pts.taille-1){
+    erreur("Erreur, k doit être inférieur à n-1 dans la fonction trouver_kppv");
   }
 
   for(i = 0; i < tab_pts.taille; i++){
@@ -32,15 +38,18 @@ TabPts trouver_kppv(TabPts tab_pts, point pt, int k){
       ){
         j++;
       }
-      if(j < kppv.taille){                    /*si un point est plus éloigné :*/
-        supprimer_point(&kppv, j);            /* - on le supprime*/
-                                              /* - on ajoute le point actuel*/
+      if(j < kppv.taille){                  /*si un point est plus éloigné :*/
+        supprimer_point(&kppv, j);          /* - on le supprime*/
+                                            /* - on ajoute le point actuel*/
         ajouter_point(
           &kppv,
           creer_point(kppv.dimension, tab_pts.tab[i].classe)
         );
         /*on ajoute les coordonnées dans le point du tableau kppv*/
-        ajouter_coord(&kppv.tab[kppv.taille-1], kppv.dimension, tab_pts.tab[i].coord);
+        ajouter_coord(&kppv.tab[kppv.taille-1],
+                      kppv.dimension,
+                      tab_pts.tab[i].coord
+                    );
       }
     }
   }

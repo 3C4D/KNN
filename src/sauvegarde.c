@@ -1,3 +1,6 @@
+/* Fichier source contenant les fonctions relatives à la sauvegarde et au */
+/* chargement de tableaux de points */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include "points.h"
