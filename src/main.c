@@ -1,4 +1,4 @@
-/* Fichier principal corresponadant à l'executable kppv */
+/* Fichier principal correspondant à l'executable kppv */
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -9,14 +9,18 @@
 #include "kppv.h"
 #include "sauvegarde.h"
 #include "arbre.h"
+#include "generation.h"
 
 int main(){
+
   TabPts kppv;
   TabPts tab;
   TabPts essai;
   arbre_kd arbre = creer_arbre_vide();
 
   srand(time(NULL));
+  gen_fichier(20, 2, 3, "test_gen");
+  /*
 
   tab = chargement_fichier("test");
 
@@ -32,7 +36,6 @@ int main(){
   afficher_pt(*(arbre->fils_g->fils_g->racine), tab.dimension);
   afficher_pt(*(arbre->fils_g->fils_d->racine), tab.dimension);
   afficher_tab_pts(tab);
-  /*
 
   kppv = trouver_kppv(tab, tab.tab[231], 500);
   afficher_tab_pts(kppv);

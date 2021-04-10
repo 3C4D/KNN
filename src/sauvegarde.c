@@ -71,7 +71,7 @@ void sauvegarde_fichier(TabPts tab, char *nom_fic){
   /*on vérifie que le fichier n'existe pas*/
   /*cela permet de ne pas ecraser par mégarde un fichier source par exemple*/
   if((fic = fopen(nom_fic, "r")) != NULL){
-    erreur("Erreur, fonction de sauvegarde, le fichier existe déjà");
+    erreur("Erreur, fonction de sauvegarde, le fichier existe surement déjà");
   }
 
   /*on vérifie que le fichier est bien créé*/
