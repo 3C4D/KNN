@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
 #include "erreur.h"
 #include "arbre.h"
 
@@ -97,7 +98,36 @@ void detruire_arbre(arbre_kd arbre){
   }
 }
 
+/* Fonction auxiliaire récursive permettant de construire un arbre kd */
+/* à partir d'un tableau de point */
+arbre_kd creer_arbre_kd_aux(TabPts *tab, int debut, int fin, int prof, int axe){
+  int mediane = (int)round((fin-debut)/2);    /* Calcul de l'index median */
+  printf("ok prof : %d debut : %d fin : %d\n", prof, debut, fin);
+  if(mediane == 0){                           /* Si l'intervalle est de 1 : */
+    return creer_noeud(&tab->tab[debut]);     /* On retourne la feuille */
+  }
+
+  /* On trie l'intervalle selon l'axe */
+  tri_tab(tab->tab, debut, fin, prof%axe);
+
+  /* On renvoie l'arbre créé en rappellant la fonction sur ses fils : */
+  /* Légende : D : Debut, M : Mediane, F : Fin */
+  return creer_arbre(&tab->tab[debut+mediane],
+                     creer_arbre_kd_aux(tab,  /* Intervalle : D -> D+M-1 */
+                                        debut,
+                                        debut+mediane-1,
+                                        prof+1,
+                                        axe),
+                     creer_arbre_kd_aux(tab,  /* Intervalle : D+M+1 -> F */
+                                        debut+mediane+1,
+                                        fin,
+                                        prof+1,
+                                        axe)
+                    );
+}
+
 /* Permet de construire un arbre_kd à partir d'un tableau de points */
 arbre_kd creer_arbre_kd(TabPts *tab){
-
+  /* On retourne l'arbre créé recursivement */
+  return creer_arbre_kd_aux(tab, 0, tab->taille, 0, tab->dimension);
 }

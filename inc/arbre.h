@@ -50,4 +50,7 @@ int est_feuille(arbre_kd arbre);
 /* Permet de détruire un arbre */
 void detruire_arbre(arbre_kd arbre);
 
+/* Permet de construire un arbre_kd à partir d'un tableau de points */
+arbre_kd creer_arbre_kd(TabPts *tab);
+
 #endif

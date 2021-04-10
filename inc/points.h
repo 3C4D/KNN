@@ -19,7 +19,8 @@ typedef struct TabPts{
   int nbclasse;
 }TabPts;
 
-/* Permet de créer une structure point en prenant les composantes de cette structure en paramètre */
+/* Permet de créer une structure point en prenant les composantes de cette */
+/* structure en paramètre */
 point creer_point(int dimension, int classe);
 
 /* Ajoute les coordonnées contenues dans un tableau dans un point */

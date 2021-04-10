@@ -154,21 +154,22 @@ int classe_majoritaire(TabPts tab){
 
 /* Trie une liste de points récursivement */
 void tri_tab(point *tab, int premier, int dernier, int axe){
-  point pivot = tab[premier];
-  int pos = premier;
+  point pivot = tab[premier];   /* On fixe le pivot */
+  int pos = premier;            /* La position actuelle est celle du premier */
   int i;
 
-  if(premier < dernier){
-    for(i = premier; i < dernier; i++){
-      if(tab[i].coord[axe] < pivot.coord[axe]){
-        tab[pos] = tab[i];
-        pos++;
-        tab[i] = tab[pos];
-        tab[pos] = pivot;
+  if(premier < dernier){        /* si il reste des élements à traiter */
+    for(i = premier; i < dernier; i++){ /* Pour tous ces élements : */
+      if(tab[i].coord[axe] < pivot.coord[axe]){ /* Si le pivot est inférieur */
+        tab[pos] = tab[i];          /* Le point pos devient le point i */
+        pos++;                      /* On incrémente la position */
+        tab[i] = tab[pos];          /* Le point i devient le point pos */
+        tab[pos] = pivot;           /* Le point pos devient le pivot */
       }
     }
-
+    /* On rappelle la fonction sur les élements précedant le pivot */
     tri_tab(tab, premier, pos, axe);
+    /* On rappelle la fonction sur les élements suivants le pivot */
     tri_tab(tab, pos+1, dernier, axe);
   }
 }
