@@ -11,7 +11,7 @@ arbre_kd creer_arbre_vide(){
 }
 
 /* Permet de déterminer si un arbre est vide */
-int est_vide(arbre_kd arbre){
+int est_vide_arbre_kd(arbre_kd arbre){
   return (arbre == NULL);   /* Un arbre est vide si il équivaut à NULL */
 }
 
@@ -69,11 +69,11 @@ arbre_kd inserer_fils_droit(arbre_kd arbre, arbre_kd fils_droit){
 
 /* Permet de déterminer si un noeud est une feuille */
 int est_feuille(arbre_kd arbre){
-  if(est_vide(arbre)){  /* Si le noeud est vide il y a une erreur */
+  if(est_vide_arbre_kd(arbre)){  /* Si le noeud est vide il y a une erreur */
     erreur("Erreur, arbre vide passé en paramètre, fonction est_feuille");
   }
   /* Si les deux fils sont vides le noeud est une feuille */
-  if(est_vide(arbre->fils_g) && est_vide(arbre->fils_d)){
+  if(est_vide_arbre_kd(arbre->fils_g) && est_vide_arbre_kd(arbre->fils_d)){
 
   }
   return 0;           /* Sinon le noeud n'est pas une feuille */
@@ -86,13 +86,18 @@ void detruire_arbre(arbre_kd arbre){
   }
   else{     /* Sinon on libère ses fils non vides */
     /* On libère le fils gauche si il n'est pas vide */
-    if(!est_vide(renvoyer_fils_gauche(arbre))){
+    if(!est_vide_arbre_kd(renvoyer_fils_gauche(arbre))){
       detruire_arbre(renvoyer_fils_gauche(arbre));
     }
     /* On libère le fils droit si il n'est pas vide */
-    if(!est_vide(renvoyer_fils_droit(arbre))){
+    if(!est_vide_arbre_kd(renvoyer_fils_droit(arbre))){
       detruire_arbre(renvoyer_fils_droit(arbre));
     }
     free(arbre);    /* Enfin on libère l'arbre lui-même */
   }
+}
+
+/* Permet de construire un arbre_kd à partir d'un tableau de points */
+arbre_kd creer_arbre_kd(TabPts *tab){
+
 }

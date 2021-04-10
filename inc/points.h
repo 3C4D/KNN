@@ -46,4 +46,7 @@ void afficher_tab_pts(TabPts tab_pts);
 /* Retourne la classe la plus présente dans un tableau de points */
 int classe_majoritaire(TabPts tab);
 
+/* Trie une liste de points récursivement */
+void tri_tab(point *tab, int premier, int dernier, int axe);
+
 #endif

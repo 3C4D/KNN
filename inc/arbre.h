@@ -18,7 +18,7 @@ typedef struct Noeud *arbre_kd;
 arbre_kd creer_arbre_vide();
 
 /* Permet de déterminer si un arbre est vide */
-int est_vide(arbre_kd arbre);
+int est_vide_arbre_kd(arbre_kd arbre);
 
 /* Permet de creer un noeud à partir de sa racine (ie un point) */
 arbre_kd creer_noeud(point *pt);

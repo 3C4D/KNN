@@ -151,3 +151,24 @@ int classe_majoritaire(TabPts tab){
   /*on retourne la classe maximale*/
   return max;
 }
+
+/* Trie une liste de points récursivement */
+void tri_tab(point *tab, int premier, int dernier, int axe){
+  point pivot = tab[premier];
+  int pos = premier;
+  int i;
+
+  if(premier < dernier){
+    for(i = premier; i < dernier; i++){
+      if(tab[i].coord[axe] < pivot.coord[axe]){
+        tab[pos] = tab[i];
+        pos++;
+        tab[i] = tab[pos];
+        tab[pos] = pivot;
+      }
+    }
+
+    tri_tab(tab, premier, pos, axe);
+    tri_tab(tab, pos+1, dernier, axe);
+  }
+}
