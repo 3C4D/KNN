@@ -195,12 +195,15 @@ arbre_kd insere(arbre_kd arbre, point *pt){
 /* Permet d'afficher un arbre recursivement */
 
 void afficher_arbre(arbre_kd arbre){
+  /* Si l'arbre n'est pas vide on affiche sa racine */
   if(!est_vide_arbre_kd(arbre)){
     afficher_pt(*racine(arbre), racine(arbre)->dimension);
   }
+  /* On affiche son fils gauche si il n'est pas vide */
   if(!est_vide_arbre_kd(renvoyer_fils_gauche(arbre))){
     afficher_arbre(renvoyer_fils_gauche(arbre));
   }
+  /* On affiche son fils droit si il n'est pas vide */
   if(!est_vide_arbre_kd(renvoyer_fils_droit(arbre))){
     afficher_arbre(renvoyer_fils_droit(arbre));
   }
