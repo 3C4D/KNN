@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include "erreur.h"
 
-void gen_fichier(int nb_point, int dimension, int nbclasse, char *nom_fic){
+void generation_fichier(int nb_point, int dimension, int nbclasse, char *nom_fic){
   FILE *fic = NULL;
   int i, j;
 
@@ -27,7 +27,7 @@ void gen_fichier(int nb_point, int dimension, int nbclasse, char *nom_fic){
   for(i = 0; i < nb_point; i++){
     fprintf(fic, "%d ", (rand()%nbclasse)+1); /* Classe tirée au hasard */
     for(j = 0; j < dimension-1; j++){         /* de même pour les coordonnées */
-      fprintf(fic, "%f ", (rand()%1000000)/1000000.0);
+      fprintf(fic, "%f ", (-1000000 + rand()%2000000) / 1000000.0);
     }
     fprintf(fic, "%f\n", (rand()%1000000)/1000000.0);
   }

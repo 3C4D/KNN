@@ -19,7 +19,6 @@ int main(){
   arbre_kd arbre = creer_arbre_vide();
 
   srand(time(NULL));
-  gen_fichier(20, 2, 3, "test_gen");
   /*
 
   tab = chargement_fichier("test");
