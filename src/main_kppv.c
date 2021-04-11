@@ -17,6 +17,9 @@ int main(){
   TabPts tab;
   TabPts essai;
   arbre_kd arbre = creer_arbre_vide();
+  double c[2] = {0.8,0.6};
+  point pt = creer_point(2, 3);
+  ajouter_coord(&pt, 2, c);
 
   srand(time(NULL));
 
@@ -28,6 +31,8 @@ int main(){
 
 
   arbre = creer_arbre_kd(&tab);
+  afficher_arbre_bis(arbre);
+  arbre = insere(arbre, &pt);
   afficher_arbre_bis(arbre);
   /*
   afficher_pt(*(arbre->racine), tab.dimension);

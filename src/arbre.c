@@ -156,18 +156,13 @@ arbre_kd creer_arbre_kd(TabPts *tab){
 /* Fonction auxiliaire recursive permettant d'inserer un point dans un */
 /* arbre kd */
 arbre_kd insere_aux(arbre_kd arbre, point *pt, int prof, int axe){
-  if(est_feuille(arbre)){ /* Si le noeud est une feuille : */
-    /* On place le point sur l'un des deux fils en fonction de l'axe */
-    if(racine(arbre)->coord[prof%axe] < pt->coord[prof%axe]){
-      return inserer_fils_gauche(arbre, creer_noeud(pt));
-    }
-    else{
-      return inserer_fils_droit(arbre, creer_noeud(pt));
-    }
+
+  if(est_vide_arbre_kd(arbre)){ /* Si l'arbre est vide : on renvoie le noeud */
+    return creer_noeud(pt);
   }
   /*Sinon, on envoie le point sur l'un des deux fils en fonction de l'axe*/
   else{
-    if(racine(arbre)->coord[prof%axe] < pt->coord[prof%axe]){
+    if(racine(arbre)->coord[prof%axe] > pt->coord[prof%axe]){
       return inserer_fils_gauche(arbre, /* Fils gauche si l'axe est inférieur */
                                  insere_aux(renvoyer_fils_gauche(arbre),
                                             pt,
@@ -176,7 +171,7 @@ arbre_kd insere_aux(arbre_kd arbre, point *pt, int prof, int axe){
                                 );
     }
     else{
-      return inserer_fils_gauche(arbre, /* Fils droit sinon */
+      return inserer_fils_droit(arbre, /* Fils droit sinon */
                                  insere_aux(renvoyer_fils_droit(arbre),
                                             pt,
                                             prof+1,
