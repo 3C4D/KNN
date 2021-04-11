@@ -101,21 +101,42 @@ void detruire_arbre(arbre_kd arbre){
 /* Fonction auxiliaire récursive permettant de construire un arbre kd */
 /* à partir d'un tableau de point */
 arbre_kd creer_arbre_kd_aux(TabPts *tab, int debut, int fin, int prof, int axe){
-  int mediane = (int)round((fin-debut)/2);    /* Calcul de l'index median */
-  printf("ok prof : %d debut : %d fin : %d\n", prof, debut, fin);
-  if(mediane == 0){                           /* Si l'intervalle est de 1 : */
+  int mediane;                                /* Calcul de l'index median */
+  if(fin-debut % 2 != 0){
+    mediane = (fin-debut)/2;
+  }
+  else{
+    mediane = ((fin-debut)-1)/2;
+  }
+
+  if(mediane == 0){                           /* Si l'intervalle est de 0 : */
     return creer_noeud(&tab->tab[debut]);     /* On retourne la feuille */
   }
 
   /* On trie l'intervalle selon l'axe */
   tri_tab(tab->tab, debut, fin, prof%axe);
 
+  /* Cas particulier si on a un intervalle de 2 */
+  if(fin == debut+2){                       /* Cas particuler: deux élements */
+    return creer_arbre(&tab->tab[debut+mediane],
+                       creer_noeud(&tab->tab[debut]),
+                       creer_arbre_vide()
+                     );
+  }
+
+  if(fin == debut+3){                     /* Cas particuler: trois élements */
+    return creer_arbre(&tab->tab[debut+mediane],
+                       creer_noeud(&tab->tab[debut]),
+                       creer_noeud(&tab->tab[fin-1])
+                     );
+  }
+
   /* On renvoie l'arbre créé en rappellant la fonction sur ses fils : */
   /* Légende : D : Debut, M : Mediane, F : Fin */
   return creer_arbre(&tab->tab[debut+mediane],
                      creer_arbre_kd_aux(tab,  /* Intervalle : D -> D+M-1 */
                                         debut,
-                                        debut+mediane-1,
+                                        debut+mediane,
                                         prof+1,
                                         axe),
                      creer_arbre_kd_aux(tab,  /* Intervalle : D+M+1 -> F */
@@ -130,4 +151,100 @@ arbre_kd creer_arbre_kd_aux(TabPts *tab, int debut, int fin, int prof, int axe){
 arbre_kd creer_arbre_kd(TabPts *tab){
   /* On retourne l'arbre créé recursivement */
   return creer_arbre_kd_aux(tab, 0, tab->taille, 0, tab->dimension);
+}
+
+/* Fonction auxiliaire recursive permettant d'inserer un point dans un */
+/* arbre kd */
+arbre_kd insere_aux(arbre_kd arbre, point *pt, int prof, int axe){
+  if(est_feuille(arbre)){ /* Si le noeud est une feuille : */
+    /* On place le point sur l'un des deux fils en fonction de l'axe */
+    if(racine(arbre)->coord[prof%axe] < pt->coord[prof%axe]){
+      return inserer_fils_gauche(arbre, creer_noeud(pt));
+    }
+    else{
+      return inserer_fils_droit(arbre, creer_noeud(pt));
+    }
+  }
+  else{ /*Sinon, on envoie le point sur l'un des deux fils en fonction de l'axe*/
+    if(racine(arbre)->coord[prof%axe] < pt->coord[prof%axe]){
+      return inserer_fils_gauche(arbre, /* Fils gauche si l'axe est inférieur */
+                                 insere_aux(renvoyer_fils_gauche(arbre),
+                                            pt,
+                                            prof+1,
+                                            axe)
+                                );
+    }
+    else{
+      return inserer_fils_gauche(arbre, /* Fils droit sinon */
+                                 insere_aux(renvoyer_fils_droit(arbre),
+                                            pt,
+                                            prof+1,
+                                            axe)
+                                );
+    }
+  }
+}
+
+/* Fonction permettant d'inserer un point dans un arbre kd */
+arbre_kd insere(arbre_kd arbre, point *pt){
+  /* On retourne l'arbre une fois le point inséré recursivement */
+  return insere_aux(arbre, pt, 0, pt->dimension);
+}
+
+/* Permet d'afficher un arbre recursivement */
+
+void afficher_arbre(arbre_kd arbre){
+  printf("ok\n");
+  if(!est_vide_arbre_kd(arbre)){
+    printf("racine non vide\n");
+    afficher_pt(*racine(arbre), racine(arbre)->dimension);
+  }
+  if(!est_vide_arbre_kd(renvoyer_fils_gauche(arbre))){
+    printf("fg non vide\n");
+    afficher_arbre(renvoyer_fils_gauche(arbre));
+  }
+  if(!est_vide_arbre_kd(renvoyer_fils_droit(arbre))){
+    printf("fd non vide\n");
+    afficher_arbre(renvoyer_fils_droit(arbre));
+  }
+}
+
+/* Fonction locale recursive permettant de connaître la profondeur d'un arbre */
+int profondeur_arbre(arbre_kd arbre){
+  if(est_vide_arbre_kd(arbre)){  /* Si l'arbre est vide, on renvoie 0 */
+    return 0;
+  }
+  /* Sinon sinon on renvoie la profondeur du fils le plus profond + 1 */
+  if(profondeur_arbre(arbre->fils_d) > profondeur_arbre(arbre->fils_g)){
+    return 1+profondeur_arbre(arbre->fils_d);
+  }
+  else{
+    return 1+profondeur_arbre(arbre->fils_g);
+  }
+}
+
+/* Fonction locale recursive permettant d'afficher un noeud (ie un arbre) */
+void aff_noeud(arbre_kd arbre, int prof, int max_prof){
+  int i;
+
+  if(!est_vide_arbre_kd(arbre)) {    /* Si le noeud n'est pas vide : */
+    aff_noeud(arbre->fils_d, prof+1, max_prof); /* On affiche le fils droit */
+    for (i = 0; i < prof; i++){
+      printf("                                ");      /* On affiche le nombre d'espace necessaire */
+    }
+    afficher_pt(*racine(arbre), racine(arbre)->dimension);
+    aff_noeud(arbre->fils_g, prof+1, max_prof); /* On affiche le fils gauche */
+  }
+  else{                 /* Sinon (ie si le noeud est vide) : */
+    for (i = 0; i < prof; i++) {
+      printf("                                ");     /* On affiche le nombre d'espace necessaire */
+    }
+    printf("NULL\n");     /* On affiche NULL puisque le noeud est vide */
+  }
+}
+
+/* Fonction permettant d'afficher un arbre de manière plus clair dans le */
+/* terminal */
+void afficher_arbre_bis(arbre_kd a){
+  aff_noeud(a, 0, profondeur_arbre(a));
 }

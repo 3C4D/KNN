@@ -26,9 +26,6 @@ arbre_kd creer_noeud(point *pt);
 /* Permet de creer un arbre à partir de sa racine et de ses fils*/
 arbre_kd creer_arbre(point *pt, arbre_kd fils_gauche, arbre_kd fils_droit);
 
-/* Permet d'afficher un arbre dans le terminal */
-void afficher_arbre(arbre_kd arbre);
-
 /* Permet de renvoyer la racine */
 point *racine(arbre_kd arbre);
 
@@ -52,5 +49,15 @@ void detruire_arbre(arbre_kd arbre);
 
 /* Permet de construire un arbre_kd à partir d'un tableau de points */
 arbre_kd creer_arbre_kd(TabPts *tab);
+
+/* Fonction permettant d'inserer un point dans un arbre kd */
+arbre_kd insere(arbre_kd arbre, point *pt);
+
+/* Permet d'afficher un arbre recursivement */
+void afficher_arbre(arbre_kd arbre);
+
+/* Fonction permettant d'afficher un arbre de manière plus clair dans le */
+/* terminal */
+void afficher_arbre_bis(arbre_kd a);
 
 #endif

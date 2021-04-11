@@ -19,16 +19,17 @@ int main(){
   arbre_kd arbre = creer_arbre_vide();
 
   srand(time(NULL));
-  /*
 
   tab = chargement_fichier("test");
 
+  putchar('\n');
   afficher_tab_pts(tab);
-
   putchar('\n');
 
-  afficher_tab_pts(tab);
+
   arbre = creer_arbre_kd(&tab);
+  afficher_arbre_bis(arbre);
+  /*
   afficher_pt(*(arbre->racine), tab.dimension);
   afficher_pt(*(arbre->fils_g->racine), tab.dimension);
   afficher_pt(*(arbre->fils_d->racine), tab.dimension);

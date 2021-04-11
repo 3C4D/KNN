@@ -10,9 +10,9 @@
 /* Permet de créer un point d'une classe donnée */
 point creer_point(int dimension, int classe){
   point pt;
-  /*la taille d'un point est unique*/
-  pt.classe = classe;
-  return pt;
+  pt.classe = classe;       /* Mise en place de la classe */
+  pt.dimension = dimension; /* Mise en place de la dimension */
+  return pt;                /* On retourne le point */
 }
 
 /* Ajoute les coordonnées contenues dans un tableau dans un point */
