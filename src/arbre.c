@@ -165,7 +165,8 @@ arbre_kd insere_aux(arbre_kd arbre, point *pt, int prof, int axe){
       return inserer_fils_droit(arbre, creer_noeud(pt));
     }
   }
-  else{ /*Sinon, on envoie le point sur l'un des deux fils en fonction de l'axe*/
+  /*Sinon, on envoie le point sur l'un des deux fils en fonction de l'axe*/
+  else{
     if(racine(arbre)->coord[prof%axe] < pt->coord[prof%axe]){
       return inserer_fils_gauche(arbre, /* Fils gauche si l'axe est inférieur */
                                  insere_aux(renvoyer_fils_gauche(arbre),
@@ -194,17 +195,13 @@ arbre_kd insere(arbre_kd arbre, point *pt){
 /* Permet d'afficher un arbre recursivement */
 
 void afficher_arbre(arbre_kd arbre){
-  printf("ok\n");
   if(!est_vide_arbre_kd(arbre)){
-    printf("racine non vide\n");
     afficher_pt(*racine(arbre), racine(arbre)->dimension);
   }
   if(!est_vide_arbre_kd(renvoyer_fils_gauche(arbre))){
-    printf("fg non vide\n");
     afficher_arbre(renvoyer_fils_gauche(arbre));
   }
   if(!est_vide_arbre_kd(renvoyer_fils_droit(arbre))){
-    printf("fd non vide\n");
     afficher_arbre(renvoyer_fils_droit(arbre));
   }
 }
@@ -227,17 +224,20 @@ int profondeur_arbre(arbre_kd arbre){
 void aff_noeud(arbre_kd arbre, int prof, int max_prof){
   int i;
 
-  if(!est_vide_arbre_kd(arbre)) {    /* Si le noeud n'est pas vide : */
+  if(!est_vide_arbre_kd(arbre)){        /* Si le noeud n'est pas vide : */
     aff_noeud(arbre->fils_d, prof+1, max_prof); /* On affiche le fils droit */
     for (i = 0; i < prof; i++){
-      printf("                                ");      /* On affiche le nombre d'espace necessaire */
+      /* On affiche le nombre d'espace necessaire */
+      printf("                                ");
     }
     afficher_pt(*racine(arbre), racine(arbre)->dimension);
+
     aff_noeud(arbre->fils_g, prof+1, max_prof); /* On affiche le fils gauche */
   }
   else{                 /* Sinon (ie si le noeud est vide) : */
     for (i = 0; i < prof; i++) {
-      printf("                                ");     /* On affiche le nombre d'espace necessaire */
+      /* On affiche le nombre d'espace necessaire */
+      printf("                                ");
     }
     printf("NULL\n");     /* On affiche NULL puisque le noeud est vide */
   }
