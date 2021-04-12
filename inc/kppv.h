@@ -2,13 +2,13 @@
 /* à savoir trouver les kppv et trouver la classe d'un point par rapport */
 /* à ses kppv */
 
-#ifndef KNN_H_
-#define KNN_H_
+#ifndef KPPV_H_
+#define KPPV_H_
 
 /* Renvoie le tableau des k plus proches voisins*/
-TabPts trouver_kppv(TabPts tab_pts, point pt, int k);
+TabPts trouver_kppv_tab(TabPts tab_pts, point pt, int k);
 
 /* Permet de trouver la classe d'un point par rapport à ses kppv */
-int trouver_classe_kppv(TabPts tab, point pt, int k);
+int trouver_classe_kppv_tab(TabPts tab, point pt, int k);
 
 #endif

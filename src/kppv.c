@@ -5,9 +5,10 @@
 #include <stdio.h>
 #include "points.h"
 #include "erreur.h"
+#include "arbre.h"
 
 /* Renvoie le tableau des k plus proches voisins */
-TabPts trouver_kppv(TabPts tab_pts, point pt, int k){
+TabPts trouver_kppv_tab(TabPts tab_pts, point pt, int k){
   TabPts kppv = creer_tab_pts(tab_pts.dimension, tab_pts.nbclasse);
   int i, j;
 
@@ -57,12 +58,12 @@ TabPts trouver_kppv(TabPts tab_pts, point pt, int k){
 }
 
 /* Permet de trouver la classe d'un point par rapport à ses kppv */
-int trouver_classe_kppv(TabPts tab, point pt, int k){
+int trouver_classe_kppv_tab(TabPts tab, point pt, int k){
   TabPts kppv;
   int classe, i;
 
   /*calcul des kppv*/
-  kppv = trouver_kppv(tab, pt, k);
+  kppv = trouver_kppv_tab(tab, pt, k);
 
   /*calcul de la classe majoritaire parmi les kppv*/
   classe = classe_majoritaire(kppv);

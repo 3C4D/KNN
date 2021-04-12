@@ -16,6 +16,7 @@ typedef struct point{
 typedef struct TabPts{
   point *tab;
   int taille;
+  int taille_max;
   int dimension;
   int nbclasse;
 }TabPts;

@@ -28,13 +28,15 @@ int main(){
   putchar('\n');
   afficher_tab_pts(tab);
   putchar('\n');
+  printf("%d %d\n", tab.taille, tab.taille_max);
 
 
+  /*
   arbre = creer_arbre_kd(&tab);
   afficher_arbre_bis(arbre);
   arbre = insere(arbre, &pt);
+  printf("######## Insertion ########################################\n");
   afficher_arbre_bis(arbre);
-  /*
   afficher_pt(*(arbre->racine), tab.dimension);
   afficher_pt(*(arbre->fils_g->racine), tab.dimension);
   afficher_pt(*(arbre->fils_d->racine), tab.dimension);
@@ -42,7 +44,7 @@ int main(){
   afficher_pt(*(arbre->fils_g->fils_d->racine), tab.dimension);
   afficher_tab_pts(tab);
 
-  kppv = trouver_kppv(tab, tab.tab[231], 500);
+  kppv = trouver_kppv_tab(tab, tab.tab[231], 500);
   afficher_tab_pts(kppv);
 
   putchar('\n');

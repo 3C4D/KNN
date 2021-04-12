@@ -45,7 +45,8 @@ double calc_distance(point p1, point p2, int dimension){
 TabPts creer_tab_pts(int dimension, int nbclasse){
   TabPts tab;
   /*on alloue un espace mémoire pour pouvoir utiliser realloc*/
-  tab.tab = (point *)malloc(0);
+  tab.tab = (point *)malloc(10*sizeof(point));
+  tab.taille_max = 10;
   /*vérification de l'allocation*/
   if(tab.tab == NULL){
     erreur("Erreur d'allocation dans la fonction creer_tab_pts");
@@ -60,11 +61,14 @@ TabPts creer_tab_pts(int dimension, int nbclasse){
 
 /* Permet d'ajouter un point au tableau de points */
 void ajouter_point(TabPts *tab_pts, point pt){
-  /*on realloue le tableau en ajoutant une case*/
-  tab_pts->tab = (point *)realloc(
-    tab_pts->tab,
-    (tab_pts->taille+1)*sizeof(point)
-  );
+  /*on realloue le tableau en ajoutant 10 cases si le tableau est plein*/
+  if(tab_pts->taille == tab_pts->taille_max){
+    tab_pts->taille_max += 10;
+    tab_pts->tab = (point *)realloc(
+      tab_pts->tab,
+      (tab_pts->taille+10)*sizeof(point)
+    );
+  }
   /*vérification de l'allocation*/
   if(tab_pts->tab == NULL){
     erreur("Erreur d'allocation dans la fonction ajouter_point");
