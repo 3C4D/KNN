@@ -31,9 +31,10 @@ int main(){
   printf("%d %d\n", tab.taille, tab.taille_max);
 
 
-  /*
+  
   arbre = creer_arbre_kd(&tab);
   afficher_arbre_bis(arbre);
+  /*
   arbre = insere(arbre, &pt);
   printf("######## Insertion ########################################\n");
   afficher_arbre_bis(arbre);
