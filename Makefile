@@ -7,7 +7,7 @@ EXE_GEN  := $(BIN_DIR)/generation_test
 ALL_EXE  := $(EXE_KPPV) $(EXE_GEN)
 SRC := $(wildcard $(SRC_DIR)/*.c)
 OBJ := $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
-OBJ_GEN  := $(filter-out %kppv.o, $(OBJ))
+OBJ_GEN  := $(filter-out %main_kppv.o, $(OBJ))
 OBJ_KPPV := $(filter-out %generation.o, $(OBJ))
 
 CC := gcc

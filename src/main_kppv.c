@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <time.h>
+#include "interface.h"
 #include "points.h"
 #include "erreur.h"
 #include "kppv.h"
@@ -13,27 +14,18 @@
 
 int main(){
 
-  TabPts kppv;
-  TabPts tab;
-  TabPts essai;
-  arbre_kd arbre = creer_arbre_vide();
-  double c[2] = {0.8,0.6};
-  point pt = creer_point(2, 3);
-  ajouter_coord(&pt, 2, c);
 
-  srand(time(NULL));
-
-  tab = chargement_fichier("test");
-
-  putchar('\n');
-  afficher_tab_pts(tab);
-  putchar('\n');
-  printf("%d %d\n", tab.taille, tab.taille_max);
+  // putchar('\n');
+  // afficher_tab_pts(tab);
+  // putchar('\n');
+  // printf("%d %d\n", tab.taille, tab.taille_max);
 
 
   
-  arbre = creer_arbre_kd(&tab);
-  afficher_arbre_bis(arbre);
+  // arbre = creer_arbre_kd(&tab);
+  // afficher_arbre_bis(arbre);
+  srand(time(NULL));
+  lancer_interface();
   /*
   arbre = insere(arbre, &pt);
   printf("######## Insertion ########################################\n");
