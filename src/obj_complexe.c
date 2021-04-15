@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include "obj_complexe.h"
+#include "couleur.h"
 #include "canvas.h"
 #include "erreur.h"
 
@@ -180,7 +181,7 @@ Id_Obj maj_compteur(MLV_Clickable click, Info_Souris souris){
   }
   
   compteur->info->keylog->etat = INACTIF;
-  couleur_fond_canvas(MLV_rgba(0x39, 0x40, 0x4d, 0xff), compteur->info->fond);
+  couleur_fond_canvas(couleur_hex("39404d"), compteur->info->fond);
   modif_texte_int(compteur->val, compteur->info->texte);
   return NON_DEFINI;
 }
@@ -279,7 +280,7 @@ void aff_sous_grille_x(int nb_sections, MLV_Graph2D graph2D){
     graph_placer_segment(
       init_coordr(graph2D->plan->abs.min, pos_y),
       init_coordr(graph2D->plan->abs.max, pos_y),
-      MLV_rgba(0xbf, 0xbf, 0xbf, 0x3f), graph2D
+      couleur_hex("bfbfbf3f"), graph2D
     );
     pos_y += graph2D->plan->ord.pas/nb_sections;
   } 
@@ -289,7 +290,7 @@ void aff_sous_grille_x(int nb_sections, MLV_Graph2D graph2D){
     graph_placer_segment(
       init_coordr(graph2D->plan->abs.min, pos_y),
       init_coordr(graph2D->plan->abs.max, pos_y),
-      MLV_rgba(0xbf, 0xbf, 0xbf, 0x3f), graph2D
+      couleur_hex("bfbfbf3f"), graph2D
     );
     pos_y -= graph2D->plan->ord.pas/nb_sections;
   } 
@@ -301,7 +302,7 @@ void aff_sous_grille_y(int nb_sections, MLV_Graph2D graph2D){
     graph_placer_segment(
       init_coordr(pos_x, graph2D->plan->ord.min),
       init_coordr(pos_x, graph2D->plan->ord.max),
-      MLV_rgba(0xbf, 0xbf, 0xbf, 0x3f), graph2D
+      couleur_hex("bfbfbf3f"), graph2D
     );
     pos_x += graph2D->plan->abs.pas / nb_sections;
   } 
@@ -311,7 +312,7 @@ void aff_sous_grille_y(int nb_sections, MLV_Graph2D graph2D){
     graph_placer_segment(
       init_coordr(pos_x, graph2D->plan->ord.min),
       init_coordr(pos_x, graph2D->plan->ord.max),
-      MLV_rgba(0xbf, 0xbf, 0xbf, 0x3f), graph2D
+      couleur_hex("bfbfbf3f"), graph2D
     );
     pos_x -= graph2D->plan->abs.pas / nb_sections;
   } 
@@ -354,9 +355,10 @@ void graph_placer_cercle(
 }
 
 void graph_placer_point(
-  Coord_R centre, MLV_Color sur, MLV_Color cir, MLV_Graph2D graph
+  Coord_R centre, MLV_Color col, MLV_Graph2D graph
 ){
+  MLV_Color inter = couleur_changer_alpha(0x7f, col);
   double rayon = long_ztor(2, graph->mat_pix->abs, graph->plan->abs);
-  graph_placer_cercle_plein(centre, rayon, sur, graph);
-  graph_placer_cercle(centre, rayon, cir, graph);
+  graph_placer_cercle_plein(centre, rayon, inter, graph);
+  graph_placer_cercle(centre, rayon, col, graph);
 }

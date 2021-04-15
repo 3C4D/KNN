@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include "obj_simple.h"
 #include "geometrie.h"
+#include "couleur.h"
 #include "erreur.h"
 
 MLV_Button init_bouton(MLV_Position pos, FctClick fonction){
@@ -34,10 +35,10 @@ void bouton_changer_etat(MLV_Button bouton){
 }
 
 void bouton_label(char *label, MLV_Button bouton){
-  couleur_fond_canvas(MLV_rgba(0x39, 0x40, 0x4d, 0xff), bouton->actif);
-  placer_texte(label, MLV_rgba(0xab, 0xb2, 0xbf, 0xff), bouton->actif);
-  couleur_fond_canvas(MLV_rgba(0x5f, 0x5f, 0x5f, 0xff), bouton->inactif);
-  placer_texte(label, MLV_rgba(0x9f, 0x9f, 0x9f, 0xff), bouton->inactif);
+  couleur_fond_canvas(couleur_hex("39404d"), bouton->actif);
+  placer_texte(label, couleur_hex("abb2bf"), bouton->actif);
+  couleur_fond_canvas(couleur_hex("5f5f5f"), bouton->inactif);
+  placer_texte(label, couleur_hex("9f9f9f"), bouton->inactif);
 }
 
 void bouton_image(char *active_rep, char *inactive_rep, MLV_Button bouton){
@@ -109,15 +110,15 @@ void bascule_changer_pose(MLV_Toggle bascule){
 }
 
 void bascule_label(char *label_a, char *label_b, MLV_Toggle bascule){
-  couleur_fond_canvas(MLV_rgba(0x39, 0x40, 0x4d, 0xff), bascule->etat_on_a);
-  placer_texte(label_a, MLV_rgba(0x61, 0xaf, 0xef, 0xff), bascule->etat_on_a);
-  couleur_fond_canvas(MLV_rgba(0x39, 0x40, 0x4d, 0xff), bascule->etat_on_b);
-  placer_texte(label_b, MLV_rgba(0xe0, 0x6c, 0x75, 0xff), bascule->etat_on_b);
+  couleur_fond_canvas(couleur_hex("39404d"), bascule->etat_on_a);
+  placer_texte(label_a, couleur_hex("61afef"), bascule->etat_on_a);
+  couleur_fond_canvas(couleur_hex("39404d"), bascule->etat_on_b);
+  placer_texte(label_b, couleur_hex("e06c75"), bascule->etat_on_b);
 
-  couleur_fond_canvas(MLV_rgba(0x5f, 0x5f, 0x5f, 0xff), bascule->etat_off_a);
-  placer_texte(label_a, MLV_rgba(0x9f, 0x9f, 0x9f, 0xff), bascule->etat_off_a);
-  couleur_fond_canvas(MLV_rgba(0x5f, 0x5f, 0x5f, 0xff), bascule->etat_off_b);
-  placer_texte(label_b, MLV_rgba(0x9f, 0x9f, 0x9f, 0xff), bascule->etat_off_b);
+  couleur_fond_canvas(couleur_hex("5f5f5f"), bascule->etat_off_a);
+  placer_texte(label_a, couleur_hex("9f9f9f"), bascule->etat_off_a);
+  couleur_fond_canvas(couleur_hex("5f5f5f"), bascule->etat_off_b);
+  placer_texte(label_b, couleur_hex("9f9f9f"), bascule->etat_off_b);
 }
 
 void bascule_image(
@@ -163,7 +164,7 @@ MLV_Input init_saisie(MLV_Position pos, FctKeylog en_cours, FctClick fini){
   verif_alloc(saisie);
 
   saisie->fond = init_canvas(pos, true);
-  couleur_fond_canvas(MLV_rgba(0x39, 0x40, 0x4d, 0xff), saisie->fond);
+  couleur_fond_canvas(couleur_hex("39404d"), saisie->fond);
   saisie->keylog = init_keylogger(INACTIF);
   if (en_cours != NULL){
     keylog_init_fct(en_cours, saisie->keylog);
@@ -206,7 +207,7 @@ Id_Obj activation_saisie(MLV_Clickable click, Info_Souris souris){
   
   saisie->keylog->etat = ACTIF;
   placer_curseur_texte(
-    saisie->texte, MLV_rgba(0xab, 0xb2, 0xbf, 0xff), saisie->fond
+    saisie->texte, couleur_hex("abb2bf"), saisie->fond
   );
 
   return INPUT;
@@ -215,7 +216,7 @@ Id_Obj activation_saisie(MLV_Clickable click, Info_Souris souris){
 Id_Obj desactivation_saisie(MLV_Clickable click, Info_Souris souris){
   MLV_Input saisie = (MLV_Input)click_proprio(click);
   saisie->keylog->etat = INACTIF;
-  couleur_fond_canvas(MLV_rgba(0x39, 0x40, 0x4d, 0xff), saisie->fond);
+  couleur_fond_canvas(couleur_hex("39404d"), saisie->fond);
   
   return INPUT;
 }
@@ -237,9 +238,9 @@ Id_Obj saisie_en_cours(MLV_Keylogger keylog, Info_Clavier clavier){
     texte_ajouter_str(carac, saisie->texte);
   }
 
-  couleur_fond_canvas(MLV_rgba(0x39, 0x40, 0x4d, 0xff), saisie->fond);
+  couleur_fond_canvas(couleur_hex("39404d"), saisie->fond);
   placer_curseur_texte(
-    saisie->texte, MLV_rgba(0xab, 0xb2, 0xbf, 0xff), saisie->fond
+    saisie->texte, couleur_hex("abb2bf"), saisie->fond
   );
 
   if (carac){

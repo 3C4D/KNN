@@ -64,7 +64,7 @@ void graph_placer_cercle(
   Coord_R centre, double rayon, MLV_Color col, MLV_Graph2D graph
 );
 void graph_placer_point(
-  Coord_R centre, MLV_Color sur, MLV_Color cir, MLV_Graph2D graph
+  Coord_R centre, MLV_Color col, MLV_Graph2D graph
 );
 
 #endif

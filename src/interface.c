@@ -1,4 +1,6 @@
 #include <MLV/MLV_all.h>
+#include <stdlib.h>
+#include <math.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include "interface.h"
@@ -13,11 +15,8 @@
 #include "gestion_ajout.h"
 #include "peripheriques.h"
 #include "obj_kppv.h"
+#include "couleur.h"
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <math.h>
-#include <time.h>
 #include "points.h"
 #include "erreur.h"
 #include "kppv.h"
@@ -74,7 +73,7 @@ int lancer_interface() {
   MLV_Canvas fond = init_canvas(
     grille_pos(0, 0, GRILLE_X, GRILLE_Y, grille), true
   );
-  couleur_fond_canvas(MLV_rgba(0x21, 0x25, 0x2b, 0xff), fond);
+  couleur_fond_canvas(couleur_hex("21252b"), fond);
 
   ajouter_canvas(fond, gestionnaire->liste_canvas);
   mise_en_place(grille, gestionnaire);
@@ -233,7 +232,7 @@ void ajout_elements(Grid grille, Manager gest){
     )
   );
 
-  tab = chargement_fichier("moons.txt");
+  tab = chargement_fichier("out.dat");
   graph_kppv_ajouter_tab_pts(&tab, graphes[0]);
   graph_kppv_aff(graphes[0]);
 

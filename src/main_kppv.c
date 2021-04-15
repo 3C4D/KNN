@@ -12,6 +12,8 @@
 #include "arbre.h"
 #include "generation.h"
 
+#include "couleur.h"
+
 int main(){
 
 

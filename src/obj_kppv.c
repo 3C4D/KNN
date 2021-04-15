@@ -1,5 +1,6 @@
 #include "obj_kppv.h"
 #include "erreur.h"
+#include "couleur.h"
 
 MLV_GraphKNN init_graph_kppv(MLV_Position pos){
   MLV_GraphKNN graph_kppv = malloc(sizeof(struct MLV_GraphKNN_s));
@@ -77,19 +78,9 @@ void graph_kppv_aff(MLV_GraphKNN graph_kppv){
 }
 
 void graph_kppv_aff_pt(point pt, MLV_GraphKNN graph_kppv){
-  MLV_Color couleurs[] = {
-    MLV_COLOR_RED,
-    MLV_COLOR_BLUE,
-    MLV_COLOR_GREEN,
-    MLV_COLOR_YELLOW,
-    MLV_COLOR_ORANGE,
-    MLV_COLOR_PURPLE
-  };
-
   graph_placer_point(
     coord2d_point(pt), 
-    couleurs[pt.classe % 6],
-    couleurs[pt.classe % 6],
+    gen_couleur(pt.classe),
     graph_kppv->graph2D
   );
 }
