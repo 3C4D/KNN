@@ -3,8 +3,31 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "points.h"
 #include "erreur.h"
+
+/* Vérifie l'extension d'un nom de fichier et sa cohérence */
+int verif_nom_fic(char *nom_fic){
+  /* Les extensions permises sont .dat .txt et .log */
+  char ext[3][5] = {".dat", ".txt", ".log"};
+  int i = 0, valide = 0;
+  if(strlen(nom_fic) < 5){ /* La longueur minimale est 5 (ex : a.dat) */
+    erreur("Erreur, nom de fichier invalide, fonction verif_nom_fic");
+  }
+
+  /* On parcours le tableau d'extensions */
+  while(i < 3 && !valide){
+    if(!strcmp(nom_fic+(strlen(nom_fic)-4), ext[i])){
+      valide = 1;  /* Si une extension correspond on affect 1 à valide */
+    }
+    i++;
+  }
+  if(valide){
+    return 1; /* Si une extension correspond on retourne 1 */
+  }
+  return 0;   /* Sinon on retourne 0 */
+}
 
 /* Permet de charger des informations contenues dans un fichier dans un
    tableau de points et de retourner ce dernier */
@@ -13,6 +36,11 @@ TabPts chargement_fichier(char *nom_fic){
   TabPts tab;
   double *coord_temp = NULL;
   int i, j, classe, nb_pts, dimension, nbclasse;
+
+  /* On vérifie si le nom du fichier est valide */
+  if(!verif_nom_fic(nom_fic)){
+    erreur("Erreur, fonction de sauvegarde, nom de fichier invalide");
+  }
 
   /*on essaye d'ouvrir le fichier dont le nom est en argument de la fonction*/
   fic = fopen(nom_fic, "r");
@@ -68,10 +96,9 @@ void sauvegarde_fichier(TabPts tab, char *nom_fic){
   FILE *fic = NULL;
   int i, j;
 
-  /*on vérifie que le fichier n'existe pas*/
-  /*cela permet de ne pas ecraser par mégarde un fichier source par exemple*/
-  if((fic = fopen(nom_fic, "r")) != NULL){
-    erreur("Erreur, fonction de sauvegarde, le fichier existe surement déjà");
+  /* On vérifie si le nom du fichier est valide */
+  if(!verif_nom_fic(nom_fic)){
+    erreur("Erreur, fonction de sauvegarde, nom de fichier invalide");
   }
 
   /*on vérifie que le fichier est bien créé*/

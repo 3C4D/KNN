@@ -10,7 +10,7 @@
 /* Renvoie le tableau des k plus proches voisins */
 TabPts trouver_kppv_tab(TabPts tab_pts, point pt, int k){
   TabPts kppv = creer_tab_pts(tab_pts.dimension, tab_pts.nbclasse);
-  int i, j;
+  int i, j, victime;
 
   if(k <= 0){
     erreur("Erreur, k doit être supérieur à 0 dans la fonction trouver_kppv");
@@ -29,18 +29,24 @@ TabPts trouver_kppv_tab(TabPts tab_pts, point pt, int k){
       /*on ajoute les coordonnées dans le point du tableau kppv*/
       ajouter_coord(&kppv.tab[i], kppv.dimension, tab_pts.tab[i].coord);
     }
-   /*sinon on remplace le premier point plus éloigné de pt que le point actuel*/
+   /* sinon on remplace le plus éloigné de pt que le point actuel */
+   /* si et seulement si il est plus éloigné que le point choisi */
     else{
-      j = 0;
-      /*on trouve l'index du premier point le plus proche (s'il existe)*/
-      while(j < kppv.taille
-        && calc_distance(kppv.tab[j], pt, tab_pts.dimension)
-        < calc_distance(tab_pts.tab[i], pt, tab_pts.dimension)
-      ){
+      victime = 0;  /* On cherche la victime potentielle */
+      j = 1;
+      /*on trouve l'index du point le plus éloigné*/
+      while(j < kppv.taille){
+        if(calc_distance(kppv.tab[victime], pt, tab_pts.dimension)
+        < calc_distance(kppv.tab[j], pt, tab_pts.dimension)){
+          victime = j;
+        }
         j++;
       }
-      if(j < kppv.taille){                  /*si un point est plus éloigné :*/
-        supprimer_point(&kppv, j);          /* - on le supprime*/
+      afficher_tab_pts(tab_pts);
+      /* Si la victime est plus éloignée que le point actuel on la remplace */
+      if(calc_distance(kppv.tab[victime], pt, tab_pts.dimension)
+      < calc_distance(tab_pts.tab[i], pt, tab_pts.dimension)){
+        supprimer_point(&kppv, victime);          /* - on le supprime*/
                                             /* - on ajoute le point actuel*/
         ajouter_point(
           &kppv,

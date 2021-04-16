@@ -11,22 +11,27 @@
 #include "arbre.h"
 #include "generation.h"
 
-int main(){
+int main(int argc, char **argv){
 
   TabPts kppv;
   TabPts tab;
   TabPts essai;
   arbre_kd arbre = creer_arbre_vide();
-  double c[2] = {0.8,0.6};
-  point pt = creer_point(2, 3);
-  ajouter_coord(&pt, 2, c);
+
+  if(argc != 2){
+    erreur("Usage : kppv <nom_fic>");
+  }
 
   srand(time(NULL));
 
-  tab = chargement_fichier("test");
+  tab = chargement_fichier(argv[1]);
+  kppv = trouver_kppv_tab(tab, tab.tab[2], 4);
 
   putchar('\n');
   afficher_tab_pts(tab);
+  putchar('\n');
+  putchar('\n');
+  afficher_tab_pts(kppv);
   putchar('\n');
   printf("%d %d\n", tab.taille, tab.taille_max);
 
