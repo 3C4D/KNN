@@ -56,7 +56,7 @@ arbre_kd insere(arbre_kd arbre, point *pt);
 /* Permet d'afficher un arbre recursivement */
 void afficher_arbre(arbre_kd arbre);
 
-/* Fonction permettant d'afficher un arbre de manière plus clair dans le */
+/* Fonction permettant d'afficher un arbre de manière plus claire dans le */
 /* terminal */
 void afficher_arbre_bis(arbre_kd a);
 

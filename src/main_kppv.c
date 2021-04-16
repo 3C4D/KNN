@@ -10,6 +10,7 @@
 #include "sauvegarde.h"
 #include "arbre.h"
 #include "generation.h"
+#include "recherche.h"
 
 int main(int argc, char **argv){
 
@@ -17,65 +18,36 @@ int main(int argc, char **argv){
   TabPts tab;
   TabPts essai;
   arbre_kd arbre = creer_arbre_vide();
+  point p = creer_point(2, 5);
+  point *pt_proche;
+  int i;
+  double coord[2] = {-1.0, 0.9};
 
-  if(argc != 2){
-    erreur("Usage : kppv <nom_fic>");
+  ajouter_coord(&p, 2, coord);
+
+  if(argc < 2){
+    erreur("Usage : kppv <entier> [<nom_fic> | <entier K>]");
   }
 
   srand(time(NULL));
 
-  tab = chargement_fichier(argv[1]);
-  kppv = trouver_kppv_tab(tab, tab.tab[2], 4);
+  if((argv[1][0]-'0') == 1){       /* TAB */
+    tab = chargement_fichier(argv[2]);
+    putchar('\n');
+    afficher_tab_pts(tab);
+    putchar('\n');
+    arbre = creer_arbre_kd(&tab);
+    pt_proche = point_proche_dans_zone(&p, arbre);
+    afficher_pt(*pt_proche, 2);
 
-  putchar('\n');
-  afficher_tab_pts(tab);
-  putchar('\n');
-  putchar('\n');
-  afficher_tab_pts(kppv);
-  putchar('\n');
-  printf("%d %d\n", tab.taille, tab.taille_max);
-
-
-  /*
-  arbre = creer_arbre_kd(&tab);
-  afficher_arbre_bis(arbre);
-  arbre = insere(arbre, &pt);
-  printf("######## Insertion ########################################\n");
-  afficher_arbre_bis(arbre);
-  afficher_pt(*(arbre->racine), tab.dimension);
-  afficher_pt(*(arbre->fils_g->racine), tab.dimension);
-  afficher_pt(*(arbre->fils_d->racine), tab.dimension);
-  afficher_pt(*(arbre->fils_g->fils_g->racine), tab.dimension);
-  afficher_pt(*(arbre->fils_g->fils_d->racine), tab.dimension);
-  afficher_tab_pts(tab);
-
-  kppv = trouver_kppv_tab(tab, tab.tab[231], 500);
-  afficher_tab_pts(kppv);
-
-  putchar('\n');
-
-  afficher_tab_pts(tab);
-  sauvegarde_fichier(tab, "test_save");
-  essai = chargement_fichier("test_save");
-
-  putchar('\n');
-
-  printf("%d\n", trouver_classe_kppv(tab, tab.tab[0], 4));
-  afficher_tab_pts(essai);
-  arbre = creer_arbre(&tab.tab[2], creer_arbre(&tab.tab[5],
-  creer_noeud(&tab.tab[21]), creer_arbre_vide()), creer_noeud(&tab.tab[8]));
-  afficher_pt(*(arbre->racine), tab.dimension);
-
-  afficher_pt(tab.tab[2], tab.dimension);
-  afficher_pt(tab.tab[5], tab.dimension);
-  afficher_pt(tab.tab[8], tab.dimension);
-  printf("suppression\n");
-  detruire_arbre(arbre);
-  afficher_pt(tab.tab[2], tab.dimension);
-  afficher_pt(tab.tab[5], tab.dimension);
-  afficher_pt(tab.tab[8], tab.dimension);
-  afficher_pt(*(arbre->racine), tab.dimension);
-  */
-
+    printf("######## POINTS ########\n");
+    for(i = 0; i < 6; i++){
+      afficher_pt(tab.tab[i], 2);
+      printf("%f\n", calc_distance(p, tab.tab[i], 2));
+    }
+  }
+  if((argv[1][0]-'0') == 2){     /* ARBRE */
+    // à completer
+  }
   exit(0);
 }

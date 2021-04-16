@@ -75,7 +75,7 @@ int est_feuille(arbre_kd arbre){
   }
   /* Si les deux fils sont vides le noeud est une feuille */
   if(est_vide_arbre_kd(arbre->fils_g) && est_vide_arbre_kd(arbre->fils_d)){
-
+    return 1;
   }
   return 0;           /* Sinon le noeud n'est pas une feuille */
 }
