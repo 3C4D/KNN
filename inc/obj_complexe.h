@@ -56,6 +56,7 @@ Id_Obj dim_compteur(MLV_Clickable click, Info_Souris souris);
 
 MLV_Graph2D init_graph2D(MLV_Position pos, Plan_R plan);
 void liberer_graph2D(MLV_Graph2D *graph2D);
+void vider_graph(MLV_Graph2D graph2D);
 void aff_axe_x(MLV_Graph2D graph2D);
 void aff_axe_y(MLV_Graph2D graph2D);
 void aff_grille_x(MLV_Graph2D graph2D);

@@ -56,6 +56,7 @@ void graph_kppv_suppr_opt_aff(char opt, MLV_GraphKNN graph_kppv){
 void graph_kppv_aff(MLV_GraphKNN graph_kppv){
   int i;
 
+  vider_graph(graph_kppv->graph2D);
   if(graph_kppv->option_aff && SOUS_GRILLE){
     aff_sous_grille_x(5, graph_kppv->graph2D);
     aff_sous_grille_y(5, graph_kppv->graph2D);
@@ -73,6 +74,10 @@ void graph_kppv_aff(MLV_GraphKNN graph_kppv){
     for (i = 0; i < graph_kppv->pts_classes->taille; i++) {
       graph_kppv_aff_pt(graph_kppv->pts_classes->tab[i], graph_kppv);
     }
+  }
+
+  if(graph_kppv->pt_kppv != NULL){
+    graph_kppv_aff_pt(*graph_kppv->pt_kppv, graph_kppv);
   }
 }
 

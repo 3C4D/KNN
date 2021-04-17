@@ -188,7 +188,7 @@ MLV_Graph2D init_graph2D(MLV_Position pos, Plan_R plan){
   verif_alloc(plan);
   graph2D->placement = pos;
   graph2D->surface = init_canvas(pos, true);
-  couleur_fond_canvas(MLV_COLOR_WHITE, graph2D->surface);
+  vider_graph(graph2D);
   graph2D->plan = plan;
   graph2D->mat_pix = init_planz(
     init_axe(0, pos->dimension.x), init_axe(0, pos->dimension.y)
@@ -207,6 +207,10 @@ void liberer_graph2D(MLV_Graph2D *graph2D){
   }
   
   *graph2D = NULL;
+}
+
+void vider_graph(MLV_Graph2D graph2D){
+  couleur_fond_canvas(MLV_COLOR_WHITE, graph2D->surface);
 }
 
 void aff_axe_x(MLV_Graph2D graph2D){
