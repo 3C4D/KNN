@@ -39,7 +39,7 @@ TabPts *chargement_fichier(char *nom_fic){
 
   /* On vérifie si le nom du fichier est valide */
   if(!verif_nom_fic(nom_fic)){
-    erreur("Erreur, fonction de sauvegarde, nom de fichier invalide");
+    erreur("Erreur, fonction de chargement, nom de fichier invalide");
   }
 
   /*on essaye d'ouvrir le fichier dont le nom est en argument de la fonction*/

@@ -14,7 +14,7 @@
 #include "recherche.h"
 
 int main(int argc, char **argv){
-
+  /*
   TabPts kppv;
   TabPts tab;
   TabPts essai;
@@ -26,14 +26,14 @@ int main(int argc, char **argv){
 
   ajouter_coord(&p, 2, coord);
 
-
+  */
   // putchar('\n');
   // afficher_tab_pts(tab);
   // putchar('\n');
   // printf("%d %d\n", tab.taille, tab.taille_max);
 
 
-  
+
   // arbre = creer_arbre_kd(&tab);
   // afficher_arbre_bis(arbre);
   srand(time(NULL));
@@ -55,8 +55,8 @@ int main(int argc, char **argv){
   }
 
   srand(time(NULL));
-
-  // if((argv[1][0]-'0') == 1){       /* TAB */
+  */
+  // if((argv[1][0]-'0') == 1){
   //   tab = chargement_fichier(argv[2]);
   //   putchar('\n');
   //   afficher_tab_pts(tab);
@@ -69,7 +69,7 @@ int main(int argc, char **argv){
   //     printf("%f\n", calc_distance(tab.tab[0], tab.tab[i], 2));
   //   }
   // }
-  // if((argv[1][0]-'0') == 2){     /* ARBRE */
+  // if((argv[1][0]-'0') == 2){
   //   // à completer
   // }
   exit(0);

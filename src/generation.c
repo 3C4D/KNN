@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "erreur.h"
+#include "sauvegarde.h"
 
 void generation_fichier(int nb_point, int dimension, int nbclasse, char *fic){
   FILE *new = NULL;
@@ -11,8 +12,8 @@ void generation_fichier(int nb_point, int dimension, int nbclasse, char *fic){
 
   /* On vérifie que le fichier n'existe pas */
   /* Cela permet de ne pas ecraser par mégarde un fichier source par exemple */
-  if((new = fopen(fic, "r")) != NULL){
-    erreur("Erreur, fonction de generation, le fichier existe surement déjà");
+  if(!verif_nom_fic(fic)){
+    erreur("Erreur, mauvaise extension ou fichier, generation_fichier");
   }
 
   /* On vérifie que le fichier est bien créé */
