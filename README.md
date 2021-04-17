@@ -48,8 +48,8 @@ Exemple, la commande :
 bin/generation_test 1000 50 6 nouveau_fichier.dat
 ```
 
-Cette commande va créer un fichier nommé nouveau_fichier contenant 1000 points,
-ils auront 50 coordonnées et 6 classes maximum.
+Cette commande va créer un fichier nommé nouveau_fichier.dat contenant 1000
+points, ils auront 50 coordonnées et 6 classes maximum.
 L'exécutable retournera une erreur si le fichier ne possède pas la bonne
 extension.
 
