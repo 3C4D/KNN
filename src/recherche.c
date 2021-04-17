@@ -95,14 +95,14 @@ point *point_proche_dans_zone(point *p, zone z_tmp){
 
 /* Fonction auxiliaire recursive qui recherche les kppv d'un point dans un */
 /* arbre kd */
-void recherche_aux(arbre_kd a, point *p, int k, point *kppv, int taille_tab, int prof, int axe){
+void recherche_aux(arbre_kd a, point *p, int k, point *kppv, int *taille_tab, int prof, int axe){
   point *p_tmp;
 
   if(est_feuille(a)){ /* Si a est une feuille on met a jour la liste */
-    maj_liste(racine(a), p, kppv, &taille_tab, k);
+    maj_liste(racine(a), p, kppv, taille_tab, k);
   }
   else{ /* Sinon on explore la zone où se trouve le point */
-    maj_liste(racine(a), p, kppv, &taille_tab, k);  /* On met à jour les KPPV */
+    maj_liste(racine(a), p, kppv, taille_tab, k);  /* On met à jour les KPPV */
 
     /* Si le point se trouve dans le sous-arbre gauche */
     if(p->coord[prof%axe] < racine(a)->coord[prof%axe]){
@@ -112,7 +112,7 @@ void recherche_aux(arbre_kd a, point *p, int k, point *kppv, int taille_tab, int
       }
       if(!est_vide_arbre_kd(renvoyer_fils_droit(a))){
         p_tmp = point_proche_dans_zone(p, renvoyer_fils_droit(a));
-        if(maj_liste(p_tmp, p, kppv, &taille_tab, k)){
+        if(maj_liste(p_tmp, p, kppv, taille_tab, k)){
           recherche_aux(renvoyer_fils_droit(a), p, k, kppv, taille_tab, prof+1, axe);
         }
       }
@@ -126,7 +126,7 @@ void recherche_aux(arbre_kd a, point *p, int k, point *kppv, int taille_tab, int
       }
       if(!est_vide_arbre_kd(renvoyer_fils_droit(a))){
         p_tmp = point_proche_dans_zone(p, renvoyer_fils_gauche(a));
-        if(maj_liste(p_tmp, p, kppv, &taille_tab, k)){
+        if(maj_liste(p_tmp, p, kppv, taille_tab, k)){
           recherche_aux(renvoyer_fils_droit(a), p, k, kppv, taille_tab, prof+1, axe);
         }
       }
@@ -135,11 +135,14 @@ void recherche_aux(arbre_kd a, point *p, int k, point *kppv, int taille_tab, int
 }
 
 /* Recherche les kppv d'un point dans un arbre kd */
-point *recherche(arbre_kd a, point *p, int k){
+TabPts recherche(arbre_kd a, point *p, int k, int nbclasse){
+  TabPts tab_kppv = creer_tab_pts(p->dimension, nbclasse);
   point *kppv = (point *)malloc(k * sizeof(point));
   if(kppv == NULL){
     erreur("Erreur d'allocation dans la fonction recherche");
   }
-  recherche_aux(a, p, k, kppv, 0, 0, p->dimension);
-  return kppv;
+  recherche_aux(a, p, k, kppv, &tab_kppv.taille, 0, p->dimension);
+
+  tab_kppv.tab = kppv;
+  return tab_kppv;
 }

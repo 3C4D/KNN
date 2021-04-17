@@ -177,3 +177,18 @@ void tri_tab(point *tab, int premier, int dernier, int axe){
     tri_tab(tab, pos+1, dernier, axe);
   }
 }
+
+/* Renvoie le point d'un tableau de points le plus éloigné d'un point p */
+point *plus_lointain(point p, TabPts tab){
+  int i, victime = 0;
+  if(tab.taille == 0){  /* Erreur si le tableau est vide */
+    erreur("Erreur tableau vide dans la fonction plus_lointain()");
+  }
+  for(i = 0; i < tab.taille; i++){  /* On cherche la victime */
+    if(calc_distance(tab.tab[i], p, p.dimension)
+    > calc_distance(tab.tab[victime], p, p.dimension)){
+      victime = i;
+    }
+  }
+  return &tab.tab[victime]; /* On renvoie un pointeur sur la victime */
+}

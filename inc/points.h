@@ -52,4 +52,7 @@ int classe_majoritaire(TabPts tab);
 /* Trie une liste de points récursivement */
 void tri_tab(point *tab, int premier, int dernier, int axe);
 
+/* Renvoie le point d'un tableau de points le plus éloigné d'un point p */
+point *plus_lointain(point p, TabPts tab);
+
 #endif

@@ -19,7 +19,7 @@ int main(int argc, char **argv){
   TabPts essai;
   arbre_kd arbre = creer_arbre_vide();
   point p = creer_point(2, 5);
-  point *pt_proche;
+  point *pt;
   int i;
   double coord[2] = {-1.0, 0.9};
 
@@ -36,14 +36,12 @@ int main(int argc, char **argv){
     putchar('\n');
     afficher_tab_pts(tab);
     putchar('\n');
-    arbre = creer_arbre_kd(&tab);
-    pt_proche = point_proche_dans_zone(&p, arbre);
-    afficher_pt(*pt_proche, 2);
+    pt = plus_lointain(tab.tab[0], tab);
+    afficher_pt(*pt, 2);
 
     printf("######## POINTS ########\n");
     for(i = 0; i < 6; i++){
-      afficher_pt(tab.tab[i], 2);
-      printf("%f\n", calc_distance(p, tab.tab[i], 2));
+      printf("%f\n", calc_distance(tab.tab[0], tab.tab[i], 2));
     }
   }
   if((argv[1][0]-'0') == 2){     /* ARBRE */
