@@ -135,14 +135,14 @@ void recherche_aux(arbre_kd a, point *p, int k, point *kppv, int *taille_tab, in
 }
 
 /* Recherche les kppv d'un point dans un arbre kd */
-TabPts recherche(arbre_kd a, point *p, int k, int nbclasse){
-  TabPts tab_kppv = creer_tab_pts(p->dimension, nbclasse);
+TabPts *recherche(arbre_kd a, point *p, int k, int nbclasse){
+  TabPts *tab_kppv = creer_tab_pts(p->dimension, nbclasse);
   point *kppv = (point *)malloc(k * sizeof(point));
   if(kppv == NULL){
     erreur("Erreur d'allocation dans la fonction recherche");
   }
-  recherche_aux(a, p, k, kppv, &tab_kppv.taille, 0, p->dimension);
+  recherche_aux(a, p, k, kppv, &tab_kppv->taille, 0, p->dimension);
 
-  tab_kppv.tab = kppv;
+  tab_kppv->tab = kppv;
   return tab_kppv;
 }

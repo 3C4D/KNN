@@ -13,6 +13,6 @@ int maj_liste(point *p_tmp, point *cible, point *liste, int *taille_k, int k);
 point *point_proche_dans_zone(point *p, zone z_tmp);
 
 /* Recherche les kppv d'un point dans un arbre kd */
-TabPts recherche(arbre_kd a, point *p, int k, int nbclasse);
+TabPts *recherche(arbre_kd a, point *p, int k, int nbclasse);
 
 #endif

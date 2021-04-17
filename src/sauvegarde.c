@@ -31,9 +31,9 @@ int verif_nom_fic(char *nom_fic){
 
 /* Permet de charger des informations contenues dans un fichier dans un
    tableau de points et de retourner ce dernier */
-TabPts chargement_fichier(char *nom_fic){
+TabPts *chargement_fichier(char *nom_fic){
   FILE *fic = NULL;
-  TabPts tab;
+  TabPts *tab;
   double *coord_temp = NULL;
   int i, j, classe, nb_pts, dimension, nbclasse;
 
@@ -60,7 +60,7 @@ TabPts chargement_fichier(char *nom_fic){
 
   /*on alloue dynamiquement un tableau temporaire où seront chargées les
     coordonnées avant d'être insérées dans le point*/
-  coord_temp = (double *)malloc(tab.dimension * sizeof(double));
+  coord_temp = (double *)malloc(tab->dimension * sizeof(double));
   if(coord_temp == NULL){
     erreur("Erreur d'allocation dans la fonction chargement_fichier");
   }
@@ -72,16 +72,16 @@ TabPts chargement_fichier(char *nom_fic){
     }
 
     /*on crée le point dans le tableau*/
-    ajouter_point(&tab, creer_point(tab.dimension, classe));
+    ajouter_point(tab, creer_point(tab->dimension, classe));
 
-    for(j = 0; j < tab.dimension; j++){
+    for(j = 0; j < tab->dimension; j++){
       /*on charge les coordonnées dans le tableau temporaire*/
       if(fscanf(fic, "%lf", &coord_temp[j]) != 1){
         erreur("Erreur, fichier mal formatté (coordonnée)");
       }
     }
     /*on charge les coordonnées dans le point à l'aide du tableau*/
-    ajouter_coord(&tab.tab[i], tab.dimension, coord_temp);
+    ajouter_coord(&tab->tab[i], tab->dimension, coord_temp);
   }
 
   /*on ferme le fichier*/
@@ -92,7 +92,7 @@ TabPts chargement_fichier(char *nom_fic){
 }
 
 /* Permet de sauvegarder un tableau de points dans un fichier */
-void sauvegarde_fichier(TabPts tab, char *nom_fic){
+void sauvegarde_fichier(TabPts *tab, char *nom_fic){
   FILE *fic = NULL;
   int i, j;
 
@@ -107,13 +107,13 @@ void sauvegarde_fichier(TabPts tab, char *nom_fic){
   }
 
   /*on imprime la premère ligne du fichier qui est un peu particulière*/
-  fprintf(fic, "%d %d %d\n", tab.taille, tab.dimension, tab.nbclasse);
+  fprintf(fic, "%d %d %d\n", tab->taille, tab->dimension, tab->nbclasse);
 
   /*on imprime les informations de chaque points*/
-  for(i = 0; i < tab.taille; i++){
-    fprintf(fic, "%d ", tab.tab[i].classe);
-    for(j = 0; j < tab.dimension; j++){
-      fprintf(fic, "%lf ", tab.tab[i].coord[j]);
+  for(i = 0; i < tab->taille; i++){
+    fprintf(fic, "%d ", tab->tab[i].classe);
+    for(j = 0; j < tab->dimension; j++){
+      fprintf(fic, "%lf ", tab->tab[i].coord[j]);
     }
     fprintf(fic, "\n");
   }

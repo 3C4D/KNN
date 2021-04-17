@@ -175,7 +175,7 @@ void mise_en_place(Grid grille, Manager gest){
 }
 
 void ajout_elements(Grid grille, Manager gest){
-  TabPts tab;
+  TabPts *tab;
 
   boutons[0] = init_bouton(
     position_contenu(
@@ -211,7 +211,7 @@ void ajout_elements(Grid grille, Manager gest){
     0, position_contenu(
       grille_coord(25, 3, grille),
       gest->liste_boite->liste[6]->elements[0]
-    ), 
+    ),
     init_format_centre()
   );
   modif_texte("Options d'affichage", labels[0]);
@@ -288,7 +288,7 @@ void ajout_elements(Grid grille, Manager gest){
   );
 
   tab = chargement_fichier("out.dat");
-  graph_kppv_ajouter_tab_pts(&tab, graphes[0]);
+  graph_kppv_ajouter_tab_pts(tab, graphes[0]);
   graph_kppv_aff(graphes[0]);
 
   charger_graph_kppv(graphes[0], gest);
@@ -350,7 +350,7 @@ void demarrer_interface(Manager gest){
       case MLV_MOUSE_MOTION : // L'utilisateur a déplacé la souris
         break;
       default:
-        fprintf(stderr, 
+        fprintf(stderr,
         "Erreur : la valeur de l'évènement récupéré est impossible.");
         sortie = 1;
     }
@@ -359,4 +359,3 @@ void demarrer_interface(Manager gest){
     MLV_actualise_window();
   }
 }
-

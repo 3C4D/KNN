@@ -29,7 +29,7 @@ point creer_point(int dimension, int classe);
 void ajouter_coord(point *pt, int dimension, double *coord);
 
 /* Permet de créer un tableau de points */
-TabPts creer_tab_pts(int dimension, int nbclasse);
+TabPts *creer_tab_pts(int dimension, int nbclasse);
 
 /* Permet de calculer la distance euclidienne entre deux points */
 double calc_distance(point p1, point p2, int dimension);
