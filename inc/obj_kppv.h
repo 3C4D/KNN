@@ -4,16 +4,14 @@
 #include "geometrie.h"
 #include "obj_complexe.h"
 #include "points.h"
+#include "id_objet.h"
 
 typedef enum {
-  AXE_X = 0x01,
-  AXE_Y = 0x02,
-  GRILLE_X = 0x04,
-  GRILLE_Y = 0x08,
-  SOUS_GRILLE_X = 0x10,
-  SOUS_GRILLE_Y = 0x20,
-  KPPV = 0x40,
-  KPPV_DECISION = 0x80
+  AXE = 0x01,
+  GRILLE = 0x02,
+  SOUS_GRILLE = 0x4,
+  KPPV = 0x8,
+  KPPV_DECISION = 0x10
 } DrapOptAff;
 
 typedef struct MLV_GraphKNN_s *MLV_GraphKNN;
@@ -23,6 +21,7 @@ struct MLV_GraphKNN_s {
   MLV_Graph2D graph2D;
   TabPts *pts_classes;
   point *pt_kppv;
+  int classe_util;
   char option_aff;
 };
 

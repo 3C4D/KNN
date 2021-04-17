@@ -4,17 +4,16 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include "interface.h"
-#include "points.h"
+#include "lien_elems.h"
+
 #include "id_objet.h"
 #include "interactif.h"
 #include "boite.h"
 #include "position.h"
 #include "grille.h"
-#include "obj_simple.h"
 #include "gestion.h"
 #include "gestion_ajout.h"
 #include "peripheriques.h"
-#include "obj_kppv.h"
 #include "couleur.h"
 
 #include "points.h"
@@ -26,27 +25,6 @@
 
 #define GRILLE_X 90
 #define GRILLE_Y 60
-
-MLV_Button boutons[1];
-MLV_Toggle bascules[1];
-MLV_CheckBox coches[1];
-MLV_SpinBox compteurs[1];
-MLV_Input saisies[1];
-MLV_GraphKNN graphes[1];
-
-Id_Obj tog(MLV_Clickable click, Info_Souris souris) {
-  printf("clocked!\n");
-  bascule_changer_pose(bascules[0]);
-
-  return NON_DEFINI;
-}
-
-Id_Obj tester(MLV_Clickable click, Info_Souris souris) {
-  bascule_changer_etat(bascules[0]);
-
-  return NON_DEFINI;
-}
-
 
 void mise_en_place(Grid grille, Manager gest);
 void ajout_elements(Grid grille, Manager gest);
@@ -123,9 +101,9 @@ void mise_en_place(Grid grille, Manager gest){
   ajouter_remplissage(grille_dist(6, grille), boite);
   cont = init_conteneur(MLV_HORIZONTAL_LEFT, MLV_VERTICAL_CENTER);
   ajouter_conteneur(cont, grille_dist(10, grille), boite);
-  ajouter_remplissage(grille_dist(5, grille), boite);
+  ajouter_remplissage(grille_dist(2, grille), boite);
   cont = init_conteneur(MLV_HORIZONTAL_RIGHT, MLV_VERTICAL_CENTER);
-  ajouter_conteneur(cont, grille_dist(26, grille), boite);
+  ajouter_conteneur(cont, grille_dist(29, grille), boite);
   cont = init_conteneur(MLV_HORIZONTAL_LEFT, MLV_VERTICAL_CENTER);
   ajouter_remplissage(grille_dist(1, grille), boite);
   ajouter_conteneur(cont, grille_dist(8, grille), boite);
@@ -153,17 +131,40 @@ void mise_en_place(Grid grille, Manager gest){
   ajouter_boite(boite, gest->liste_boite);
 
   boite = placer_boite(
-    grille_coord(29, 26, grille),
+    grille_coord(29, 29, grille),
     VERTICAL, gest->liste_boite->liste[2]->elements[1]
   );
   cont = init_conteneur_centre();
-  ajouter_conteneur(cont, grille_dist(14, grille), boite);
+  ajouter_conteneur(cont, grille_dist(18, grille), boite);
+  ajouter_remplissage(grille_dist(4, grille), boite);
+  cont = init_conteneur_centre();
+  ajouter_conteneur(cont, grille_dist(3, grille), boite);
   ajouter_remplissage(grille_dist(1, grille), boite);
   cont = init_conteneur_centre();
-  ajouter_conteneur(cont, grille_dist(6, grille), boite);
+  ajouter_conteneur(cont, grille_dist(3, grille), boite);
+  ajouter_boite(boite, gest->liste_boite);
+
+  boite = placer_boite(
+    grille_coord(29, 18, grille),
+    VERTICAL, gest->liste_boite->liste[5]->elements[0]
+  );
+  cont = init_conteneur_centre();
+  ajouter_conteneur(cont, grille_dist(3, grille), boite);
   ajouter_remplissage(grille_dist(1, grille), boite);
   cont = init_conteneur_centre();
-  ajouter_conteneur(cont, grille_dist(4, grille), boite);
+  ajouter_conteneur(cont, grille_dist(2, grille), boite);
+  ajouter_remplissage(grille_dist(1, grille), boite);
+  cont = init_conteneur_centre();
+  ajouter_conteneur(cont, grille_dist(2, grille), boite);
+  ajouter_remplissage(grille_dist(1, grille), boite);
+  cont = init_conteneur_centre();
+  ajouter_conteneur(cont, grille_dist(2, grille), boite);
+  ajouter_remplissage(grille_dist(1, grille), boite);
+  cont = init_conteneur_centre();
+  ajouter_conteneur(cont, grille_dist(2, grille), boite);
+  ajouter_remplissage(grille_dist(1, grille), boite);
+  cont = init_conteneur_centre();
+  ajouter_conteneur(cont, grille_dist(2, grille), boite);
   ajouter_boite(boite, gest->liste_boite);
 
   pos = grille_pos(GRILLE_X - 5, 1, 4, 4, grille);
@@ -179,18 +180,26 @@ void ajout_elements(Grid grille, Manager gest){
   boutons[0] = init_bouton(
     position_contenu(
       grille_coord(4, 4, grille),
-      gest->liste_boite->liste[6]->elements[0]
+      gest->liste_boite->liste[7]->elements[0]
     ),
     tester
   );
-  bouton_image(
-    "ressources/img/reset.png", "ressources/img/reset_inactif.png", boutons[0]
-  );
+  bouton_image("ressources/img/reset.png", boutons[0]);
   charger_bouton(boutons[0], gest);
+
+  boutons[1] = init_bouton(
+    position_contenu(
+      grille_coord(8, 4, grille),
+      gest->liste_boite->liste[4]->elements[0]
+    ),
+    tester
+  );
+  bouton_image("ressources/img/undo.png", boutons[1]);
+  charger_bouton(boutons[1], gest);
 
   bascules[0] = init_bascule(
     position_contenu(
-      grille_coord(20, 4, grille),
+      grille_coord(15, 3, grille),
       gest->liste_boite->liste[3]->elements[0]
     ),
     tog, ETAT_B
@@ -198,32 +207,78 @@ void ajout_elements(Grid grille, Manager gest){
   bascule_label("Mode Création", "Mode KPPV", bascules[0]);
   charger_bascule(bascules[0], gest);
 
+  labels[0] = init_texte(
+    0, position_contenu(
+      grille_coord(25, 3, grille),
+      gest->liste_boite->liste[6]->elements[0]
+    ), 
+    init_format_centre()
+  );
+  modif_texte("Options d'affichage", labels[0]);
+  ajouter_texte(labels[0], gest->liste_texte);
+
   coches[0] = init_coche(
     position_contenu(
-      grille_coord(10, 2, grille),
-      gest->liste_boite->liste[5]->elements[0]
+      grille_coord(20, 2, grille),
+      gest->liste_boite->liste[6]->elements[1]
     ),
-    "KPPV", true
+    "Affichage des axes", true
   );
   charger_coche(coches[0], gest);
 
+  coches[1] = init_coche(
+    position_contenu(
+      grille_coord(20, 2, grille),
+      gest->liste_boite->liste[6]->elements[2]
+    ),
+    "Affichage de la grille", true
+  );
+  charger_coche(coches[1], gest);
+
+  coches[2] = init_coche(
+    position_contenu(
+      grille_coord(20, 2, grille),
+      gest->liste_boite->liste[6]->elements[3]
+    ),
+    "Affichage de la sous-grille", true
+  );
+  charger_coche(coches[2], gest);
+
+  coches[3] = init_coche(
+    position_contenu(
+      grille_coord(20, 2, grille),
+      gest->liste_boite->liste[6]->elements[4]
+    ),
+    "Affichage des KPPV", true
+  );
+  charger_coche(coches[3], gest);
+
+  coches[4] = init_coche(
+    position_contenu(
+      grille_coord(20, 2, grille),
+      gest->liste_boite->liste[6]->elements[5]
+    ),
+    "Prise de décision", true
+  );
+  charger_coche(coches[4], gest);
+
   compteurs[0] = init_compteur(
     position_contenu(
-      grille_coord(10, 4, grille),
+      grille_coord(10, 3, grille),
       gest->liste_boite->liste[3]->elements[1]
     ),
     -1000, 100000, 15
   );
   charger_compteur(compteurs[0], gest);
 
-  saisies[0] = init_saisie(
+  compteurs[1] = init_compteur(
     position_contenu(
-      grille_coord(20, 4, grille),
-      gest->liste_boite->liste[5]->elements[2]
+      grille_coord(10, 3, grille),
+      gest->liste_boite->liste[4]->elements[1]
     ),
-    NULL, NULL
+    1, 100, 15
   );
-  charger_saisie(saisies[0], gest);
+  charger_compteur(compteurs[1], gest);
 
   graphes[0] = init_graph_kppv(
     position_contenu(
@@ -237,6 +292,26 @@ void ajout_elements(Grid grille, Manager gest){
   graph_kppv_aff(graphes[0]);
 
   charger_graph_kppv(graphes[0], gest);
+
+  gests_fichier[0] = init_gest_fichier(
+    position_contenu(
+      grille_coord(25, 3, grille),
+      gest->liste_boite->liste[5]->elements[1]
+    ),
+    "ressources/data/"
+  );
+  ajouter_icon_gest_fichier("ressources/img/load.png", gests_fichier[0]);
+  charger_gest_fichier(gests_fichier[0], gest);
+
+  gests_fichier[1] = init_gest_fichier(
+    position_contenu(
+      grille_coord(25, 3, grille),
+      gest->liste_boite->liste[5]->elements[2]
+    ),
+    "ressources/data/"
+  );
+  ajouter_icon_gest_fichier("ressources/img/save.png", gests_fichier[1]);
+  charger_gest_fichier(gests_fichier[1], gest);
 }
 
 void demarrer_interface(Manager gest){
@@ -247,15 +322,6 @@ void demarrer_interface(Manager gest){
   MLV_Keylogger keylog;
 
   Info_Periphs periphs = init_info_periph();
-
-  // TabPts kppv;
-  // TabPts tab;
-  // TabPts essai;
-  // arbre_kd arbre = creer_arbre_vide();
-  // double c[2] = {0.8,0.6};
-  // point pt = creer_point(2, 3);
-  // ajouter_coord(&pt, 2, c);
-
 
   while (!sortie) {
     evenement = maj_evenement(periphs);

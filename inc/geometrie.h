@@ -37,6 +37,7 @@ struct Plan_R_s{
 
 
 Coord init_coord(int x, int y);
+Coord coord_relative(Coord absolue, Coord dec);
 Coord_R init_coordr(double x, double y);
 
 Axe init_axe(int a, int b);

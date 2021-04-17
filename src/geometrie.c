@@ -12,6 +12,10 @@ Coord init_coord(int x, int y){
   return c;
 }
 
+Coord coord_relative(Coord absolue, Coord dec){
+  return (init_coord(absolue.x - dec.x, absolue.y - dec.y));
+}
+
 /* Gestion de la structure Coord_R */
 Coord_R init_coordr(double x, double y){
   Coord_R c;

@@ -92,6 +92,11 @@ MLV_Color gen_couleur(int graine){
   int h, s, l;
   uint32_t hash;
   char buff[17];
+
+  if(graine == 0){
+    return MLV_COLOR_BLACK;
+  }
+
   memset(buff, 0, 17);
 
   sprintf(buff, "%x", graine);

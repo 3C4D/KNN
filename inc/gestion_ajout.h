@@ -13,5 +13,6 @@ void charger_coche(MLV_CheckBox coche, Manager gest);
 void charger_compteur(MLV_SpinBox compteur, Manager gest);
 void charger_graphe2d(MLV_Graph2D graph2d, Manager gest);
 void charger_graph_kppv(MLV_GraphKNN graph_kppv, Manager gest);
+void charger_gest_fichier(MLV_FileManager gest_fichier, Manager gest);
 
 #endif

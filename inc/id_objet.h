@@ -12,7 +12,8 @@ typedef enum {
   SPINBOX,
   COMBOBOX,
   INPUT,
-  GRAPH
+  GRAPH,
+  GKPPV
 } Id_Obj;
 
 #endif

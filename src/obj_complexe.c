@@ -24,8 +24,6 @@ MLV_CheckBox init_coche(MLV_Position pos, char *label, bool valide){
   bascule_image(
     "ressources/img/vide.png",
     "ressources/img/croix.png",
-    "ressources/img/vide_inactif.png",
-    "ressources/img/croix_inactif.png",
     coche->case_coche
   );
 
@@ -91,7 +89,6 @@ MLV_SpinBox init_compteur(MLV_Position pos, int min, int max, int val){
   compteur->aug = init_bouton(pos_aug, aug_compteur);
   bouton_image(
     "ressources/img/fleche_haut.png",
-    "ressources/img/fleche_haut_inactif.png",
     compteur->aug
   );
   click_maj_proprio((void *)compteur, compteur->aug->zone);
@@ -99,7 +96,6 @@ MLV_SpinBox init_compteur(MLV_Position pos, int min, int max, int val){
   compteur->dim = init_bouton(pos_dim, dim_compteur);
   bouton_image(
     "ressources/img/fleche_bas.png",
-    "ressources/img/fleche_bas_inactif.png",
     compteur->dim
   );
   click_maj_proprio((void *)compteur, compteur->dim->zone);
@@ -358,7 +354,42 @@ void graph_placer_point(
   Coord_R centre, MLV_Color col, MLV_Graph2D graph
 ){
   MLV_Color inter = couleur_changer_alpha(0x7f, col);
-  double rayon = long_ztor(2, graph->mat_pix->abs, graph->plan->abs);
-  graph_placer_cercle_plein(centre, rayon, inter, graph);
-  graph_placer_cercle(centre, rayon, col, graph);
+  Coord c = coord_rtoz(centre, graph->plan, graph->mat_pix);
+  int rayon = 2;
+  placer_disque(c, rayon, inter, graph->surface);
+  placer_cercle(c, rayon, col, graph->surface);
+}
+
+
+MLV_FileManager init_gest_fichier(MLV_Position pos, char const *rep){
+  MLV_Position pos_saisie = copie_position(pos);
+  MLV_Position pos_bouton = copie_position(pos);
+  MLV_FileManager gest_fichier = malloc(sizeof(struct MLV_FileManager_s));
+  verif_alloc(gest_fichier);
+  
+  gest_fichier->placement = pos;
+  pos_saisie->dimension.x -= pos_saisie->dimension.y + 10;
+  gest_fichier->fichier = init_saisie(pos_saisie, NULL, NULL);
+  pos_bouton->dimension.x = pos_bouton->dimension.y;
+  pos_bouton->decalage.x += pos_saisie->dimension.x + 10;
+  gest_fichier->operation = init_bouton(pos_bouton, NULL);
+  gest_fichier->repertoire = String_new(rep);
+
+  return gest_fichier;
+}
+
+void liberer_gest_fichier(MLV_FileManager *gest_fichier){
+  if(*gest_fichier != NULL){
+    liberer_position(&(*gest_fichier)->placement);
+    liberer_saisie(&(*gest_fichier)->fichier);
+    liberer_bouton(&(*gest_fichier)->operation);
+    String_free((*gest_fichier)->repertoire);
+    free(*gest_fichier);
+  }
+
+  *gest_fichier = NULL;
+}
+
+void ajouter_icon_gest_fichier(char *chemin, MLV_FileManager gest_fichier){
+  bouton_image(chemin, gest_fichier->operation);
 }

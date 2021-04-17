@@ -86,6 +86,14 @@ void placer_ellipse(Coord centre, Coord rayon, MLV_Color col, MLV_Canvas cnvs){
   );
 }
 
+void placer_disque(Coord centre, int rayon, MLV_Color col, MLV_Canvas cnvs){
+  MLV_draw_filled_circle_on_image(centre.x, centre.y, rayon, col, cnvs->img);
+}
+
+void placer_cercle(Coord centre, int rayon, MLV_Color col, MLV_Canvas cnvs){
+  MLV_draw_circle_on_image(centre.x, centre.y, rayon, col, cnvs->img);
+}
+
 void placer_curseur_texte(MLV_Text texte, MLV_Color col, MLV_Canvas canvas){
   int ligne_x, ligne_y, hauteur;
 

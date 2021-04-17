@@ -41,3 +41,8 @@ void charger_graph_kppv(MLV_GraphKNN graph_kppv, Manager gest){
   charger_graphe2d(graph_kppv->graph2D, gest);
   ajouter_click(graph_kppv->curseur, gest->liste_click);
 }
+
+void charger_gest_fichier(MLV_FileManager gest_fichier, Manager gest){
+  charger_saisie(gest_fichier->fichier, gest);
+  charger_bouton(gest_fichier->operation, gest);
+}

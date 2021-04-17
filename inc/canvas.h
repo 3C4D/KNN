@@ -27,6 +27,8 @@ void placer_ellipse_pleine(
   Coord centre, Coord rayon, MLV_Color col, MLV_Canvas cnvs
 );
 void placer_ellipse(Coord centre, Coord rayon, MLV_Color col, MLV_Canvas cnvs);
+void placer_disque(Coord centre, int rayon, MLV_Color col, MLV_Canvas cnvs);
+void placer_cercle(Coord centre, int rayon, MLV_Color col, MLV_Canvas cnvs);
 void placer_curseur_texte(MLV_Text texte, MLV_Color col, MLV_Canvas canvas);
 void afficher_canvas(MLV_Canvas canvas);
 

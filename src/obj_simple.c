@@ -1,9 +1,12 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "obj_simple.h"
+#include "string_obj.h"
 #include "geometrie.h"
 #include "couleur.h"
 #include "erreur.h"
+
+void chemin_img_inactif(String chemin);
 
 MLV_Button init_bouton(MLV_Position pos, FctClick fonction){
   MLV_Button bouton = malloc(sizeof(struct MLV_Button_s));
@@ -41,18 +44,23 @@ void bouton_label(char *label, MLV_Button bouton){
   placer_texte(label, couleur_hex("9f9f9f"), bouton->inactif);
 }
 
-void bouton_image(char *active_rep, char *inactive_rep, MLV_Button bouton){
+void bouton_image(char *chemin, MLV_Button bouton){
   Coord dec = bouton->actif->placement;
-  MLV_Canvas canvas_actif = init_canvas_img(dec, active_rep, true);
+  String rep_img = String_new(chemin);
+  
+  MLV_Canvas canvas_actif = init_canvas_img(dec, rep_img->str, true);
   redimensionner_canvas(bouton->zone->pos->dimension, canvas_actif);
-  MLV_Canvas canvas_inactif = init_canvas_img(dec, inactive_rep, false);
+
+  chemin_img_inactif(rep_img);
+  MLV_Canvas canvas_inactif = init_canvas_img(dec, rep_img->str, false);
   redimensionner_canvas(bouton->zone->pos->dimension, canvas_inactif);
+
   liberer_canvas(&bouton->actif);
   liberer_canvas(&bouton->inactif);
   bouton->actif = canvas_actif;
   bouton->inactif = canvas_inactif;
+  String_free(rep_img);
 }
-
 
 MLV_Toggle init_bascule(MLV_Position pos, FctClick fonction, Pose pose) {
   MLV_Toggle bascule = malloc(sizeof(struct MLV_Toggle_s));
@@ -121,25 +129,29 @@ void bascule_label(char *label_a, char *label_b, MLV_Toggle bascule){
   placer_texte(label_b, couleur_hex("9f9f9f"), bascule->etat_off_b);
 }
 
-void bascule_image(
-  char *a_on, char *b_on, char *a_off, char *b_off, MLV_Toggle bascule
-){
+void bascule_image(char *chemin_a, char *chemin_b, MLV_Toggle bascule){
   Coord dec = bascule->etat_on_a->placement;
+  String rep_img_a = String_new(chemin_a);
+  String rep_img_b = String_new(chemin_b);
 
   MLV_Canvas canvas_a_on = init_canvas_img(
-    dec, a_on, est_visible(bascule->etat_on_a)
+    dec, rep_img_a->str, est_visible(bascule->etat_on_a)
   );
   redimensionner_canvas(bascule->zone->pos->dimension, canvas_a_on);
   MLV_Canvas canvas_b_on = init_canvas_img(
-    dec, b_on, est_visible(bascule->etat_on_b)
+    dec, rep_img_b->str, est_visible(bascule->etat_on_b)
   );
   redimensionner_canvas(bascule->zone->pos->dimension, canvas_b_on);
+
+  chemin_img_inactif(rep_img_a);
   MLV_Canvas canvas_a_off = init_canvas_img(
-    dec, a_off, est_visible(bascule->etat_off_a)
+    dec, rep_img_a->str, est_visible(bascule->etat_off_a)
   );
   redimensionner_canvas(bascule->zone->pos->dimension, canvas_a_off);
+
+  chemin_img_inactif(rep_img_b);
   MLV_Canvas canvas_b_off = init_canvas_img(
-    dec, b_off, est_visible(bascule->etat_off_b)
+    dec, rep_img_b->str, est_visible(bascule->etat_off_b)
   );
   redimensionner_canvas(bascule->zone->pos->dimension, canvas_b_off);
 
@@ -151,6 +163,20 @@ void bascule_image(
   bascule->etat_on_b = canvas_b_on;
   bascule->etat_off_a = canvas_a_off;
   bascule->etat_off_b = canvas_b_off;
+
+  String_free(rep_img_a);
+  String_free(rep_img_b);
+}
+
+void chemin_img_inactif(String chemin){
+  int index_pt;
+  String extension = String_new_empty(0);
+  index_pt = String_find_last(chemin, ".");
+  String_split(index_pt, chemin, extension);
+  String_concat_str(chemin, "_inactif");
+  String_concat(chemin, extension);
+
+  String_free(extension);
 }
 
 

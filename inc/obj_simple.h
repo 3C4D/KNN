@@ -5,6 +5,7 @@
 #include "interactif.h"
 #include "position.h"
 #include "canvas.h"
+#include "string_obj.h"
 #include "texte.h"
 
 typedef enum {ETAT_A, ETAT_B} Pose;
@@ -43,7 +44,7 @@ MLV_Button init_bouton(MLV_Position pos, FctClick fonction);
 void liberer_bouton(MLV_Button *bouton);
 void bouton_changer_etat(MLV_Button bouton);
 void bouton_label(char *label, MLV_Button bouton);
-void bouton_image(char *active_rep, char *inactive_rep, MLV_Button bouton);
+void bouton_image(char *chemin, MLV_Button bouton);
 
 
 MLV_Toggle init_bascule(MLV_Position pos, FctClick fonction, Pose pose);
@@ -51,9 +52,7 @@ void liberer_bascule(MLV_Toggle *bascule);
 void bascule_changer_etat(MLV_Toggle bascule);
 void bascule_changer_pose(MLV_Toggle bascule);
 void bascule_label(char *label_a, char *label_b, MLV_Toggle bascule);
-void bascule_image(
-  char *a_on, char *b_on, char *a_off, char *b_off, MLV_Toggle bascule
-);
+void bascule_image(char *chemin_a, char *chemin_b, MLV_Toggle bascule);
 
 MLV_Input init_saisie(MLV_Position pos, FctKeylog en_cours, FctClick fini);
 void liberer_saisie(MLV_Input *saisie);

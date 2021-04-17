@@ -116,6 +116,13 @@ int String_find(const String str, const char *substr){
   return index;
 }
 
+int String_find_last(const String str, const char *substr){
+  int nb_occ = String_count(str, substr);
+  int index = String_find_nth(str, substr, nb_occ);
+
+  return index;
+}
+
 /*Trouve l'index de la nieme occurence d'un paterne dans un String*/
 int String_find_nth(const String str, const char *substr, int occ_num){
   int index = -1, i;
@@ -141,6 +148,20 @@ int String_find_nth(const String str, const char *substr, int occ_num){
   return index;
 }
 
+void String_split(int len, String str, String split){
+  String cpy = String_new_empty(0);
+  
+  if (split != NULL){
+    String_copy(cpy, str);
+    String_substr(cpy, len, cpy->length - len);
+    String_copy(split, cpy);
+  }
+
+  String_substr(str, 0, len);
+  
+  String_free(cpy);
+}
+
 /*Crée une sous-chaine de la chaine du String*/
 void String_substr(String str, int index, int length){
   str->length = length;
@@ -158,6 +179,12 @@ void String_concat(String str1, String str2){
   str1->str = realloc(str1->str, concat_len + 1);
   verif_alloc((void *)str1->str);
   strcat(str1->str, str2->str);
+}
+
+void String_concat_str(String str, char const *concat){
+  String conc_str = String_new(concat);
+  String_concat(str, conc_str);
+  String_free(conc_str);
 }
 
 /*Remplace un paterne par un autre dans un String*/

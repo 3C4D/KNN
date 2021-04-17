@@ -1,6 +1,9 @@
+#include <stdbool.h>
 #include "obj_kppv.h"
 #include "erreur.h"
 #include "couleur.h"
+
+Id_Obj gkppv_ajouter_pt_classe(MLV_Clickable click, Info_Souris souris);
 
 MLV_GraphKNN init_graph_kppv(MLV_Position pos){
   MLV_GraphKNN graph_kppv = malloc(sizeof(struct MLV_GraphKNN_s));
@@ -12,11 +15,13 @@ MLV_GraphKNN init_graph_kppv(MLV_Position pos){
       init_axer(-1.025, 1.025, 0.2)
     )
   );
-  graph_kppv->option_aff = 0x3f;
+  graph_kppv->option_aff = 0x07;
   graph_kppv->pt_kppv = NULL;
   graph_kppv->pts_classes = NULL;
+  graph_kppv->classe_util = 0;
   graph_kppv->curseur = init_clickable(pos, ACTIF, INTERNE);
   click_maj_proprio((void *)graph_kppv, graph_kppv->curseur);
+  click_init_fct(gkppv_ajouter_pt_classe, graph_kppv->curseur);
 
   return graph_kppv;
 }
@@ -51,22 +56,16 @@ void graph_kppv_suppr_opt_aff(char opt, MLV_GraphKNN graph_kppv){
 void graph_kppv_aff(MLV_GraphKNN graph_kppv){
   int i;
 
-  if(graph_kppv->option_aff && SOUS_GRILLE_X){
+  if(graph_kppv->option_aff && SOUS_GRILLE){
     aff_sous_grille_x(5, graph_kppv->graph2D);
-  }
-  if(graph_kppv->option_aff && SOUS_GRILLE_Y){
     aff_sous_grille_y(5, graph_kppv->graph2D);
   }
-  if(graph_kppv->option_aff && GRILLE_X){
+  if(graph_kppv->option_aff && GRILLE){
     aff_grille_x(graph_kppv->graph2D);
-  }
-  if(graph_kppv->option_aff && GRILLE_Y){
     aff_grille_y(graph_kppv->graph2D);
   }
-  if(graph_kppv->option_aff && AXE_X){
+  if(graph_kppv->option_aff && AXE){
     aff_axe_x(graph_kppv->graph2D);
-  }
-  if(graph_kppv->option_aff && AXE_Y){
     aff_axe_y(graph_kppv->graph2D);
   }
 
@@ -93,3 +92,33 @@ Coord_R coord2d_point(point pt){
   }
 }
 
+bool coord_valide_kppv(Coord_R c);
+
+Id_Obj gkppv_ajouter_pt_classe(MLV_Clickable click, Info_Souris souris){
+  MLV_GraphKNN graph_kppv = (MLV_GraphKNN)click_proprio(click);
+  Coord curseur = coord_relative(
+    coord_souris(souris), graph_kppv->placement->decalage
+  );
+  Coord_R coord_pt = coord_ztor(
+    curseur, graph_kppv->graph2D->plan, graph_kppv->graph2D->mat_pix
+  );
+  point pt = creer_point(2, graph_kppv->classe_util);
+  double tab_coord[] = {coord_pt.x, coord_pt.y};  
+
+  if (!coord_valide_kppv(coord_pt)) {
+    return GKPPV;
+  }
+
+  ajouter_coord(&pt, 2, tab_coord);
+  ajouter_point(graph_kppv->pts_classes, pt);
+  graph_kppv_aff(graph_kppv);
+
+  return GKPPV;
+}
+
+bool coord_valide_kppv(Coord_R c){
+  return (
+    c.x >= -1.0 && c.x <= 1.0 &&
+    c.y >= -1.0 && c.y <= 1.0
+  );
+}

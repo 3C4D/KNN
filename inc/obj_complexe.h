@@ -3,6 +3,7 @@
 
 #include <MLV/MLV_all.h>
 #include <stdbool.h>
+#include "string_obj.h"
 #include "texte.h"
 #include "position.h"
 #include "obj_simple.h"
@@ -36,6 +37,13 @@ struct MLV_Graph2D_s {
   Plan_Z mat_pix;
 };
 
+typedef struct MLV_FileManager_s *MLV_FileManager;
+struct MLV_FileManager_s {
+  MLV_Position placement;
+  MLV_Input fichier;
+  MLV_Button operation;
+  String repertoire;
+};
 
 MLV_CheckBox init_coche(MLV_Position pos, char *label, bool valide);
 void liberer_coche(MLV_CheckBox *coche);
@@ -66,5 +74,9 @@ void graph_placer_cercle(
 void graph_placer_point(
   Coord_R centre, MLV_Color col, MLV_Graph2D graph
 );
+
+MLV_FileManager init_gest_fichier(MLV_Position pos, char const *rep);
+void liberer_gest_fichier(MLV_FileManager *gest_fichier);
+void ajouter_icon_gest_fichier(char *chemin, MLV_FileManager gest_fichier);
 
 #endif
