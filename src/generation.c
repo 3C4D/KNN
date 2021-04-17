@@ -29,7 +29,7 @@ void generation_fichier(int nb_point, int dimension, int nbclasse, char *fic){
     for(j = 0; j < dimension-1; j++){         /* de même pour les coordonnées */
       fprintf(new, "%f ", (-1000000 + rand()%2000000) / 1000000.0);
     }
-    fprintf(new, "%f\n", (rand()%1000000)/1000000.0);
+    fprintf(new, "%f\n", (-1000000 + rand()%2000000) / 1000000.0);
   }
 
   fclose(new); /* On ferme le fichier */
