@@ -9,13 +9,19 @@
 #include "recherche.h"
 
 /* Met à jour une liste de point en fonction d'un nouveau point */
-int maj_liste(point *p_tmp, point *cible, point *liste, int taille_k){
+int maj_liste(point *p_tmp, point *cible, point *liste, int *taille_k, int k){
   int i, victime = 0;
 
+  if(*taille_k < k){  /* Si il reste de la place dans le tableau on le met */
+    liste[*taille_k] = *p_tmp;
+    *taille_k += 1;
+    return 1;
+  }
+
   /* On cherche la victime soit le point le plus éloigné parmi les K-PPV */
-  for(i = 0; i < taille_k; i++){
+  for(i = 0; i < *taille_k; i++){
     if(calc_distance(liste[victime], *cible, p_tmp->dimension)
-    < calc_distance(liste[i],*cible, p_tmp->dimension)){
+    < calc_distance(liste[i], *cible, p_tmp->dimension)){
       victime = i;
     }
   }
@@ -87,13 +93,53 @@ point *point_proche_dans_zone(point *p, zone z_tmp){
   }
 }
 
-/* Fonction auxiliaire recursive qui recherche les kppv d'un point dans un /*
+/* Fonction auxiliaire recursive qui recherche les kppv d'un point dans un */
 /* arbre kd */
-point *recherche_aux(arbre_kd a, point *p, int k, point *kppv){
-  return NULL; // à modifier
+void recherche_aux(arbre_kd a, point *p, int k, point *kppv, int taille_tab, int prof, int axe){
+  point *p_tmp;
+
+  if(est_feuille(a)){ /* Si a est une feuille on met a jour la liste */
+    maj_liste(racine(a), p, kppv, &taille_tab, k);
+  }
+  else{ /* Sinon on explore la zone où se trouve le point */
+    maj_liste(racine(a), p, kppv, &taille_tab, k);  /* On met à jour les KPPV */
+
+    /* Si le point se trouve dans le sous-arbre gauche */
+    if(p->coord[prof%axe] < racine(a)->coord[prof%axe]){
+      /* On l'explore si il n'est pas vide */
+      if(!est_vide_arbre_kd(renvoyer_fils_gauche(a))){
+        recherche_aux(renvoyer_fils_gauche(a), p, k, kppv, taille_tab, prof+1, axe);
+      }
+      if(!est_vide_arbre_kd(renvoyer_fils_droit(a))){
+        p_tmp = point_proche_dans_zone(p, renvoyer_fils_droit(a));
+        if(maj_liste(p_tmp, p, kppv, &taille_tab, k)){
+          recherche_aux(renvoyer_fils_droit(a), p, k, kppv, taille_tab, prof+1, axe);
+        }
+      }
+    }
+
+    /* Si le point se trouve dans le sous-arbre droit */
+    if(p->coord[prof%axe] < racine(a)->coord[prof%axe]){
+      /* On l'explore si il n'est pas vide */
+      if(!est_vide_arbre_kd(renvoyer_fils_gauche(a))){
+        recherche_aux(renvoyer_fils_gauche(a), p, k, kppv, taille_tab, prof+1, axe);
+      }
+      if(!est_vide_arbre_kd(renvoyer_fils_droit(a))){
+        p_tmp = point_proche_dans_zone(p, renvoyer_fils_gauche(a));
+        if(maj_liste(p_tmp, p, kppv, &taille_tab, k)){
+          recherche_aux(renvoyer_fils_droit(a), p, k, kppv, taille_tab, prof+1, axe);
+        }
+      }
+    }
+  }
 }
 
 /* Recherche les kppv d'un point dans un arbre kd */
 point *recherche(arbre_kd a, point *p, int k){
-  return NULL; // à modifier
+  point *kppv = (point *)malloc(k * sizeof(point));
+  if(kppv == NULL){
+    erreur("Erreur d'allocation dans la fonction recherche");
+  }
+  recherche_aux(a, p, k, kppv, 0, 0, p->dimension);
+  return kppv;
 }
