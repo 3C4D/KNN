@@ -38,19 +38,24 @@ Vous pouvez générer aléatoirement des fichiers de test avec l'exécutable
 bin/generation_test.
 
 il suffit de lui passer en paramètre, dans l'ordre :
-  - Son nombre de point
+  - Le nombre de point
   - Le nombre de coordonnée(s) des points
   - Le nombre de classes maximum
   - Le nom du fichier (qui doit être nouveau)
 
 Exemple, la commande :
 ```
-bin/generation_test 1000 50 6 nouveau_fichier
+bin/generation_test 1000 50 6 nouveau_fichier.dat
 ```
 
 Cette commande va créer un fichier nommé nouveau_fichier contenant 1000 points,
 ils auront 50 coordonnées et 6 classes maximum.
-L'exécutable retournera une erreur si le fichier existe ou bien si on ne peut
-pas y écrire.
+L'exécutable retournera une erreur si le fichier ne possède pas la bonne
+extension.
+
+Extensions autorisées :
+  - .dat
+  - .log
+  - .txt
 
 ## Application
