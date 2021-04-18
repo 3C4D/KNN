@@ -23,7 +23,7 @@ TabPts *trouver_kppv_tab(TabPts *tab_pts, point pt, int k){
     /*on remplit le tableau tant que sa taille est inférieure à k*/
     if(kppv->taille < k){
       ajouter_point(
-        &kppv,
+        kppv,
         creer_point(kppv->dimension, tab_pts->tab[i].classe)
       );
       /*on ajoute les coordonnées dans le point du tableau kppv*/

@@ -13,7 +13,8 @@ int verif_nom_fic(char *nom_fic){
   char ext[3][5] = {".dat", ".txt", ".log"};
   int i = 0, valide = 0;
   if(strlen(nom_fic) < 5){ /* La longueur minimale est 5 (ex : a.dat) */
-    erreur("Erreur, nom de fichier invalide, fonction verif_nom_fic");
+    err_log("nom de fichier invalide dans la fonction verif_nom_fic");
+    return 0;
   }
 
   /* On parcours le tableau d'extensions */
@@ -39,18 +40,21 @@ TabPts *chargement_fichier(char *nom_fic){
 
   /* On vérifie si le nom du fichier est valide */
   if(!verif_nom_fic(nom_fic)){
-    erreur("Erreur, fonction de sauvegarde, nom de fichier invalide");
+    err_log("Erreur, fonction de chargement, nom de fichier invalide");
+    return NULL;
   }
 
   /*on essaye d'ouvrir le fichier dont le nom est en argument de la fonction*/
   fic = fopen(nom_fic, "r");
   if(fic == NULL){  /*si le fichier n'existe pas, on retourne une erreur*/
-    erreur("Erreur, fichier introuvable dans la fonction chargement_fichier");
+    err_log("fichier introuvable dans la fonction chargement_fichier");
+    return NULL;
   }
 
   /*si la première ligne ne convient pas, on retourne une erreur*/
   if(fscanf(fic, "%d %d %d", &nb_pts, &dimension, &nbclasse) < 3){
-    erreur("Erreur, fichier mal formatté (premiere ligne)");
+    err_log("fichier mal formatté (premiere ligne)");
+    return NULL;
   }
 
   /*on crée le tableau de points et on charge les elements*/
@@ -68,7 +72,8 @@ TabPts *chargement_fichier(char *nom_fic){
   for(i = 0; i < nb_pts; i++){
     /*on essaye de saisir la classe du point, sinon on retourne une erreur*/
     if(fscanf(fic, "%d", &classe) != 1){
-      erreur("Erreur, fichier mal formatté (classe)");
+      err_log("fichier mal formatté (classe)");
+      return NULL;
     }
 
     /*on crée le point dans le tableau*/
@@ -77,7 +82,8 @@ TabPts *chargement_fichier(char *nom_fic){
     for(j = 0; j < tab->dimension; j++){
       /*on charge les coordonnées dans le tableau temporaire*/
       if(fscanf(fic, "%lf", &coord_temp[j]) != 1){
-        erreur("Erreur, fichier mal formatté (coordonnée)");
+        err_log("fichier mal formatté (coordonnée)");
+        return NULL;
       }
     }
     /*on charge les coordonnées dans le point à l'aide du tableau*/
@@ -98,7 +104,7 @@ void sauvegarde_fichier(TabPts *tab, char *nom_fic){
 
   /* On vérifie si le nom du fichier est valide */
   if(!verif_nom_fic(nom_fic)){
-    erreur("Erreur, fonction de sauvegarde, nom de fichier invalide");
+    erreur("fonction de sauvegarde, nom de fichier invalide");
   }
 
   /*on vérifie que le fichier est bien créé*/
