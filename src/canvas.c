@@ -32,11 +32,19 @@ void liberer_canvas(MLV_Canvas *canvas){
 }
 
 void changer_visibilite(MLV_Canvas canvas){
-  if (canvas->visible) {
-    canvas->visible = false;
+  if (est_visible(canvas)) {
+    canvas_invisible(canvas);
   } else {
-    canvas->visible = true;
+    canvas_visible(canvas);
   }
+}
+
+void canvas_visible(MLV_Canvas canvas){
+  canvas->visible = true;
+}
+
+void canvas_invisible(MLV_Canvas canvas){
+  canvas->visible = false;
 }
 
 bool est_visible(MLV_Canvas canvas){

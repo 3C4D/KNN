@@ -49,9 +49,15 @@ struct MLV_FileManager_s {
 MLV_CheckBox init_coche(MLV_Position pos, char *label, bool valide);
 void liberer_coche(MLV_CheckBox *coche);
 Id_Obj changer_validation(MLV_Clickable click, Info_Souris souris) ;
+void cocher_case_coche(MLV_CheckBox coche);
+void decocher_case_coche(MLV_CheckBox coche);
+void desactiver_coche(MLV_CheckBox coche);
+void activer_coche(MLV_CheckBox coche);
 
 MLV_SpinBox init_compteur(MLV_Position pos, int min, int max, int val);
 void liberer_compteur(MLV_SpinBox *compteur);
+void desactiver_compteur(MLV_SpinBox compteur);
+void activer_compteur(MLV_SpinBox compteur);
 Id_Obj aug_compteur(MLV_Clickable click, Info_Souris souris);
 Id_Obj dim_compteur(MLV_Clickable click, Info_Souris souris);
 

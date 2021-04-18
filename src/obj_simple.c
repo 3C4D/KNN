@@ -37,6 +37,18 @@ void bouton_changer_etat(MLV_Button bouton){
   changer_visibilite(bouton->inactif);
 }
 
+void desactiver_bouton(MLV_Button bouton){
+  desactiver_click(bouton->zone);
+  canvas_invisible(bouton->actif);
+  canvas_visible(bouton->inactif);
+}
+
+void activer_bouton(MLV_Button bouton){
+  activer_click(bouton->zone);
+  canvas_visible(bouton->actif);
+  canvas_invisible(bouton->inactif);
+}
+
 void bouton_label(char *label, MLV_Button bouton){
   couleur_fond_canvas(couleur_hex("39404d"), bouton->actif);
   placer_texte(label, couleur_hex("abb2bf"), bouton->actif);
@@ -107,14 +119,46 @@ void bascule_changer_etat(MLV_Toggle bascule){
   }
 }
 
+void desactiver_bascule(MLV_Toggle bascule){
+  desactiver_click(bascule->zone);
+  if (bascule->etat == ETAT_A) {
+    canvas_invisible(bascule->etat_on_a);
+    canvas_visible(bascule->etat_off_a);
+  } else {
+    canvas_invisible(bascule->etat_on_b);
+    canvas_visible(bascule->etat_off_b);
+  }
+}
+
+void activer_bascule(MLV_Toggle bascule){
+  activer_click(bascule->zone);
+  if (bascule->etat == ETAT_A) {
+    canvas_visible(bascule->etat_on_a);
+    canvas_invisible(bascule->etat_off_a);
+  } else {
+    canvas_visible(bascule->etat_on_b);
+    canvas_invisible(bascule->etat_off_b);
+  }
+}
+
+void bascule_pose(Pose pose, MLV_Toggle bascule){
+  bascule->etat = pose;
+
+  if (pose  == ETAT_A){
+    canvas_visible(bascule->etat_on_a);
+    canvas_invisible(bascule->etat_on_b);
+  } else {
+    canvas_invisible(bascule->etat_on_a);
+    canvas_visible(bascule->etat_on_b);
+  } 
+}
+
 void bascule_changer_pose(MLV_Toggle bascule){
   if (bascule->etat == ETAT_A) {
-    bascule->etat = ETAT_B;
+    bascule_pose(ETAT_B, bascule);
   } else {
-    bascule->etat = ETAT_A;
+    bascule_pose(ETAT_A, bascule);
   }
-  changer_visibilite(bascule->etat_on_a);
-  changer_visibilite(bascule->etat_on_b);
 }
 
 void bascule_label(char *label_a, char *label_b, MLV_Toggle bascule){
@@ -181,9 +225,8 @@ void chemin_img_inactif(String chemin){
 
 
 Id_Obj saisie_en_cours(MLV_Keylogger keylog, Info_Clavier clavier);
-Id_Obj activation_saisie(MLV_Clickable click, Info_Souris souris);
-Id_Obj desactivation_saisie(MLV_Clickable click, Info_Souris souris);
-void desactivation_saisie_keylog(MLV_Input saisie);
+Id_Obj debut_saisie(MLV_Clickable click, Info_Souris souris);
+Id_Obj saisie_finie(MLV_Clickable click, Info_Souris souris);
 
 MLV_Input init_saisie(MLV_Position pos, FctKeylog en_cours, FctClick fini){
   MLV_Input saisie = malloc(sizeof(struct MLV_Input_s));
@@ -201,12 +244,12 @@ MLV_Input init_saisie(MLV_Position pos, FctKeylog en_cours, FctClick fini){
   saisie->texte = init_texte(2, pos, init_format_defaut());
   saisie->zone = init_clickable(pos, ACTIF, INTERNE);
   click_maj_proprio((void *)saisie, saisie->zone);
-  click_init_fct(activation_saisie, saisie->zone);
+  click_init_fct(debut_saisie, saisie->zone);
   saisie->sortie = init_clickable(pos, ACTIF, EXTERNE);
   if (fini != NULL){
     click_init_fct(fini, saisie->sortie);
   } else {
-    click_init_fct(desactivation_saisie, saisie->sortie);
+    click_init_fct(saisie_finie, saisie->sortie);
   }
   click_maj_proprio((void *)saisie, saisie->sortie);
 
@@ -225,7 +268,25 @@ void liberer_saisie(MLV_Input *saisie){
   *saisie = NULL;
 }
 
-Id_Obj activation_saisie(MLV_Clickable click, Info_Souris souris){
+void desactiver_saisie(MLV_Input saisie){
+  desactiver_click(saisie->zone);
+  desactiver_click(saisie->sortie);
+  desactiver_keylog(saisie->keylog);
+
+  couleur_fond_canvas(couleur_hex("5f5f5f"), saisie->fond);
+  texte_changer_couleur(couleur_hex("9f9f9f"), saisie->texte);
+}
+
+void activer_saisie(MLV_Input saisie){
+  activer_click(saisie->zone);
+  activer_click(saisie->sortie);
+  activer_keylog(saisie->keylog);
+
+  couleur_fond_canvas(couleur_hex("39404d"), saisie->fond);
+  texte_changer_couleur(couleur_hex("abb2bf"), saisie->texte);
+}
+
+Id_Obj debut_saisie(MLV_Clickable click, Info_Souris souris){
   MLV_Input saisie = (MLV_Input)click_proprio(click);
   if (souris->bouton != MLV_BUTTON_LEFT){
     return INPUT;
@@ -239,7 +300,7 @@ Id_Obj activation_saisie(MLV_Clickable click, Info_Souris souris){
   return INPUT;
 }
 
-Id_Obj desactivation_saisie(MLV_Clickable click, Info_Souris souris){
+Id_Obj saisie_finie(MLV_Clickable click, Info_Souris souris){
   MLV_Input saisie = (MLV_Input)click_proprio(click);
   saisie->keylog->etat = INACTIF;
   couleur_fond_canvas(couleur_hex("39404d"), saisie->fond);

@@ -37,24 +37,29 @@ struct MLV_Input_s {
 
   MLV_Canvas fond;
   MLV_Text texte;
-  void (*fct_validation)(void *);
 };
 
 MLV_Button init_bouton(MLV_Position pos, FctClick fonction);
 void liberer_bouton(MLV_Button *bouton);
 void bouton_changer_etat(MLV_Button bouton);
+void desactiver_bouton(MLV_Button bouton);
+void activer_bouton(MLV_Button bouton);
 void bouton_label(char *label, MLV_Button bouton);
 void bouton_image(char *chemin, MLV_Button bouton);
-
 
 MLV_Toggle init_bascule(MLV_Position pos, FctClick fonction, Pose pose);
 void liberer_bascule(MLV_Toggle *bascule);
 void bascule_changer_etat(MLV_Toggle bascule);
+void desactiver_bascule(MLV_Toggle bascule);
+void activer_bascule(MLV_Toggle bascule);
+void bascule_pose(Pose pose, MLV_Toggle bascule);
 void bascule_changer_pose(MLV_Toggle bascule);
 void bascule_label(char *label_a, char *label_b, MLV_Toggle bascule);
 void bascule_image(char *chemin_a, char *chemin_b, MLV_Toggle bascule);
 
 MLV_Input init_saisie(MLV_Position pos, FctKeylog en_cours, FctClick fini);
 void liberer_saisie(MLV_Input *saisie);
+void desactiver_saisie(MLV_Input saisie);
+void activer_saisie(MLV_Input saisie);
 
 #endif

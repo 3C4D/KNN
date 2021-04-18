@@ -18,6 +18,8 @@ MLV_Canvas init_canvas(MLV_Position pos, bool visibilite);
 MLV_Canvas init_canvas_img(Coord dimension, char *img_rep, bool visibilite);
 void liberer_canvas(MLV_Canvas *canvas);
 void changer_visibilite(MLV_Canvas canvas);
+void canvas_visible(MLV_Canvas canvas);
+void canvas_invisible(MLV_Canvas canvas);
 bool est_visible(MLV_Canvas canvas);
 void redimensionner_canvas(Coord dimension, MLV_Canvas canvas);
 void couleur_fond_canvas(MLV_Color col, MLV_Canvas canvas);

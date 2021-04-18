@@ -3,6 +3,7 @@
 #include <math.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <limits.h>
 #include "interface.h"
 #include "lien_elems.h"
 
@@ -117,7 +118,9 @@ void mise_en_place(Grid grille, Manager gest){
   ajouter_conteneur(cont, grille_dist(20, grille), boite);
   ajouter_remplissage(grille_dist(10, grille), boite);
   cont = init_conteneur(MLV_HORIZONTAL_RIGHT, MLV_VERTICAL_CENTER);
-  ajouter_conteneur(cont, grille_dist(20, grille), boite);
+  ajouter_conteneur(cont, grille_dist(10, grille), boite);
+  cont = init_conteneur(MLV_HORIZONTAL_RIGHT, MLV_VERTICAL_CENTER);
+  ajouter_conteneur(cont, grille_dist(10, grille), boite);
   ajouter_boite(boite, gest->liste_boite);
 
   boite = placer_boite(
@@ -167,6 +170,16 @@ void mise_en_place(Grid grille, Manager gest){
   ajouter_conteneur(cont, grille_dist(2, grille), boite);
   ajouter_boite(boite, gest->liste_boite);
 
+  boite = placer_boite(
+    grille_coord(20, 5, grille),
+    HORIZONTAL, gest->liste_boite->liste[4]->elements[1]
+  );
+  cont = init_conteneur_centre();
+  ajouter_conteneur(cont, grille_dist(8, grille), boite);
+  cont = init_conteneur_centre();
+  ajouter_conteneur(cont, grille_dist(12, grille), boite);
+  ajouter_boite(boite, gest->liste_boite);
+
   pos = grille_pos(GRILLE_X - 5, 1, 4, 4, grille);
   boite = init_boite(HORIZONTAL, pos);
   cont = init_conteneur_centre();
@@ -180,7 +193,7 @@ void ajout_elements(Grid grille, Manager gest){
   boutons[0] = init_bouton(
     position_contenu(
       grille_coord(4, 4, grille),
-      gest->liste_boite->liste[7]->elements[0]
+      gest->liste_boite->liste[8]->elements[0]
     ),
     tester
   );
@@ -217,6 +230,28 @@ void ajout_elements(Grid grille, Manager gest){
   modif_texte("Options d'affichage", labels[0]);
   ajouter_texte(labels[0], gest->liste_texte);
 
+  labels[1] = init_texte(
+    0, position_contenu(
+      grille_coord(10, 3, grille),
+      gest->liste_boite->liste[3]->elements[1]
+    ),
+    init_format_centre()
+  );
+  modif_texte("Valeur de K:", labels[1]);
+  labels[1]->bordure = false;
+  ajouter_texte(labels[1], gest->liste_texte);
+
+  labels[2] = init_texte(
+    0, position_contenu(
+      grille_coord(8, 3, grille),
+      gest->liste_boite->liste[7]->elements[0]
+    ),
+    init_format_centre()
+  );
+  modif_texte("Classe:", labels[2]);
+  labels[2]->bordure = false;
+  ajouter_texte(labels[2], gest->liste_texte);
+
   coches[0] = init_coche(
     position_contenu(
       grille_coord(20, 2, grille),
@@ -249,7 +284,7 @@ void ajout_elements(Grid grille, Manager gest){
       grille_coord(20, 2, grille),
       gest->liste_boite->liste[6]->elements[4]
     ),
-    "Affichage des KPPV", true
+    "Affichage des KPPV", false
   );
   charger_coche(coches[3], gest);
 
@@ -258,25 +293,25 @@ void ajout_elements(Grid grille, Manager gest){
       grille_coord(20, 2, grille),
       gest->liste_boite->liste[6]->elements[5]
     ),
-    "Prise de décision", true
+    "Prise de décision", false
   );
   charger_coche(coches[4], gest);
 
   compteurs[0] = init_compteur(
     position_contenu(
       grille_coord(10, 3, grille),
-      gest->liste_boite->liste[3]->elements[1]
+      gest->liste_boite->liste[3]->elements[2]
     ),
-    -1000, 100000, 15
+    1, INT_MAX, 1
   );
   charger_compteur(compteurs[0], gest);
 
   compteurs[1] = init_compteur(
     position_contenu(
-      grille_coord(10, 3, grille),
-      gest->liste_boite->liste[4]->elements[1]
+      grille_coord(12, 3, grille),
+      gest->liste_boite->liste[7]->elements[1]
     ),
-    1, 100, 15
+    1, INT_MAX, 1
   );
   charger_compteur(compteurs[1], gest);
 

@@ -1,4 +1,5 @@
 #include "texte.h"
+#include "couleur.h"
 #include "erreur.h"
 
 MLV_Text_Format init_format(
@@ -47,6 +48,7 @@ MLV_Text init_texte(int remplissage, MLV_Position pos, MLV_Text_Format format) {
   MLV_Text texte = malloc(sizeof(struct MLV_Text_s));
   verif_alloc(texte);
   texte->msg = String_new_empty(0);
+  texte->couleur = couleur_hex("abb2bf");
   texte->remplissage = remplissage;
   texte->placement = pos;
   texte->format = format;
@@ -69,6 +71,10 @@ void liberer_texte(MLV_Text *texte){
 
 String contenu_texte(MLV_Text texte){
   return (texte->msg);
+}
+
+void texte_changer_couleur(MLV_Color col, MLV_Text texte){
+  texte->couleur = col;
 }
 
 void texte_ajout_remplissage(MLV_Text texte){
@@ -136,11 +142,18 @@ void texte_suppr_char(MLV_Text texte){
 }
 
 void texte_changer_visibilite(MLV_Text texte){
-  if (texte->visible) {
-    texte->visible = false;
-  } else {
-    texte->visible = true;
-  }
+  if (texte_est_visible(texte))
+    texte_invisible(texte);
+  else
+    texte_visible(texte);
+}
+
+void texte_visible(MLV_Text texte){
+  texte->visible = true;
+}
+
+void texte_invisible(MLV_Text texte){
+  texte->visible = false;
 }
 
 bool texte_est_visible(MLV_Text texte){
@@ -198,9 +211,9 @@ int dist_texte_bas(MLV_Text texte){
 void afficher_texte(MLV_Text texte){
   MLV_Color bordure;
   if (texte->bordure) {
-    bordure = MLV_rgba(0xab, 0xb2, 0xbf, 0xff);
+    bordure = texte->couleur;
   } else {
-    bordure = MLV_rgba(0, 0, 0, 0);
+    bordure = couleur_hex("00000000");
   }
 
   texte_ajout_remplissage(texte);
@@ -210,8 +223,8 @@ void afficher_texte(MLV_Text texte){
     texte->placement->dimension.x, texte->placement->dimension.y,
     texte->msg->str, 1,
     bordure,
-    MLV_rgba(0xab, 0xb2, 0xbf, 0xff),
-    MLV_rgba(0, 0, 0, 0),
+    texte->couleur,
+    couleur_hex("00000000"),
     texte->format->justif, texte->format->h_pos, texte->format->v_pos
   );
 

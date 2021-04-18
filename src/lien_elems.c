@@ -6,37 +6,43 @@ MLV_CheckBox coches[5];
 MLV_SpinBox compteurs[2];
 MLV_FileManager gests_fichier[2];
 MLV_GraphKNN graphes[1];
-MLV_Text labels[1];
+MLV_Text labels[4];
 
+void maj_elem_coches();
 void maj_elem_bascules();
+void maj_elem_compteurs();
 
 Id_Obj tog(MLV_Clickable click, Info_Souris souris) {
-  printf("clocked!\n");
   bascule_changer_pose(bascules[0]);
 
-  bouton_changer_etat(boutons[0]);
-  
-
-  return BUTTON;
+  return TOGGLE;
 }
 
 Id_Obj tester(MLV_Clickable click, Info_Souris souris) {
   bascule_changer_etat(bascules[0]);
+  desactiver_compteur(compteurs[0]);
+  desactiver_coche(coches[0]);
 
-  return TOGGLE;
+  return BUTTON;
 }
 
 void maj_elements(Id_Obj id){
   switch (id){
   case CHECKBOX:
+    maj_elem_coches();
+    break;
+  case TOGGLE:
     maj_elem_bascules();
+    break;
+  case SPINBOX:
+    maj_elem_compteurs();
     break;
   default:
     break;
   }
 }
 
-void maj_elem_bascules(){
+void maj_elem_coches(){
   if (coches[0]->valide) {
     graph_kppv_ajouter_opt_aff(AXE, graphes[0]);
   } else {
@@ -45,8 +51,11 @@ void maj_elem_bascules(){
   
   if (coches[1]->valide) {
     graph_kppv_ajouter_opt_aff(GRILLE, graphes[0]);
+    activer_coche(coches[2]);
   } else {
     graph_kppv_suppr_opt_aff(GRILLE, graphes[0]);
+    decocher_case_coche(coches[2]);
+    desactiver_coche(coches[2]);
   }
   
   if (coches[2]->valide) {
@@ -68,4 +77,20 @@ void maj_elem_bascules(){
   }
 
   graph_kppv_aff(graphes[0]);
+}
+
+void maj_elem_bascules(){
+  if (bascules[0]->etat == ETAT_A){
+    activer_compteur(compteurs[1]);
+    graph_kppv_maj_classe_utilise(compteurs[1]->val, graphes[0]);
+    click_init_fct(gkppv_ajouter_pt_classe, graphes[0]->curseur);
+  } else {
+    desactiver_compteur(compteurs[1]);
+    graph_kppv_maj_classe_utilise(0, graphes[0]);
+    click_init_fct(gkppv_maj_pt, graphes[0]->curseur);
+  }
+}
+
+void maj_elem_compteurs(){
+  graph_kppv_maj_classe_utilise(compteurs[1]->val, graphes[0]);
 }

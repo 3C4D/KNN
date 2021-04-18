@@ -46,6 +46,26 @@ void liberer_coche(MLV_CheckBox *coche) {
   *coche = NULL;
 }
 
+void desactiver_coche(MLV_CheckBox coche){
+  desactiver_bascule(coche->case_coche);
+  texte_changer_couleur(couleur_hex("9f9f9f"), coche->label);
+}
+
+void activer_coche(MLV_CheckBox coche){
+  activer_bascule(coche->case_coche);
+  texte_changer_couleur(couleur_hex("abb2bf"), coche->label);
+}
+
+void cocher_case_coche(MLV_CheckBox coche){
+  coche->valide = true;
+  bascule_pose(ETAT_B, coche->case_coche);
+}
+
+void decocher_case_coche(MLV_CheckBox coche){
+  coche->valide = false;
+  bascule_pose(ETAT_A, coche->case_coche);
+}
+
 Id_Obj changer_validation(MLV_Clickable click, Info_Souris souris) {
   MLV_CheckBox coche;
 
@@ -54,12 +74,11 @@ Id_Obj changer_validation(MLV_Clickable click, Info_Souris souris) {
   }
 
   coche = (MLV_CheckBox)click_proprio(click);
-  bascule_changer_pose(coche->case_coche);
 
   if (coche->valide) {
-    coche->valide = false;
+    decocher_case_coche(coche);
   } else {
-    coche->valide = true;
+    cocher_case_coche(coche);
   }
 
   return CHECKBOX;
@@ -127,6 +146,18 @@ void liberer_compteur(MLV_SpinBox *compteur){
   }
 
   *compteur = NULL;
+}
+
+void desactiver_compteur(MLV_SpinBox compteur){
+  desactiver_bouton(compteur->aug);
+  desactiver_bouton(compteur->dim);
+  desactiver_saisie(compteur->info);
+}
+
+void activer_compteur(MLV_SpinBox compteur){
+  activer_bouton(compteur->aug);
+  activer_bouton(compteur->dim);
+  activer_saisie(compteur->info);
 }
 
 Id_Obj aug_compteur(MLV_Clickable click, Info_Souris souris){

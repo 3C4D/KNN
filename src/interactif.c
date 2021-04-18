@@ -72,10 +72,18 @@ int click_est_dehors(Info_Souris souris, MLV_Clickable click){
 
 void click_changer_etat(MLV_Clickable click){
   if (click->etat == ACTIF) {
-    click->etat = INACTIF;
+    desactiver_click(click);
   } else {
-    click->etat = ACTIF;
+    activer_click(click);
   }
+}
+
+void desactiver_click(MLV_Clickable click){
+  click->etat = INACTIF;
+}
+
+void activer_click(MLV_Clickable click){
+  click->etat = ACTIF;
 }
 
 int est_dans_zone(Coord c, MLV_Position pos){
@@ -220,9 +228,17 @@ bool keylog_est_active(Info_Clavier clavier, MLV_Keylogger keylog){
 
 void keylog_changer_etat(MLV_Keylogger keylog){
   if (keylog->etat == ACTIF) {
-    keylog->etat = INACTIF;
+    desactiver_keylog(keylog); 
   } else {
-    keylog->etat = ACTIF;
+    activer_keylog(keylog); 
   }
+}
+
+void desactiver_keylog(MLV_Keylogger keylog){
+  keylog->etat = INACTIF;
+}
+
+void activer_keylog(MLV_Keylogger keylog){
+  keylog->etat = ACTIF;
 }
 

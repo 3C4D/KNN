@@ -13,6 +13,6 @@ extern MLV_CheckBox coches[5];
 extern MLV_SpinBox compteurs[2];
 extern MLV_FileManager gests_fichier[2];
 extern MLV_GraphKNN graphes[1];
-extern MLV_Text labels[1];
+extern MLV_Text labels[4];
 
 #endif

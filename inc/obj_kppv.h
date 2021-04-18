@@ -22,6 +22,7 @@ struct MLV_GraphKNN_s {
   TabPts *pts_classes;
   point *pt_kppv;
   int classe_util;
+  int k;
   char option_aff;
 };
 
@@ -30,8 +31,12 @@ void liberer_graph_kppv(MLV_GraphKNN *graph_kppv);
 void graph_kppv_ajouter_tab_pts(TabPts *tab_pts, MLV_GraphKNN graph_kppv);
 void graph_kppv_ajouter_opt_aff(char opt, MLV_GraphKNN graph_kppv);
 void graph_kppv_suppr_opt_aff(char opt, MLV_GraphKNN graph_kppv);
+void graph_kppv_maj_classe_utilise(int classe, MLV_GraphKNN graph_kppv);
 void graph_kppv_aff(MLV_GraphKNN graph_kppv);
 void graph_kppv_aff_pt(point pt, MLV_GraphKNN graph_kppv);
+void graph_kppv_aff_zone_kppv(MLV_GraphKNN graph_kppv);
 Coord_R coord2d_point(point pt);
+Id_Obj gkppv_ajouter_pt_classe(MLV_Clickable click, Info_Souris souris);
+Id_Obj gkppv_maj_pt(MLV_Clickable click, Info_Souris souris);
 
 #endif
