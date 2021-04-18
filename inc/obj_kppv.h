@@ -32,6 +32,7 @@ void graph_kppv_ajouter_tab_pts(TabPts *tab_pts, MLV_GraphKNN graph_kppv);
 void graph_kppv_ajouter_opt_aff(char opt, MLV_GraphKNN graph_kppv);
 void graph_kppv_suppr_opt_aff(char opt, MLV_GraphKNN graph_kppv);
 void graph_kppv_maj_classe_utilise(int classe, MLV_GraphKNN graph_kppv);
+void graph_kppv_maj_k(int k, MLV_GraphKNN graph_kppv);
 void graph_kppv_aff(MLV_GraphKNN graph_kppv);
 void graph_kppv_aff_pt(point pt, MLV_GraphKNN graph_kppv);
 void graph_kppv_aff_zone_kppv(MLV_GraphKNN graph_kppv);

@@ -93,4 +93,5 @@ void maj_elem_bascules(){
 
 void maj_elem_compteurs(){
   graph_kppv_maj_classe_utilise(compteurs[1]->val, graphes[0]);
+  graph_kppv_maj_k(compteurs[0]->val, graphes[0]);
 }

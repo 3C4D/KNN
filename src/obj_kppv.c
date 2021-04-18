@@ -59,6 +59,12 @@ void graph_kppv_maj_classe_utilise(int classe, MLV_GraphKNN graph_kppv){
   }
 }
 
+void graph_kppv_maj_k(int k, MLV_GraphKNN graph_kppv){
+  if (k >= 1){
+    graph_kppv->k = k;
+  }
+}
+
 void graph_kppv_aff(MLV_GraphKNN graph_kppv){
   int i;
 
@@ -107,7 +113,7 @@ void graph_kppv_aff_zone_kppv(MLV_GraphKNN graph_kppv){
   }
 
   tabpts = trouver_kppv_tab(
-    *graph_kppv->pts_classes, *graph_kppv->pt_kppv, graph_kppv->k
+    graph_kppv->pts_classes, *graph_kppv->pt_kppv, graph_kppv->k
   );
   loin = plus_lointain(*graph_kppv->pt_kppv, tabpts);
   graph_placer_cercle(
