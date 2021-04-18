@@ -50,20 +50,19 @@ Id_Obj changer_validation(MLV_Clickable click, Info_Souris souris) {
   MLV_CheckBox coche;
 
   if (souris->bouton != MLV_BUTTON_LEFT) {
-    return NON_DEFINI;
+    return CHECKBOX;
   }
 
   coche = (MLV_CheckBox)click_proprio(click);
   bascule_changer_pose(coche->case_coche);
+
   if (coche->valide) {
-    printf("off\n");
     coche->valide = false;
   } else {
     coche->valide = true;
-    printf("on\n");
   }
 
-  return NON_DEFINI;
+  return CHECKBOX;
 }
 
 
@@ -134,7 +133,7 @@ Id_Obj aug_compteur(MLV_Clickable click, Info_Souris souris){
   MLV_SpinBox compteur;
 
   if (souris->bouton != MLV_BUTTON_LEFT) {
-    return NON_DEFINI;
+    return SPINBOX;
   }
   compteur = (MLV_SpinBox)click_proprio(click);
 
@@ -145,14 +144,14 @@ Id_Obj aug_compteur(MLV_Clickable click, Info_Souris souris){
 
   modif_texte_int(compteur->val, compteur->info->texte);
 
-  return NON_DEFINI;
+  return SPINBOX;
 }
 
 Id_Obj dim_compteur(MLV_Clickable click, Info_Souris souris){
   MLV_SpinBox compteur;
 
   if (souris->bouton != MLV_BUTTON_LEFT) {
-    return NON_DEFINI;
+    return SPINBOX;
   }
   compteur = (MLV_SpinBox)click_proprio(click);
 
@@ -163,7 +162,7 @@ Id_Obj dim_compteur(MLV_Clickable click, Info_Souris souris){
 
   modif_texte_int(compteur->val, compteur->info->texte);
 
-  return NON_DEFINI;
+  return SPINBOX;
 }
 
 Id_Obj maj_compteur(MLV_Clickable click, Info_Souris souris){
@@ -179,7 +178,7 @@ Id_Obj maj_compteur(MLV_Clickable click, Info_Souris souris){
   compteur->info->keylog->etat = INACTIF;
   couleur_fond_canvas(couleur_hex("39404d"), compteur->info->fond);
   modif_texte_int(compteur->val, compteur->info->texte);
-  return NON_DEFINI;
+  return SPINBOX;
 }
 
 
@@ -231,7 +230,7 @@ void aff_axe_y(MLV_Graph2D graph2D){
 }
 
 void aff_grille_x(MLV_Graph2D graph2D){
-  double pos_y = graph2D->plan->ord.pas;
+  double pos_y = 0.0;
   while (pos_y < graph2D->plan->ord.max){
     graph_placer_segment(
       init_coordr(graph2D->plan->abs.min, pos_y),
@@ -253,7 +252,7 @@ void aff_grille_x(MLV_Graph2D graph2D){
 }
 
 void aff_grille_y(MLV_Graph2D graph2D){
-  double pos_x = graph2D->plan->abs.pas;
+  double pos_x = 0.0;
   while (pos_x < graph2D->plan->abs.max){
     graph_placer_segment(
       init_coordr(pos_x, graph2D->plan->ord.min),
@@ -275,7 +274,7 @@ void aff_grille_y(MLV_Graph2D graph2D){
 }
 
 void aff_sous_grille_x(int nb_sections, MLV_Graph2D graph2D){
-  double pos_y = graph2D->plan->ord.pas/nb_sections;
+  double pos_y = 0.0;
   while (pos_y < graph2D->plan->ord.max){
     graph_placer_segment(
       init_coordr(graph2D->plan->abs.min, pos_y),
@@ -297,7 +296,7 @@ void aff_sous_grille_x(int nb_sections, MLV_Graph2D graph2D){
 }
 
 void aff_sous_grille_y(int nb_sections, MLV_Graph2D graph2D){
-  double pos_x = graph2D->plan->abs.pas / nb_sections;
+  double pos_x = 0.0;
   while (pos_x < graph2D->plan->abs.max){
     graph_placer_segment(
       init_coordr(pos_x, graph2D->plan->ord.min),

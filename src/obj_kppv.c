@@ -16,7 +16,7 @@ MLV_GraphKNN init_graph_kppv(MLV_Position pos){
     )
   );
   graph_kppv->option_aff = 0x07;
-  graph_kppv->pt_kppv = NULL;
+  graph_kppv->pt_kppv = malloc(sizeof(point));
   graph_kppv->pts_classes = NULL;
   graph_kppv->classe_util = 0;
   graph_kppv->curseur = init_clickable(pos, ACTIF, INTERNE);
@@ -41,10 +41,6 @@ void graph_kppv_ajouter_tab_pts(TabPts *tab_pts, MLV_GraphKNN graph_kppv){
   graph_kppv->pts_classes = tab_pts;
 }
 
-void graph_kppv_ajouter_pt(point *pt, MLV_GraphKNN graph_kppv){
-  graph_kppv->pt_kppv = pt;
-}
-
 void graph_kppv_ajouter_opt_aff(char opt, MLV_GraphKNN graph_kppv){
   graph_kppv->option_aff |= opt;
 }
@@ -57,15 +53,15 @@ void graph_kppv_aff(MLV_GraphKNN graph_kppv){
   int i;
 
   vider_graph(graph_kppv->graph2D);
-  if(graph_kppv->option_aff && SOUS_GRILLE){
+  if(graph_kppv->option_aff & SOUS_GRILLE){
     aff_sous_grille_x(5, graph_kppv->graph2D);
     aff_sous_grille_y(5, graph_kppv->graph2D);
   }
-  if(graph_kppv->option_aff && GRILLE){
+  if(graph_kppv->option_aff & GRILLE){
     aff_grille_x(graph_kppv->graph2D);
     aff_grille_y(graph_kppv->graph2D);
   }
-  if(graph_kppv->option_aff && AXE){
+  if(graph_kppv->option_aff & AXE){
     aff_axe_x(graph_kppv->graph2D);
     aff_axe_y(graph_kppv->graph2D);
   }
@@ -76,9 +72,9 @@ void graph_kppv_aff(MLV_GraphKNN graph_kppv){
     }
   }
 
-  if(graph_kppv->pt_kppv != NULL){
-    graph_kppv_aff_pt(*graph_kppv->pt_kppv, graph_kppv);
-  }
+  // if(graph_kppv->pt_kppv != NULL){
+  //   graph_kppv_aff_pt(*graph_kppv->pt_kppv, graph_kppv);
+  // }
 }
 
 void graph_kppv_aff_pt(point pt, MLV_GraphKNN graph_kppv){
@@ -116,6 +112,28 @@ Id_Obj gkppv_ajouter_pt_classe(MLV_Clickable click, Info_Souris souris){
 
   ajouter_coord(&pt, 2, tab_coord);
   ajouter_point(graph_kppv->pts_classes, pt);
+  graph_kppv_aff(graph_kppv);
+
+  return GKPPV;
+}
+
+Id_Obj gkppv_maj_pt(MLV_Clickable click, Info_Souris souris){
+  MLV_GraphKNN graph_kppv = (MLV_GraphKNN)click_proprio(click);
+  Coord curseur = coord_relative(
+    coord_souris(souris), graph_kppv->placement->decalage
+  );
+  Coord_R coord_pt = coord_ztor(
+    curseur, graph_kppv->graph2D->plan, graph_kppv->graph2D->mat_pix
+  );
+  point pt = creer_point(2, 0);
+  double tab_coord[] = {coord_pt.x, coord_pt.y};  
+
+  if (!coord_valide_kppv(coord_pt)) {
+    return GKPPV;
+  }
+
+  ajouter_coord(&pt, 2, tab_coord);
+  *graph_kppv->pt_kppv = pt;
   graph_kppv_aff(graph_kppv);
 
   return GKPPV;

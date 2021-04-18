@@ -10,7 +10,7 @@ typedef enum {
   AXE = 0x01,
   GRILLE = 0x02,
   SOUS_GRILLE = 0x4,
-  KPPV = 0x8,
+  CERCLE_KPPV = 0x8,
   KPPV_DECISION = 0x10
 } DrapOptAff;
 
@@ -28,7 +28,6 @@ struct MLV_GraphKNN_s {
 MLV_GraphKNN init_graph_kppv(MLV_Position pos);
 void liberer_graph_kppv(MLV_GraphKNN *graph_kppv);
 void graph_kppv_ajouter_tab_pts(TabPts *tab_pts, MLV_GraphKNN graph_kppv);
-void graph_kppv_ajouter_pt(point *pt, MLV_GraphKNN graph_kppv);
 void graph_kppv_ajouter_opt_aff(char opt, MLV_GraphKNN graph_kppv);
 void graph_kppv_suppr_opt_aff(char opt, MLV_GraphKNN graph_kppv);
 void graph_kppv_aff(MLV_GraphKNN graph_kppv);

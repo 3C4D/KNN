@@ -316,7 +316,7 @@ void ajout_elements(Grid grille, Manager gest){
 
 void demarrer_interface(Manager gest){
   int sortie = 0, i;
-  //Id_Obj obj;
+  Id_Obj obj;
   MLV_Event evenement = MLV_NONE;
   MLV_Clickable click;
   MLV_Keylogger keylog;
@@ -333,7 +333,7 @@ void demarrer_interface(Manager gest){
         for (i = 0; i < gest->liste_keylog->nb_keylog; i++){
           keylog = gest->liste_keylog->liste[i];
           if (keylog != NULL){
-            keylog_lancer_fct(keylog, periphs->clavier);
+            obj = keylog_lancer_fct(keylog, periphs->clavier);
           }
         }
         break;
@@ -343,7 +343,8 @@ void demarrer_interface(Manager gest){
         for (i = 0; i < gest->liste_click->nb_clicks; i++){
           click = gest->liste_click->liste[i];
           if (click != NULL) {
-            click_lancer_fct(click, periphs->souris);
+            obj = click_lancer_fct(click, periphs->souris);
+            maj_elements(obj);
           }
         }
         break;

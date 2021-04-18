@@ -8,6 +8,7 @@
 #include "position.h"
 #include "obj_simple.h"
 #include "interactif.h"
+#include "id_objet.h"
 #include "peripheriques.h"
 
 typedef struct MLV_CheckBox_s *MLV_CheckBox;
