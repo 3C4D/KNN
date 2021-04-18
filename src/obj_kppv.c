@@ -106,7 +106,7 @@ void graph_kppv_aff_pt(point pt, MLV_GraphKNN graph_kppv){
 }
 
 void graph_kppv_aff_zone_kppv(MLV_GraphKNN graph_kppv){
-  TabPts tabpts;
+  TabPts *tabpts;
   point *loin;
   if (graph_kppv->k < 1 || graph_kppv->pt_kppv->classe == -1){
     return;
@@ -115,7 +115,7 @@ void graph_kppv_aff_zone_kppv(MLV_GraphKNN graph_kppv){
   tabpts = trouver_kppv_tab(
     graph_kppv->pts_classes, *graph_kppv->pt_kppv, graph_kppv->k
   );
-  loin = plus_lointain(*graph_kppv->pt_kppv, tabpts);
+  loin = plus_lointain(*graph_kppv->pt_kppv, *tabpts);
   graph_placer_cercle(
     coord2d_point(*graph_kppv->pt_kppv),
     calc_distance(*graph_kppv->pt_kppv, *loin, 2),

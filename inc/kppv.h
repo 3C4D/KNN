@@ -6,7 +6,7 @@
 #define KPPV_H_
 
 /* Renvoie le tableau des k plus proches voisins*/
-TabPts trouver_kppv_tab(TabPts *tab_pts, point pt, int k);
+TabPts *trouver_kppv_tab(TabPts *tab_pts, point pt, int k);
 
 /* Permet de trouver la classe d'un point par rapport à ses kppv */
 int trouver_classe_kppv_tab(TabPts *tab, point pt, int k);
