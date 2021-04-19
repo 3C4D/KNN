@@ -2,6 +2,8 @@
 #include "obj_kppv.h"
 #include "erreur.h"
 #include "kppv.h"
+#include "arbre.h"
+#include "recherche.h"
 #include "couleur.h"
 
 Id_Obj gkppv_ajouter_pt_classe(MLV_Clickable click, Info_Souris souris);
@@ -107,14 +109,18 @@ void graph_kppv_aff_pt(point pt, MLV_GraphKNN graph_kppv){
 
 void graph_kppv_aff_zone_kppv(MLV_GraphKNN graph_kppv){
   TabPts *tabpts;
+  arbre_kd a = creer_arbre_vide();
   point *loin;
   if (graph_kppv->k < 1 || graph_kppv->pt_kppv->classe == -1){
     return;
   }
-
+  /*
   tabpts = trouver_kppv_tab(
     graph_kppv->pts_classes, *graph_kppv->pt_kppv, graph_kppv->k
   );
+  */
+  a = creer_arbre_kd(graph_kppv->pts_classes);
+  tabpts = recherche(a, graph_kppv->pt_kppv, graph_kppv->k, graph_kppv->pts_classes->nbclasse);
   loin = plus_lointain(*graph_kppv->pt_kppv, *tabpts);
   graph_placer_cercle(
     coord2d_point(*graph_kppv->pt_kppv),

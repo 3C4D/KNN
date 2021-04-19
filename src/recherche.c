@@ -8,6 +8,26 @@
 #include "arbre.h"
 #include "recherche.h"
 
+/* Défini si un point est acceptable parmi les KPPV */
+int acceptable(point *p_tmp, point *cible, point *liste, int *taille_k, int k){
+  int i, victime = 0;
+  if(*taille_k < k){  /* Si il reste de la place dans le tableau */
+    return 1;
+  }
+  /* On cherche la victime soit le point le plus éloigné parmi les K-PPV */
+  for(i = 0; i < *taille_k; i++){
+    if(calc_distance(liste[victime], *cible, p_tmp->dimension)
+    < calc_distance(liste[i], *cible, p_tmp->dimension)){
+      victime = i;
+    }
+  }
+  if(calc_distance(*p_tmp, *cible, p_tmp->dimension)
+  < calc_distance(liste[victime], *cible, p_tmp->dimension)){
+    return 1; /* acceptable, on retourne 1 */
+  }
+  return 0; /* non acceptable, on retourne 0 */
+}
+
 /* Met à jour une liste de point en fonction d'un nouveau point */
 int maj_liste(point *p_tmp, point *cible, point *liste, int *taille_k, int k){
   int i, victime = 0;
@@ -110,24 +130,26 @@ void recherche_aux(arbre_kd a, point *p, int k, point *kppv, int *taille_tab, in
       if(!est_vide_arbre_kd(renvoyer_fils_gauche(a))){
         recherche_aux(renvoyer_fils_gauche(a), p, k, kppv, taille_tab, prof+1, axe);
       }
+      /* Sinon on regarde si le sous-arbre gauche peut contenir des KPPV */
       if(!est_vide_arbre_kd(renvoyer_fils_droit(a))){
         p_tmp = point_proche_dans_zone(p, renvoyer_fils_droit(a));
-        if(maj_liste(p_tmp, p, kppv, taille_tab, k)){
+        if(acceptable(p_tmp, p, kppv, taille_tab, k)){
           recherche_aux(renvoyer_fils_droit(a), p, k, kppv, taille_tab, prof+1, axe);
         }
       }
     }
 
     /* Si le point se trouve dans le sous-arbre droit */
-    if(p->coord[prof%axe] < racine(a)->coord[prof%axe]){
+    if(p->coord[prof%axe] >= racine(a)->coord[prof%axe]){
       /* On l'explore si il n'est pas vide */
-      if(!est_vide_arbre_kd(renvoyer_fils_gauche(a))){
-        recherche_aux(renvoyer_fils_gauche(a), p, k, kppv, taille_tab, prof+1, axe);
-      }
       if(!est_vide_arbre_kd(renvoyer_fils_droit(a))){
+        recherche_aux(renvoyer_fils_droit(a), p, k, kppv, taille_tab, prof+1, axe);
+      }
+      /* Sinon on regarde si le sous-arbre droit peut contenir des KPPV */
+      if(!est_vide_arbre_kd(renvoyer_fils_gauche(a))){
         p_tmp = point_proche_dans_zone(p, renvoyer_fils_gauche(a));
-        if(maj_liste(p_tmp, p, kppv, taille_tab, k)){
-          recherche_aux(renvoyer_fils_droit(a), p, k, kppv, taille_tab, prof+1, axe);
+        if(acceptable(p_tmp, p, kppv, taille_tab, k)){
+          recherche_aux(renvoyer_fils_gauche(a), p, k, kppv, taille_tab, prof+1, axe);
         }
       }
     }
