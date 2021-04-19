@@ -63,10 +63,19 @@ TabPts *creer_tab_pts(int dimension, int nbclasse){
 void detruire_tab_pts(TabPts *tab){
   int i;
   /*libération de la mémoire du tableau tab*/
-  for(i = 0; i < tab->taille; i++){
-    free(tab->tab[i].coord);
+  if(tab != NULL){
+    for(i = 0; i < tab->taille; i++){
+      free(tab->tab[i].coord);
+    }
+    free(tab->tab);
+    free(tab);
   }
-  free(tab->tab);
+}
+
+void tab_pts_maj_nb_classe(int classe, TabPts *tab){
+  if (classe > tab->nbclasse){
+    tab->nbclasse = classe;
+  }
 }
 
 /* Permet d'ajouter un point au tableau de points */

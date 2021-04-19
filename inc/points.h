@@ -34,6 +34,9 @@ TabPts *creer_tab_pts(int dimension, int nbclasse);
 /* Permet de détruire un tableau de points */
 void detruire_tab_pts(TabPts *tab);
 
+/* Met à jour le nombre de classe d'un tableau */
+void tab_pts_maj_nb_classe(int classe, TabPts *tab);
+
 /* Permet de calculer la distance euclidienne entre deux points */
 double calc_distance(point p1, point p2, int dimension);
 

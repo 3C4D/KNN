@@ -322,8 +322,6 @@ void ajout_elements(Grid grille, Manager gest){
     )
   );
 
-  tab = chargement_fichier("out.dat");
-  graph_kppv_ajouter_tab_pts(tab, graphes[0]);
   graph_kppv_aff(graphes[0]);
 
   charger_graph_kppv(graphes[0], gest);

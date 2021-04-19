@@ -106,7 +106,7 @@ MLV_Color gen_couleur(int graine){
   }
   
   hash = joaat_hash(buff);
-  h = ((graine * 7) % 36) * 10;
+  h = (((graine - 1) * 5) % 36) * 10;
   s = ((hash & 0xff00) >> 10) + 32;
   l = ((hash & 0xff) >> 3) + 35;
 
