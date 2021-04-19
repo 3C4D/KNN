@@ -50,7 +50,7 @@ void graph_kppv_ajouter_tab_pts(TabPts *tab_pts, MLV_GraphKNN graph_kppv){
   if (tab_pts != NULL){
     detruire_tab_pts(graph_kppv->pts_classes);
     graph_kppv->pts_classes = tab_pts;
-  } 
+  }
 }
 
 void graph_kppv_fichier_tab_pts(char *fichier, MLV_GraphKNN graph_kppv){
@@ -59,7 +59,7 @@ void graph_kppv_fichier_tab_pts(char *fichier, MLV_GraphKNN graph_kppv){
     detruire_tab_pts(graph_kppv->pts_classes);
     tab = chargement_fichier(fichier);
     graph_kppv->pts_classes = tab;
-  } 
+  }
 }
 
 void graph_kppv_ajouter_opt_aff(char opt, MLV_GraphKNN graph_kppv){
@@ -115,7 +115,7 @@ void graph_kppv_aff(MLV_GraphKNN graph_kppv){
   if(graph_kppv->option_aff & CERCLE_KPPV){
     graph_kppv_aff_zone_kppv(graph_kppv);
   }
-  
+
   if(graph_kppv->pts_classes != NULL){
     for (i = 0; i < graph_kppv->pts_classes->taille; i++) {
       graph_kppv_aff_pt(graph_kppv->pts_classes->tab[i], graph_kppv);
@@ -146,7 +146,7 @@ void graph_kppv_aff_zone_kppv(MLV_GraphKNN graph_kppv){
   if(graph_kppv->tab_kppv->taille == 0){
     return;
   }
-  
+
   loin = plus_lointain(*graph_kppv->pt_kppv, *graph_kppv->tab_kppv);
   graph_placer_cercle(
     coord2d_point(*graph_kppv->pt_kppv),
@@ -158,15 +158,15 @@ void graph_kppv_aff_zone_kppv(MLV_GraphKNN graph_kppv){
 
 void graph_kppv_maj_tab_kppv(MLV_GraphKNN graph_kppv){
   if (
-    graph_kppv->k < 1 || 
-    graph_kppv->pt_kppv->classe == -1 || 
+    graph_kppv->k < 1 ||
+    graph_kppv->pt_kppv->classe == -1 ||
     graph_kppv->pts_classes->taille == 0
   ){
     return;
   }
 
   graph_kppv->tab_kppv = recherche(
-    graph_kppv->arbre, graph_kppv->pt_kppv, 
+    graph_kppv->arbre, graph_kppv->pt_kppv,
     graph_kppv->k, graph_kppv->pts_classes->nbclasse
   );
 }
@@ -212,10 +212,10 @@ Id_Obj gkppv_ajouter_pt_classe(MLV_Clickable click, Info_Souris souris){
   ajouter_coord(&pt, 2, tab_coord);
   ajouter_point(graph_kppv->pts_classes, pt);
 
-  if (est_puissance_2(graph_kppv->pts_classes->taille)) {
+  if (graph_kppv->pts_classes->taille == 1) {
     graph_kppv_maj_arbre(graph_kppv);
   } else {
-    index_pt = graph_kppv->pts_classes->taille - 1;
+    index_pt = graph_kppv->pts_classes->taille-1;
     insere(graph_kppv->arbre, &graph_kppv->pts_classes->tab[index_pt]);
   }
 
