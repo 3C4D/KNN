@@ -188,8 +188,6 @@ void mise_en_place(Grid grille, Manager gest){
 }
 
 void ajout_elements(Grid grille, Manager gest){
-  TabPts *tab;
-
   boutons[0] = init_bouton(
     position_contenu(
       grille_coord(4, 4, grille),

@@ -65,12 +65,14 @@ void maj_elem_coches(){
   }
 
   if (coches[3]->valide) {
+    graph_kppv_maj_tab_kppv(graphes[0]);
     graph_kppv_ajouter_opt_aff(CERCLE_KPPV, graphes[0]);
   } else {
     graph_kppv_suppr_opt_aff(CERCLE_KPPV, graphes[0]);
   }
 
   if (coches[4]->valide) {
+    graph_kppv_maj_tab_kppv(graphes[0]);
     graph_kppv_ajouter_opt_aff(KPPV_DECISION, graphes[0]);
   } else {
     graph_kppv_suppr_opt_aff(KPPV_DECISION, graphes[0]);
@@ -94,5 +96,6 @@ void maj_elem_bascules(){
 void maj_elem_compteurs(){
   graph_kppv_maj_classe_utilise(compteurs[1]->val, graphes[0]);
   graph_kppv_maj_k(compteurs[0]->val, graphes[0]);
+  graph_kppv_maj_tab_kppv(graphes[0]);
   graph_kppv_aff(graphes[0]);
 }
