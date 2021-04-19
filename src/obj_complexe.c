@@ -395,7 +395,13 @@ void graph_placer_point(
 }
 
 
-MLV_FileManager init_gest_fichier(MLV_Position pos, char const *rep){
+Id_Obj gest_fichier_saisie(MLV_Clickable click, Info_Souris souris);
+Id_Obj gest_fichier_bouton(MLV_Clickable click, Info_Souris souris);
+void format_fichier(String str, MLV_FileManager gest_fichier);
+
+MLV_FileManager init_gest_fichier(
+  MLV_Position pos, char const *rep, void (*fct)(char *)
+){
   MLV_Position pos_saisie = copie_position(pos);
   MLV_Position pos_bouton = copie_position(pos);
   MLV_FileManager gest_fichier = malloc(sizeof(struct MLV_FileManager_s));
@@ -403,11 +409,14 @@ MLV_FileManager init_gest_fichier(MLV_Position pos, char const *rep){
   
   gest_fichier->placement = pos;
   pos_saisie->dimension.x -= pos_saisie->dimension.y + 10;
-  gest_fichier->fichier = init_saisie(pos_saisie, NULL, NULL);
+  gest_fichier->fichier = init_saisie(pos_saisie, NULL, gest_fichier_saisie);
+  click_maj_proprio((void *)gest_fichier, gest_fichier->fichier->sortie);
   pos_bouton->dimension.x = pos_bouton->dimension.y;
   pos_bouton->decalage.x += pos_saisie->dimension.x + 10;
-  gest_fichier->operation = init_bouton(pos_bouton, NULL);
+  gest_fichier->operation = init_bouton(pos_bouton, gest_fichier_bouton);
+  click_maj_proprio((void *)gest_fichier, gest_fichier->operation->zone);
   gest_fichier->repertoire = String_new(rep);
+  gest_fichier->fct_fichier = fct;
 
   return gest_fichier;
 }
@@ -426,4 +435,41 @@ void liberer_gest_fichier(MLV_FileManager *gest_fichier){
 
 void ajouter_icon_gest_fichier(char *chemin, MLV_FileManager gest_fichier){
   bouton_image(chemin, gest_fichier->operation);
+}
+
+Id_Obj gest_fichier_saisie(MLV_Clickable click, Info_Souris souris){
+  MLV_FileManager gest_fichier = (MLV_FileManager)click_proprio(click);
+  String fichier = String_new_empty(0);
+
+  format_fichier(fichier, gest_fichier);
+  gest_fichier->fichier->keylog->etat = INACTIF;
+  couleur_fond_canvas(couleur_hex("39404d"), gest_fichier->fichier->fond);
+  return FILEMAN;
+}
+
+Id_Obj gest_fichier_bouton(MLV_Clickable click, Info_Souris souris){
+  MLV_FileManager gest_fichier = (MLV_FileManager)click_proprio(click);
+  String fichier = String_new_empty(0);
+
+  format_fichier(fichier, gest_fichier);
+  gest_fichier->fichier->keylog->etat = INACTIF;
+  couleur_fond_canvas(couleur_hex("39404d"), gest_fichier->fichier->fond);
+
+  if (gest_fichier->fct_fichier != NULL) {
+    (gest_fichier->fct_fichier)(fichier->str);
+  }
+
+  return FILEMAN;
+}
+
+void format_fichier(String str, MLV_FileManager gest_fichier){
+  int i;
+  char illegal[] = ":/\\|<>?\"*";
+  char buff[2] = {0};
+  String_concat(str, gest_fichier->repertoire);
+  for (i = 0; i < 9; i++){
+    buff[0] = illegal[i];
+    String_replace(gest_fichier->fichier->texte->msg, buff, "");
+  }
+  String_concat(str, gest_fichier->fichier->texte->msg);
 }
