@@ -60,6 +60,15 @@ TabPts *creer_tab_pts(int dimension, int nbclasse){
   return tab;
 }
 
+void detruire_tab_pts(TabPts *tab){
+  int i;
+  /*libération de la mémoire du tableau tab*/
+  for(i = 0; i < tab->taille; i++){
+    free(tab->tab[i].coord);
+  }
+  free(tab->tab);
+}
+
 /* Permet d'ajouter un point au tableau de points */
 void ajouter_point(TabPts *tab_pts, point pt){
   /*on realloue le tableau en ajoutant 10 cases si le tableau est plein*/
