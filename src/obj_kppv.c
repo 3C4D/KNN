@@ -99,7 +99,7 @@ void graph_kppv_aff(MLV_GraphKNN graph_kppv){
 
 void graph_kppv_aff_pt(point pt, MLV_GraphKNN graph_kppv){
   graph_placer_point(
-    coord2d_point(pt), 
+    coord2d_point(pt),
     gen_couleur(pt.classe),
     graph_kppv->graph2D
   );
@@ -143,7 +143,7 @@ Id_Obj gkppv_ajouter_pt_classe(MLV_Clickable click, Info_Souris souris){
     curseur, graph_kppv->graph2D->plan, graph_kppv->graph2D->mat_pix
   );
   point pt = creer_point(2, graph_kppv->classe_util);
-  double tab_coord[] = {coord_pt.x, coord_pt.y};  
+  double tab_coord[] = {coord_pt.x, coord_pt.y};
 
   if (!coord_valide_kppv(coord_pt)) {
     return GKPPV;
@@ -164,7 +164,7 @@ Id_Obj gkppv_maj_pt(MLV_Clickable click, Info_Souris souris){
   Coord_R coord_pt = coord_ztor(
     curseur, graph_kppv->graph2D->plan, graph_kppv->graph2D->mat_pix
   );
-  double tab_coord[] = {coord_pt.x, coord_pt.y};  
+  double tab_coord[] = {coord_pt.x, coord_pt.y};
 
   if (!coord_valide_kppv(coord_pt)) {
     return GKPPV;

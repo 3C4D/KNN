@@ -42,10 +42,9 @@ TabPts *trouver_kppv_tab(TabPts *tab_pts, point pt, int k){
         }
         j++;
       }
-      afficher_tab_pts(*tab_pts);
       /* Si la victime est plus éloignée que le point actuel on la remplace */
       if(calc_distance(kppv->tab[victime], pt, tab_pts->dimension)
-      < calc_distance(tab_pts->tab[i], pt, tab_pts->dimension)){
+      > calc_distance(tab_pts->tab[i], pt, tab_pts->dimension)){
         supprimer_point(kppv, victime);          /* - on le supprime*/
                                             /* - on ajoute le point actuel*/
         ajouter_point(
