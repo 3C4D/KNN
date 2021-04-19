@@ -89,15 +89,6 @@ void supprimer_point(TabPts *tab_pts, int index){
     tab_pts->tab[i] = tab_pts->tab[i+1];     /*d'écraser l'élement à supprimer*/
   }
 
-  tab_pts->tab = (point *)realloc(      /*on diminue la taille du tableau de 1*/
-    tab_pts->tab,
-    (tab_pts->taille-1) * sizeof(point)
-  );
-  /*vérification de l'allocation*/
-  if(tab_pts->tab == NULL){
-    erreur("Erreur d'allocation dans la fonction supprimer_point");
-  }
-
   tab_pts->taille -= 1;       /*on décremente la taille du tableau*/
 }
 
