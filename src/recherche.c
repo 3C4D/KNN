@@ -90,8 +90,8 @@ point *point_proche_dans_zone(point *p, zone z_tmp){
     /* Si l'arbre a deux fils, on saisi les points plus proches des deux fils */
     /* pour enfin renvoyer le plus proche des trois */
     else{
-      point_gauche = point_proche_dans_zone(p, renvoyer_fils_gauche(z_tmp));
       point_droit = point_proche_dans_zone(p, renvoyer_fils_droit(z_tmp));
+      point_gauche = point_proche_dans_zone(p, renvoyer_fils_gauche(z_tmp));
 
       /* Si la racine est plus proche que le plus proche dans le fils droit : */
       if(calc_distance(*racine(z_tmp), *p, p->dimension)

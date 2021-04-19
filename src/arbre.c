@@ -82,18 +82,14 @@ int est_feuille(arbre_kd arbre){
 
 /* Permet de détruire un arbre */
 void detruire_arbre(arbre_kd arbre){
-  if(est_feuille(arbre)){ /* Si l'arbre est une feuille on le libère */
-    free(arbre);
+  if(est_vide_arbre_kd(arbre)){ /* Si l'arbre vide on ne fait rien */
+    return;
   }
   else{     /* Sinon on libère ses fils non vides */
-    /* On libère le fils gauche si il n'est pas vide */
-    if(!est_vide_arbre_kd(renvoyer_fils_gauche(arbre))){
-      detruire_arbre(renvoyer_fils_gauche(arbre));
-    }
-    /* On libère le fils droit si il n'est pas vide */
-    if(!est_vide_arbre_kd(renvoyer_fils_droit(arbre))){
-      detruire_arbre(renvoyer_fils_droit(arbre));
-    }
+    /* On libère le fils gauche */
+    detruire_arbre(renvoyer_fils_gauche(arbre));
+    /* On libère le fils droit */
+    detruire_arbre(renvoyer_fils_droit(arbre));
     free(arbre);    /* Enfin on libère l'arbre lui-même */
   }
 }
@@ -184,7 +180,7 @@ arbre_kd insere_aux(arbre_kd arbre, point *pt, int prof, int axe){
 /* Fonction permettant d'inserer un point dans un arbre kd */
 arbre_kd insere(arbre_kd arbre, point *pt){
   /* On retourne l'arbre une fois le point inséré recursivement */
-  return insere_aux(arbre, pt, 0, pt->dimension);
+  return insere_aux(arbre, pt, 0, 2);
 }
 
 /* Permet d'afficher un arbre recursivement */
