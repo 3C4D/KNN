@@ -2,7 +2,7 @@
 
 MLV_Button boutons[2];
 MLV_Toggle bascules[1];
-MLV_CheckBox coches[5];
+MLV_CheckBox coches[6];
 MLV_SpinBox compteurs[2];
 MLV_FileManager gests_fichier[2];
 MLV_GraphKNN graphes[1];

@@ -102,12 +102,12 @@ void mise_en_place(Grid grille, Manager gest){
   ajouter_remplissage(grille_dist(6, grille), boite);
   cont = init_conteneur(MLV_HORIZONTAL_LEFT, MLV_VERTICAL_CENTER);
   ajouter_conteneur(cont, grille_dist(10, grille), boite);
-  ajouter_remplissage(grille_dist(2, grille), boite);
+  ajouter_remplissage(grille_dist(1, grille), boite);
   cont = init_conteneur(MLV_HORIZONTAL_RIGHT, MLV_VERTICAL_CENTER);
-  ajouter_conteneur(cont, grille_dist(29, grille), boite);
+  ajouter_conteneur(cont, grille_dist(31, grille), boite);
   cont = init_conteneur(MLV_HORIZONTAL_LEFT, MLV_VERTICAL_CENTER);
   ajouter_remplissage(grille_dist(1, grille), boite);
-  ajouter_conteneur(cont, grille_dist(8, grille), boite);
+  ajouter_conteneur(cont, grille_dist(7, grille), boite);
   ajouter_boite(boite, gest->liste_boite);
 
   boite = placer_boite(
@@ -134,12 +134,12 @@ void mise_en_place(Grid grille, Manager gest){
   ajouter_boite(boite, gest->liste_boite);
 
   boite = placer_boite(
-    grille_coord(29, 29, grille),
+    grille_coord(29, 31, grille),
     VERTICAL, gest->liste_boite->liste[2]->elements[1]
   );
   cont = init_conteneur_centre();
-  ajouter_conteneur(cont, grille_dist(18, grille), boite);
-  ajouter_remplissage(grille_dist(4, grille), boite);
+  ajouter_conteneur(cont, grille_dist(21, grille), boite);
+  ajouter_remplissage(grille_dist(3, grille), boite);
   cont = init_conteneur_centre();
   ajouter_conteneur(cont, grille_dist(3, grille), boite);
   ajouter_remplissage(grille_dist(1, grille), boite);
@@ -148,11 +148,14 @@ void mise_en_place(Grid grille, Manager gest){
   ajouter_boite(boite, gest->liste_boite);
 
   boite = placer_boite(
-    grille_coord(29, 18, grille),
+    grille_coord(29, 21, grille),
     VERTICAL, gest->liste_boite->liste[5]->elements[0]
   );
   cont = init_conteneur_centre();
   ajouter_conteneur(cont, grille_dist(3, grille), boite);
+  ajouter_remplissage(grille_dist(1, grille), boite);
+  cont = init_conteneur_centre();
+  ajouter_conteneur(cont, grille_dist(2, grille), boite);
   ajouter_remplissage(grille_dist(1, grille), boite);
   cont = init_conteneur_centre();
   ajouter_conteneur(cont, grille_dist(2, grille), boite);
@@ -294,6 +297,15 @@ void ajout_elements(Grid grille, Manager gest){
     "Prise de décision", false
   );
   charger_coche(coches[4], gest);
+
+  coches[5] = init_coche(
+    position_contenu(
+      grille_coord(20, 2, grille),
+      gest->liste_boite->liste[6]->elements[6]
+    ),
+    "Affichage de l'arbre-kd", false
+  );
+  charger_coche(coches[5], gest);
 
   compteurs[0] = init_compteur(
     position_contenu(

@@ -162,6 +162,28 @@ void graph_kppv_aff_zone_kppv(MLV_GraphKNN graph_kppv){
   );
 }
 
+void graph_kppv_aff_arbre_kd(
+  int prof, double deb, double fin, arbre_kd arbre, MLV_GraphKNN graphe
+){
+  point noeud;
+  if (!est_feuille(arbre)) {
+    noeud = *arbre->racine;
+    if (prof % 2 == 0) {
+      graph_placer_segment(
+        init_coordr(noeud.coord[0], deb),
+        init_coordr(noeud.coord[0], fin),
+        MLV_COLOR_BLUE, graphe->graph2D->surface
+      );
+    } else {
+      graph_placer_segment(
+        init_coordr(deb, noeud.coord[1]),
+        init_coordr(fin, noeud.coord[1]),
+        MLV_COLOR_RED, graphe->graph2D->surface
+      );
+    }
+  }
+}
+
 void graph_kppv_maj_tab_kppv(MLV_GraphKNN graph_kppv){
   if (
     graph_kppv->k < 1 || 
