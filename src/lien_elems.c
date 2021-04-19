@@ -11,6 +11,7 @@ MLV_Text labels[4];
 void maj_elem_coches();
 void maj_elem_bascules();
 void maj_elem_compteurs();
+void maj_elem_gkppv();
 
 Id_Obj tog(MLV_Clickable click, Info_Souris souris) {
   bascule_changer_pose(bascules[0]);
@@ -26,6 +27,12 @@ Id_Obj tester(MLV_Clickable click, Info_Souris souris) {
   return BUTTON;
 }
 
+void init_elements(){
+  maj_elem_coches();
+  maj_elem_bascules();
+  maj_elem_compteurs();
+}
+
 void maj_elements(Id_Obj id){
   switch (id){
   case CHECKBOX:
@@ -36,6 +43,9 @@ void maj_elements(Id_Obj id){
     break;
   case SPINBOX:
     maj_elem_compteurs();
+    break;
+  case GKPPV:
+    maj_elem_gkppv();
     break;
   default:
     break;
@@ -96,6 +106,11 @@ void maj_elem_bascules(){
 void maj_elem_compteurs(){
   graph_kppv_maj_classe_utilise(compteurs[1]->val, graphes[0]);
   graph_kppv_maj_k(compteurs[0]->val, graphes[0]);
+  graph_kppv_maj_tab_kppv(graphes[0]);
+  graph_kppv_aff(graphes[0]);
+}
+
+void maj_elem_gkppv(){
   graph_kppv_maj_tab_kppv(graphes[0]);
   graph_kppv_aff(graphes[0]);
 }

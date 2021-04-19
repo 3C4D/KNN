@@ -351,8 +351,9 @@ void demarrer_interface(Manager gest){
   MLV_Event evenement = MLV_NONE;
   MLV_Clickable click;
   MLV_Keylogger keylog;
-
   Info_Periphs periphs = init_info_periph();
+
+  init_elements();
 
   while (!sortie) {
     evenement = maj_evenement(periphs);

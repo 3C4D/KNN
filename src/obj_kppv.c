@@ -142,6 +142,10 @@ void graph_kppv_aff_pt(point pt, MLV_GraphKNN graph_kppv){
 
 void graph_kppv_aff_zone_kppv(MLV_GraphKNN graph_kppv){
   point *loin;
+
+  if(graph_kppv->tab_kppv->taille == 0){
+    return;
+  }
   
   loin = plus_lointain(*graph_kppv->pt_kppv, *graph_kppv->tab_kppv);
   graph_placer_cercle(
@@ -153,7 +157,11 @@ void graph_kppv_aff_zone_kppv(MLV_GraphKNN graph_kppv){
 }
 
 void graph_kppv_maj_tab_kppv(MLV_GraphKNN graph_kppv){
-  if (graph_kppv->k < 1 || graph_kppv->pt_kppv->classe == -1){
+  if (
+    graph_kppv->k < 1 || 
+    graph_kppv->pt_kppv->classe == -1 || 
+    graph_kppv->pts_classes->taille == 0
+  ){
     return;
   }
 
