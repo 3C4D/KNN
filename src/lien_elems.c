@@ -27,6 +27,17 @@ Id_Obj tester(MLV_Clickable click, Info_Souris souris) {
   return BUTTON;
 }
 
+void importer_fichier(char *fichier){
+  graph_kppv_import_tab_pts(fichier, graphes[0]);
+  graph_kppv_aff(graphes[0]);
+}
+
+void exporter_fichier(char *fichier){
+  graph_kppv_export_tab_pts(fichier, graphes[0]);
+  graph_kppv_aff(graphes[0]);
+}
+
+
 void init_elements(){
   maj_elem_coches();
   maj_elem_bascules();

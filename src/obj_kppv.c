@@ -53,13 +53,19 @@ void graph_kppv_ajouter_tab_pts(TabPts *tab_pts, MLV_GraphKNN graph_kppv){
   }
 }
 
-void graph_kppv_fichier_tab_pts(char *fichier, MLV_GraphKNN graph_kppv){
+void graph_kppv_import_tab_pts(char *fichier, MLV_GraphKNN graph_kppv){
   TabPts *tab;
-  if (fichier != NULL){
+  if (fichier != NULL && graph_kppv != NULL){
     detruire_tab_pts(graph_kppv->pts_classes);
     tab = chargement_fichier(fichier);
     graph_kppv->pts_classes = tab;
   }
+}
+
+void graph_kppv_export_tab_pts(char *fichier, MLV_GraphKNN graph_kppv){
+  if (fichier != NULL && graph_kppv != NULL){
+    sauvegarde_fichier(graph_kppv->pts_classes, fichier);
+  } 
 }
 
 void graph_kppv_ajouter_opt_aff(char opt, MLV_GraphKNN graph_kppv){

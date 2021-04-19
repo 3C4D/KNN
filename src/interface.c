@@ -329,7 +329,7 @@ void ajout_elements(Grid grille, Manager gest){
       grille_coord(25, 3, grille),
       gest->liste_boite->liste[5]->elements[1]
     ),
-    "ressources/data/"
+    "ressources/data/", importer_fichier
   );
   ajouter_icon_gest_fichier("ressources/img/load.png", gests_fichier[0]);
   charger_gest_fichier(gests_fichier[0], gest);
@@ -339,7 +339,7 @@ void ajout_elements(Grid grille, Manager gest){
       grille_coord(25, 3, grille),
       gest->liste_boite->liste[5]->elements[2]
     ),
-    "ressources/data/"
+    "ressources/data/", exporter_fichier
   );
   ajouter_icon_gest_fichier("ressources/img/save.png", gests_fichier[1]);
   charger_gest_fichier(gests_fichier[1], gest);
@@ -354,6 +354,8 @@ void demarrer_interface(Manager gest){
   Info_Periphs periphs = init_info_periph();
 
   init_elements();
+  affichage_fenetre(gest);
+  MLV_actualise_window();
 
   while (!sortie) {
     evenement = maj_evenement(periphs);
@@ -368,6 +370,8 @@ void demarrer_interface(Manager gest){
             obj = keylog_lancer_fct(keylog, periphs->clavier);
           }
         }
+        affichage_fenetre(gest);
+        MLV_actualise_window();
         break;
       case MLV_INPUT_BOX : // L'utilisateur a utilisé une boîte de saisie.
         break;
@@ -379,6 +383,8 @@ void demarrer_interface(Manager gest){
             maj_elements(obj);
           }
         }
+        affichage_fenetre(gest);
+        MLV_actualise_window();
         break;
       case MLV_MOUSE_MOTION : // L'utilisateur a déplacé la souris
         break;
@@ -388,7 +394,5 @@ void demarrer_interface(Manager gest){
         sortie = 1;
     }
 
-    affichage_fenetre(gest);
-    MLV_actualise_window();
   }
 }

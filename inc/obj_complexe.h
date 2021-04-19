@@ -44,6 +44,7 @@ struct MLV_FileManager_s {
   MLV_Input fichier;
   MLV_Button operation;
   String repertoire;
+  void (*fct_fichier)(char *);
 };
 
 MLV_CheckBox init_coche(MLV_Position pos, char *label, bool valide);
@@ -83,7 +84,9 @@ void graph_placer_point(
   Coord_R centre, MLV_Color col, MLV_Graph2D graph
 );
 
-MLV_FileManager init_gest_fichier(MLV_Position pos, char const *rep);
+MLV_FileManager init_gest_fichier(
+  MLV_Position pos, char const *rep, void (*fct)(char *)
+);
 void liberer_gest_fichier(MLV_FileManager *gest_fichier);
 void ajouter_icon_gest_fichier(char *chemin, MLV_FileManager gest_fichier);
 

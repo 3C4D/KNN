@@ -32,6 +32,8 @@ struct MLV_GraphKNN_s {
 MLV_GraphKNN init_graph_kppv(MLV_Position pos);
 void liberer_graph_kppv(MLV_GraphKNN *graph_kppv);
 void graph_kppv_ajouter_tab_pts(TabPts *tab_pts, MLV_GraphKNN graph_kppv);
+void graph_kppv_import_tab_pts(char *fichier, MLV_GraphKNN graph_kppv);
+void graph_kppv_export_tab_pts(char *fichier, MLV_GraphKNN graph_kppv);
 void graph_kppv_ajouter_opt_aff(char opt, MLV_GraphKNN graph_kppv);
 void graph_kppv_suppr_opt_aff(char opt, MLV_GraphKNN graph_kppv);
 void graph_kppv_maj_classe_utilise(int classe, MLV_GraphKNN graph_kppv);
