@@ -93,10 +93,16 @@ void maj_elem_coches(){
   }
 
   if (coches[4]->valide) {
-    graph_kppv_maj_tab_kppv(graphes[0]);
     graph_kppv_ajouter_opt_aff(KPPV_DECISION, graphes[0]);
   } else {
     graph_kppv_suppr_opt_aff(KPPV_DECISION, graphes[0]);
+  }
+
+  if (coches[5]->valide) {
+    graph_kppv_maj_arbre(graphes[0]);
+    graph_kppv_ajouter_opt_aff(ARBRE_KD, graphes[0]);
+  } else {
+    graph_kppv_suppr_opt_aff(ARBRE_KD, graphes[0]);
   }
 
   graph_kppv_aff(graphes[0]);

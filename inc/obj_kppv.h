@@ -12,7 +12,8 @@ typedef enum {
   GRILLE = 0x02,
   SOUS_GRILLE = 0x4,
   CERCLE_KPPV = 0x8,
-  KPPV_DECISION = 0x10
+  KPPV_DECISION = 0x10,
+  ARBRE_KD = 0x20
 } DrapOptAff;
 
 typedef struct MLV_GraphKNN_s *MLV_GraphKNN;
@@ -42,6 +43,9 @@ void graph_kppv_cacher_pt(MLV_GraphKNN graph_kppv);
 void graph_kppv_aff(MLV_GraphKNN graph_kppv);
 void graph_kppv_aff_pt(point pt, MLV_GraphKNN graph_kppv);
 void graph_kppv_aff_zone_kppv(MLV_GraphKNN graph_kppv);
+void graph_kppv_aff_arbre_kd(
+  Coord_R min, Coord_R max, int prof, arbre_kd arbre, MLV_GraphKNN graphe
+);
 void graph_kppv_maj_tab_kppv(MLV_GraphKNN graph_kppv);
 void graph_kppv_maj_arbre(MLV_GraphKNN graph_kppv);
 Coord_R coord2d_point(point pt);

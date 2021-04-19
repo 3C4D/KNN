@@ -122,6 +122,15 @@ void graph_kppv_aff(MLV_GraphKNN graph_kppv){
     graph_kppv_aff_zone_kppv(graph_kppv);
   }
 
+  if (graph_kppv->arbre != NULL && graph_kppv->pts_classes->taille != 0) {
+    if (graph_kppv->option_aff & ARBRE_KD){
+      graph_kppv_aff_arbre_kd(
+        init_coordr(-1.0, -1.0), init_coordr(1.0, 1.0),
+        0, graph_kppv->arbre, graph_kppv
+      );
+    }
+  }
+
   if(graph_kppv->pts_classes != NULL){
     for (i = 0; i < graph_kppv->pts_classes->taille; i++) {
       graph_kppv_aff_pt(graph_kppv->pts_classes->tab[i], graph_kppv);
@@ -163,22 +172,46 @@ void graph_kppv_aff_zone_kppv(MLV_GraphKNN graph_kppv){
 }
 
 void graph_kppv_aff_arbre_kd(
-  int prof, double deb, double fin, arbre_kd arbre, MLV_GraphKNN graphe
+  Coord_R min, Coord_R max, int prof, arbre_kd arbre, MLV_GraphKNN graphe
 ){
   point noeud;
-  if (!est_feuille(arbre)) {
+  Coord_R tmp;
+  if (arbre != NULL) {
     noeud = *arbre->racine;
     if (prof % 2 == 0) {
       graph_placer_segment(
-        init_coordr(noeud.coord[0], deb),
-        init_coordr(noeud.coord[0], fin),
-        MLV_COLOR_BLUE, graphe->graph2D->surface
+        init_coordr(noeud.coord[0], min.y),
+        init_coordr(noeud.coord[0], max.y),
+        MLV_COLOR_BLUE, graphe->graph2D
+      );
+
+      tmp = init_coordr(noeud.coord[0], max.y);
+      graph_kppv_aff_arbre_kd(
+        min, tmp, prof + 1,
+        arbre->fils_g, graphe
+      );
+
+      tmp = init_coordr(noeud.coord[0], min.y);
+      graph_kppv_aff_arbre_kd(
+        tmp, max, prof + 1,
+        arbre->fils_d, graphe
       );
     } else {
       graph_placer_segment(
-        init_coordr(deb, noeud.coord[1]),
-        init_coordr(fin, noeud.coord[1]),
-        MLV_COLOR_RED, graphe->graph2D->surface
+        init_coordr(min.x, noeud.coord[1]),
+        init_coordr(max.x, noeud.coord[1]),
+        MLV_COLOR_RED, graphe->graph2D
+      );
+      tmp = init_coordr(max.x, noeud.coord[1]);
+      graph_kppv_aff_arbre_kd(
+        min, tmp, prof + 1,
+        arbre->fils_g, graphe
+      );
+
+      tmp = init_coordr(min.x, noeud.coord[1]);
+      graph_kppv_aff_arbre_kd(
+        tmp, max, prof + 1,
+        arbre->fils_d, graphe
       );
     }
   }
@@ -240,7 +273,7 @@ Id_Obj gkppv_ajouter_pt_classe(MLV_Clickable click, Info_Souris souris){
   ajouter_coord(&pt, 2, tab_coord);
   ajouter_point(graph_kppv->pts_classes, pt);
 
-  if (graph_kppv->pts_classes->taille == 1) {
+  if (est_puissance_2(graph_kppv->pts_classes->taille + 1)) {
     graph_kppv_maj_arbre(graph_kppv);
   } else {
     index_pt = graph_kppv->pts_classes->taille-1;
