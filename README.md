@@ -58,6 +58,20 @@ Extensions autorisées :
   - .log
   - .txt
 
+## Application kppv
+
+Quand vous démarrez l'exécutable kppv situé dans le dossier bin, libre à vous
+de :
+  - Charger un fichier existant.
+  - Sauvegarder ce que vous avez fait.
+  - Créer de nouveaux point en cliquant sur le mode création.
+  - Placer le point dont on veut connaitre les plus proches voisins
+    en cliquant sur le mode KPPV.
+  - Changer le nombre de voisins (K).
+  - Dessiner l'arbre kd.
+  - Déterminer la classe du point dont on connait les plus proches voisins.
+  - Afficher/enlever les axes, la grille ainsi que la sous-grille.
+
 ## Chargement de fichier(s)
 
 Pour charger un fichier il suffit d'entrer le nom du fichier dans la première
