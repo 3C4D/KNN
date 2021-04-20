@@ -58,4 +58,16 @@ Extensions autorisées :
   - .log
   - .txt
 
-## Application
+## Chargement de fichier(s)
+
+Pour charger un fichier il suffit d'entrer le nom du fichier dans la première
+case de saisie et d'appuyer sur l'icône à sa droite.
+
+Les fichiers sont chargés à partir du dossier ressources/data.
+
+## Sauvegarde de fichier(s)
+
+Pour sauvegarder un fichier il suffit d'entrer le nom du fichier dans la
+première case de saisie et d'appuyer sur l'icône à sa droite.
+
+Les fichiers sont sauvegardés dans le dossier ressources/data.
