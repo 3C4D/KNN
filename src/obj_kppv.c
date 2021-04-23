@@ -25,7 +25,7 @@ MLV_GraphKNN init_graph_kppv(MLV_Position pos){
   graph_kppv->option_aff = 0x07;
   graph_kppv->pt_kppv = malloc(sizeof(point));
   *graph_kppv->pt_kppv = creer_point(2, -1);
-  graph_kppv->tab_kppv = creer_tab_pts(2, 0);
+  graph_kppv->tab_kppv = NULL;
   graph_kppv->pts_classes = creer_tab_pts(2, 0);
   graph_kppv->arbre = NULL;
   graph_kppv->pts_ajoutes = 0;
@@ -63,7 +63,7 @@ void graph_kppv_import_tab_pts(char *fichier, MLV_GraphKNN graph_kppv){
   if (strcmp(fichier, "ressources/data/") == 0) {
     tab = creer_tab_pts(2, 0);
     detruire_arbre(graph_kppv->arbre);
-    graph_kppv->tab_kppv = creer_tab_pts(2, 0);
+    graph_kppv->tab_kppv = NULL;
     graph_kppv->arbre = NULL;
     graph_kppv_ajouter_tab_pts(tab, graph_kppv);
   } else if (fichier != NULL && graph_kppv != NULL){
@@ -169,11 +169,9 @@ void graph_kppv_aff_pt(point pt, MLV_GraphKNN graph_kppv){
 void graph_kppv_aff_zone_kppv(MLV_GraphKNN graph_kppv){
   point *loin;
 
-  if(graph_kppv->tab_kppv->taille == 0){
+  if(graph_kppv->tab_kppv == NULL){
     return;
   }
-
-  afficher_tab_pts(*graph_kppv->tab_kppv);
 
   loin = plus_lointain(*graph_kppv->pt_kppv, *graph_kppv->tab_kppv);
   graph_placer_cercle(

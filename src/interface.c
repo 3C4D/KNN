@@ -380,6 +380,7 @@ void demarrer_interface(Manager gest){
           keylog = gest->liste_keylog->liste[i];
           if (keylog != NULL){
             obj = keylog_lancer_fct(keylog, periphs->clavier);
+            maj_elements(obj);
           }
         }
         affichage_fenetre(gest);
