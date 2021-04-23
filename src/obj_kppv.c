@@ -1,4 +1,6 @@
 #include <stdbool.h>
+#include <stdlib.h>
+#include <string.h>
 #include "obj_kppv.h"
 #include "erreur.h"
 #include "kppv.h"
@@ -26,6 +28,7 @@ MLV_GraphKNN init_graph_kppv(MLV_Position pos){
   graph_kppv->tab_kppv = creer_tab_pts(2, 0);
   graph_kppv->pts_classes = creer_tab_pts(2, 0);
   graph_kppv->arbre = NULL;
+  graph_kppv->pts_ajoutes = 0;
   graph_kppv->classe_util = 0;
   graph_kppv->k = 1;
   graph_kppv->curseur = init_clickable(pos, ACTIF, INTERNE);
@@ -48,17 +51,26 @@ void liberer_graph_kppv(MLV_GraphKNN *graph_kppv){
 
 void graph_kppv_ajouter_tab_pts(TabPts *tab_pts, MLV_GraphKNN graph_kppv){
   if (tab_pts != NULL){
+    graph_kppv->pts_ajoutes = 0;
     detruire_tab_pts(graph_kppv->pts_classes);
     graph_kppv->pts_classes = tab_pts;
   }
 }
 
 void graph_kppv_import_tab_pts(char *fichier, MLV_GraphKNN graph_kppv){
-  TabPts *tab;
-  if (fichier != NULL && graph_kppv != NULL){
-    detruire_tab_pts(graph_kppv->pts_classes);
+  TabPts *tab = NULL;
+
+  if (strcmp(fichier, "ressources/data/") == 0) {
+    tab = creer_tab_pts(2, 0);
+    detruire_arbre(graph_kppv->arbre);
+    graph_kppv->tab_kppv = creer_tab_pts(2, 0);
+    graph_kppv->arbre = NULL;
+    graph_kppv_ajouter_tab_pts(tab, graph_kppv);
+  } else if (fichier != NULL && graph_kppv != NULL){
     tab = chargement_fichier(fichier);
-    graph_kppv->pts_classes = tab;
+    graph_kppv_ajouter_tab_pts(tab, graph_kppv);
+    graph_kppv_maj_arbre(graph_kppv);
+    graph_kppv_maj_tab_kppv(graph_kppv);
   }
 }
 
@@ -118,10 +130,6 @@ void graph_kppv_aff(MLV_GraphKNN graph_kppv){
     aff_axe_y(graph_kppv->graph2D);
   }
 
-  if(graph_kppv->option_aff & CERCLE_KPPV){
-    graph_kppv_aff_zone_kppv(graph_kppv);
-  }
-
   if (graph_kppv->arbre != NULL && graph_kppv->pts_classes->taille != 0) {
     if (graph_kppv->option_aff & ARBRE_KD){
       graph_kppv_aff_arbre_kd(
@@ -138,6 +146,9 @@ void graph_kppv_aff(MLV_GraphKNN graph_kppv){
   }
 
   if(graph_kppv->pt_kppv != NULL && graph_kppv->pt_kppv->classe != -1){
+    if(graph_kppv->option_aff & CERCLE_KPPV){
+      graph_kppv_aff_zone_kppv(graph_kppv);
+    }
     if (graph_kppv->option_aff & KPPV_DECISION){
       graph_kppv_classer_pt(graph_kppv);
     } else {
@@ -161,6 +172,8 @@ void graph_kppv_aff_zone_kppv(MLV_GraphKNN graph_kppv){
   if(graph_kppv->tab_kppv->taille == 0){
     return;
   }
+
+  afficher_tab_pts(*graph_kppv->tab_kppv);
 
   loin = plus_lointain(*graph_kppv->pt_kppv, *graph_kppv->tab_kppv);
   graph_placer_cercle(
@@ -225,7 +238,7 @@ void graph_kppv_maj_tab_kppv(MLV_GraphKNN graph_kppv){
   ){
     return;
   }
-
+  
   graph_kppv->tab_kppv = recherche(
     graph_kppv->arbre, graph_kppv->pt_kppv,
     graph_kppv->k, graph_kppv->pts_classes->nbclasse
@@ -241,6 +254,41 @@ void graph_kppv_maj_arbre(MLV_GraphKNN graph_kppv){
   }
 
   graph_kppv->arbre = a;
+}
+
+void graph_kppv_suppr_pt_ajoute(MLV_GraphKNN graph_kppv){
+  int i, index;
+  if (graph_kppv->pts_ajoutes == 0){
+    return;
+  }
+
+  i = 0;
+  index = graph_kppv->pts_classes->taille - 1;
+  while (index != graph_kppv->pts_classes->tab[i].ordre){
+    i++;
+  }
+  supprimer_point(graph_kppv->pts_classes, i);
+  
+  graph_kppv_maj_arbre(graph_kppv);
+  graph_kppv->pts_ajoutes--;
+}
+
+void graph_kppv_reinit_pt(MLV_GraphKNN graph_kppv){
+  int i;
+  int taille_finale = (
+    graph_kppv->pts_classes->taille -
+    graph_kppv->pts_ajoutes
+  );
+
+  for (i = 0; i < graph_kppv->pts_classes->taille; i++){
+    if (graph_kppv->pts_classes->tab[i].ordre >= taille_finale) {
+      supprimer_point(graph_kppv->pts_classes, i);
+      i--;
+    }
+  }
+  
+  graph_kppv_maj_arbre(graph_kppv);
+  graph_kppv->pts_ajoutes = 0;
 }
 
 Coord_R coord2d_point(point pt){
@@ -272,6 +320,7 @@ Id_Obj gkppv_ajouter_pt_classe(MLV_Clickable click, Info_Souris souris){
   tab_pts_maj_nb_classe(graph_kppv->classe_util, graph_kppv->pts_classes);
   ajouter_coord(&pt, 2, tab_coord);
   ajouter_point(graph_kppv->pts_classes, pt);
+  graph_kppv->pts_ajoutes++;
 
   if (est_puissance_2(graph_kppv->pts_classes->taille + 1)) {
     graph_kppv_maj_arbre(graph_kppv);

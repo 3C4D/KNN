@@ -36,6 +36,10 @@ int main(int argc, char **argv){
 
   // arbre = creer_arbre_kd(&tab);
   // afficher_arbre_bis(arbre);
+  int *l = malloc(sizeof(int));
+  *l = 9;
+  free(l);
+  free(l);
   srand(time(NULL));
   lancer_interface();
   /*

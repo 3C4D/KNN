@@ -10,6 +10,7 @@ typedef struct point{
   double *coord;
   int classe;
   int dimension;
+  int ordre;
 }point;
 
 /* Structure permettant de représenter un tableau de point */

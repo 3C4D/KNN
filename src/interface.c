@@ -196,7 +196,7 @@ void ajout_elements(Grid grille, Manager gest){
       grille_coord(4, 4, grille),
       gest->liste_boite->liste[8]->elements[0]
     ),
-    tester
+    gkppv_reinit
   );
   bouton_image("ressources/img/reset.png", boutons[0]);
   charger_bouton(boutons[0], gest);
@@ -206,7 +206,7 @@ void ajout_elements(Grid grille, Manager gest){
       grille_coord(8, 4, grille),
       gest->liste_boite->liste[4]->elements[0]
     ),
-    tester
+    NULL
   );
   bouton_image("ressources/img/undo.png", boutons[1]);
   charger_bouton(boutons[1], gest);
@@ -216,7 +216,7 @@ void ajout_elements(Grid grille, Manager gest){
       grille_coord(15, 3, grille),
       gest->liste_boite->liste[3]->elements[0]
     ),
-    tog, ETAT_B
+    NULL, ETAT_B
   );
   bascule_label("Mode Création", "Mode KPPV", bascules[0]);
   charger_bascule(bascules[0], gest);

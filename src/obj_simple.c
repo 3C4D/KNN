@@ -74,11 +74,19 @@ void bouton_image(char *chemin, MLV_Button bouton){
   String_free(rep_img);
 }
 
+Id_Obj bascule_fct_defaut(MLV_Clickable click, Info_Souris souris);
+
 MLV_Toggle init_bascule(MLV_Position pos, FctClick fonction, Pose pose) {
   MLV_Toggle bascule = malloc(sizeof(struct MLV_Toggle_s));
   verif_alloc((void *)bascule);
   bascule->zone = init_clickable(pos, ACTIF, INTERNE);
-  click_init_fct(fonction, bascule->zone);
+
+  if (fonction != NULL){
+    click_init_fct(fonction, bascule->zone);
+  } else {
+    click_init_fct(bascule_fct_defaut, bascule->zone);
+  }
+  
   click_maj_proprio((void *)bascule, bascule->zone);
   bascule->etat = pose;
   bascule->etat_on_a = init_canvas(pos, false);
@@ -106,6 +114,13 @@ void liberer_bascule(MLV_Toggle *bascule){
   }
 
   *bascule = NULL;
+}
+
+Id_Obj bascule_fct_defaut(MLV_Clickable click, Info_Souris souris){
+  MLV_Toggle bascule = (MLV_Toggle)click_proprio(click);
+  bascule_changer_pose(bascule);
+
+  return TOGGLE;
 }
 
 void bascule_changer_etat(MLV_Toggle bascule){

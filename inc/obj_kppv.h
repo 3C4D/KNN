@@ -6,6 +6,7 @@
 #include "points.h"
 #include "arbre.h"
 #include "id_objet.h"
+#include "repertoire_pts.h"
 
 typedef enum {
   AXE = 0x01,
@@ -25,6 +26,7 @@ struct MLV_GraphKNN_s {
   TabPts *tab_kppv;
   arbre_kd arbre;
   point *pt_kppv;
+  int pts_ajoutes;
   int classe_util;
   int k;
   char option_aff;
@@ -48,6 +50,9 @@ void graph_kppv_aff_arbre_kd(
 );
 void graph_kppv_maj_tab_kppv(MLV_GraphKNN graph_kppv);
 void graph_kppv_maj_arbre(MLV_GraphKNN graph_kppv);
+void graph_kppv_nettoyage_tab_pt(MLV_GraphKNN graph_kppv);
+void graph_kppv_suppr_pt_ajoute(MLV_GraphKNN graph_kppv);
+void graph_kppv_reinit_pt(MLV_GraphKNN graph_kppv);
 Coord_R coord2d_point(point pt);
 Id_Obj gkppv_ajouter_pt_classe(MLV_Clickable click, Info_Souris souris);
 Id_Obj gkppv_maj_pt(MLV_Clickable click, Info_Souris souris);

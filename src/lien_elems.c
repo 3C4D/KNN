@@ -13,20 +13,6 @@ void maj_elem_bascules();
 void maj_elem_compteurs();
 void maj_elem_gkppv();
 
-Id_Obj tog(MLV_Clickable click, Info_Souris souris) {
-  bascule_changer_pose(bascules[0]);
-
-  return TOGGLE;
-}
-
-Id_Obj tester(MLV_Clickable click, Info_Souris souris) {
-  bascule_changer_etat(bascules[0]);
-  desactiver_compteur(compteurs[0]);
-  desactiver_coche(coches[0]);
-
-  return BUTTON;
-}
-
 void importer_fichier(char *fichier){
   graph_kppv_import_tab_pts(fichier, graphes[0]);
   graph_kppv_aff(graphes[0]);
@@ -37,11 +23,30 @@ void exporter_fichier(char *fichier){
   graph_kppv_aff(graphes[0]);
 }
 
+Id_Obj gkppv_annuler_placement_pt(MLV_Clickable click, Info_Souris souris){
+  graph_kppv_suppr_pt_ajoute(graphes[0]);
+
+  return BUTTON;
+}
+
+Id_Obj gkppv_effacer_pt_kppv(MLV_Clickable click, Info_Souris souris){
+  graph_kppv_cacher_pt(graphes[0]);
+
+  return BUTTON;
+}
+
+Id_Obj gkppv_reinit(MLV_Clickable click, Info_Souris souris){
+  graph_kppv_reinit_pt(graphes[0]);
+
+  return BUTTON;
+}
+
 
 void init_elements(){
   maj_elem_coches();
   maj_elem_bascules();
   maj_elem_compteurs();
+  maj_elem_gkppv();
 }
 
 void maj_elements(Id_Obj id){
@@ -113,10 +118,12 @@ void maj_elem_bascules(){
     activer_compteur(compteurs[1]);
     graph_kppv_maj_classe_utilise(compteurs[1]->val, graphes[0]);
     click_init_fct(gkppv_ajouter_pt_classe, graphes[0]->curseur);
+    click_init_fct(gkppv_annuler_placement_pt, boutons[1]->zone);
   } else {
     desactiver_compteur(compteurs[1]);
     graph_kppv_maj_classe_utilise(0, graphes[0]);
     click_init_fct(gkppv_maj_pt, graphes[0]->curseur);
+    click_init_fct(gkppv_effacer_pt_kppv, boutons[1]->zone);
   }
 }
 

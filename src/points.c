@@ -92,18 +92,23 @@ void ajouter_point(TabPts *tab_pts, point pt){
     erreur("Erreur d'allocation dans la fonction ajouter_point");
   }
 
+  pt.ordre = tab_pts->taille;
   tab_pts->tab[tab_pts->taille] = pt; /*on place le point dans la case*/
   tab_pts->taille += 1;               /*on incrémente la taille du tableau*/
 }
 
 /* Permet de supprimer un point du tableau de points dont on connait l'index */
 void supprimer_point(TabPts *tab_pts, int index){
-  int i;
+  int i, ord;
 
   free(tab_pts->tab[index].coord);
+  ord = tab_pts->tab[index].ordre;
 
   for(i = index; i < tab_pts->taille; i++){ /*On décale les élements afin*/
     tab_pts->tab[i] = tab_pts->tab[i+1];     /*d'écraser l'élement à supprimer*/
+    if (tab_pts->tab[i].ordre > ord) {
+      tab_pts->tab[i].ordre--;
+    }
   }
 
   tab_pts->taille -= 1;       /*on décremente la taille du tableau*/
@@ -116,7 +121,8 @@ void afficher_pt(point pt, int dimension){
   for(i = 0; i < dimension-1; i++){
     printf("%lf, ", pt.coord[i]);
   }
-  printf("%lf) classe : %d\n", pt.coord[dimension-1], pt.classe);
+  printf("%lf) classe : %d | ", pt.coord[dimension-1], pt.classe);
+  printf("ordre: %d\n", pt.ordre);
 }
 
 /* Affiche un tableau de points */

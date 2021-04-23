@@ -8,8 +8,7 @@
 
 void init_elements();
 void maj_elements(Id_Obj id);
-Id_Obj tog(MLV_Clickable click, Info_Souris souris);
-Id_Obj tester(MLV_Clickable click, Info_Souris souris);
+Id_Obj gkppv_reinit(MLV_Clickable click, Info_Souris souris);
 void importer_fichier(char *fichier);
 void exporter_fichier(char *fichier);
 
