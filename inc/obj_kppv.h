@@ -6,7 +6,6 @@
 #include "points.h"
 #include "arbre.h"
 #include "id_objet.h"
-#include "repertoire_pts.h"
 
 typedef enum {
   AXE = 0x01,
