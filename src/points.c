@@ -80,14 +80,6 @@ void tab_pts_maj_nb_classe(int classe, TabPts *tab){
 
 /* Permet d'ajouter un point au tableau de points */
 void ajouter_point(TabPts *tab_pts, point pt){
-  if(tab_pts->taille == tab_pts->taille_max){
-    tab_pts->taille_max *= 2;
-    tab_pts->tab = (point *)realloc(
-      tab_pts->tab,
-      (tab_pts->taille_max)*sizeof(point)
-    );
-  }
-
   /*vérification de l'allocation*/
   if(tab_pts->tab == NULL){
     erreur("Erreur d'allocation dans la fonction ajouter_point");
@@ -96,6 +88,14 @@ void ajouter_point(TabPts *tab_pts, point pt){
   pt.ordre = tab_pts->taille;
   tab_pts->tab[tab_pts->taille] = pt; /*on place le point dans la case*/
   tab_pts->taille += 1;               /*on incrémente la taille du tableau*/
+
+  if(tab_pts->taille == tab_pts->taille_max){
+    tab_pts->taille_max *= 2;
+    tab_pts->tab = (point *)realloc(
+      tab_pts->tab,
+      (tab_pts->taille_max)*sizeof(point)
+    );
+  }
 }
 
 /* Permet de supprimer un point du tableau de points dont on connait l'index */
