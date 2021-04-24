@@ -6,7 +6,7 @@
 #define POINTS_H_
 
 /* Structure permettant de représenter un point */
-typedef struct point{
+typedef struct{
   double *coord;
   int classe;
   int dimension;
@@ -14,7 +14,7 @@ typedef struct point{
 }point;
 
 /* Structure permettant de représenter un tableau de point */
-typedef struct TabPts{
+typedef struct{
   point *tab;
   int taille;
   int taille_max;

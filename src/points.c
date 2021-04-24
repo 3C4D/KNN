@@ -46,8 +46,8 @@ TabPts *creer_tab_pts(int dimension, int nbclasse){
   TabPts *tab;
   tab = (TabPts *)malloc(sizeof(TabPts));
   /*on alloue un espace mémoire pour pouvoir utiliser realloc*/
-  tab->tab = (point *)malloc(4096*sizeof(point));
-  tab->taille_max = 4096;
+  tab->tab = (point *)malloc(64*sizeof(point));
+  tab->taille_max = 64;
   /*vérification de l'allocation*/
   if(tab->tab == NULL){
     erreur("Erreur d'allocation dans la fonction creer_tab_pts");
@@ -87,6 +87,7 @@ void ajouter_point(TabPts *tab_pts, point pt){
       (tab_pts->taille_max)*sizeof(point)
     );
   }
+
   /*vérification de l'allocation*/
   if(tab_pts->tab == NULL){
     erreur("Erreur d'allocation dans la fonction ajouter_point");

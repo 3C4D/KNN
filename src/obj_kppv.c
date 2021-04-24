@@ -320,13 +320,7 @@ Id_Obj gkppv_ajouter_pt_classe(MLV_Clickable click, Info_Souris souris){
   ajouter_point(graph_kppv->pts_classes, pt);
   graph_kppv->pts_ajoutes++;
 
-  if (est_puissance_2(graph_kppv->pts_classes->taille + 1)) {
-    graph_kppv_maj_arbre(graph_kppv);
-  } else {
-    index_pt = graph_kppv->pts_classes->taille-1;
-    insere(graph_kppv->arbre, &graph_kppv->pts_classes->tab[index_pt]);
-  }
-
+  graph_kppv_maj_arbre(graph_kppv);
   graph_kppv_maj_tab_kppv(graph_kppv);
   graph_kppv_aff(graph_kppv);
 
