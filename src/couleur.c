@@ -1,4 +1,5 @@
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
@@ -73,42 +74,61 @@ MLV_Color couleur_changer_alpha(int alpha, MLV_Color col){
   return (MLV_rgba(r, g, b, alpha));
 }
 
-uint32_t joaat_hash(const char* graine) {
-  uint32_t hash = 0;
-  uint8_t c;
-  while ((c = (uint8_t)*graine++)) {
-    hash += c;
-    hash += hash << 10;
-    hash ^= hash >> 6;
+u_int8_t gen_val(int graine){
+  u_int8_t v1 = 0;
+  u_int8_t v2 = 0;
+  u_int8_t v3 = 0;
+  u_int8_t v4 = 0;
+  u_int8_t val;
+  int i;
+  
+  for (i = 0; i < graine; i++){
+    v1 = i % 3;
+
+    if (v1 == 0){
+      v2++;
+
+      if ((v2 % 4) == 0) {
+        v2 = 0;
+        v3++;
+
+        if ((v3 % 4) == 0) {
+          v3 = 0;
+          v4++;
+        }
+      }
+    }
+  } 
+
+  val = v1 | v2 << 2 | v3 << 4 | v4 << 6;
+  return val;
+}
+
+double inverse_char(u_int8_t val){
+  double out = 0.0;
+  int i;
+
+  for (i = 0; i < 8; i++){
+    if (val & (1 << i)) {
+      out += 1/(double)(2 << i);
+    }
   }
-  hash += hash << 3;
-  hash ^= hash >> 11;
-  hash += hash << 15;
-  return hash;
+
+  return out;
 }
 
 MLV_Color gen_couleur(int graine){
-  int i, len_int = 0;
   int h, s, l;
-  uint32_t hash;
-  char buff[17];
+  u_int8_t val;
 
   if(graine == 0){
     return MLV_COLOR_BLACK;
   }
-
-  memset(buff, 0, 17);
-
-  sprintf(buff, "%x", graine);
-  len_int = strlen(buff);
-  for (i = len_int; i < 16 ; i++){
-    buff[i] = 0x21 + (graine * i) % 94;
-  }
   
-  hash = joaat_hash(buff);
-  h = (((graine - 1) * 5) % 36) * 10;
-  s = ((hash & 0xff00) >> 10) + 32;
-  l = ((hash & 0xff) >> 3) + 35;
-
+  val = gen_val(graine - 1);
+  h = (120 * (val & 0x03) + (int)(inverse_char((val & 0x0c) >> 2) * 120)) % 360;
+  s = (((val & 0x30) >> 4) + 1) * 10 + 55;
+  l = 66 - (((val & 0xc0) >> 6) + 1) * 8;
+  
   return (couleur_hsla(h, s, l, 0xff));
 }
