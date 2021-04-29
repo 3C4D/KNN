@@ -12,7 +12,7 @@ Afin de compiler le générateur de fichier de test, utiliez la commande :
 make bin/generation_test
 ```
 
-Afin de compiler le comparateur de fonctoins, utiliez la commande :
+Afin de compiler le comparateur de fonctions, utiliez la commande :
 ```
 make bin/benchmark
 ```
