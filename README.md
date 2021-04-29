@@ -12,6 +12,11 @@ Afin de compiler le générateur de fichier de test, utiliez la commande :
 make bin/generation_test
 ```
 
+Afin de compiler le comparateur de fonctoins, utiliez la commande :
+```
+make bin/benchmark
+```
+
 Pour compiler les deux, utiliez simplement la commande :
 ```
 make
@@ -85,3 +90,31 @@ Pour sauvegarder un fichier il suffit d'entrer le nom du fichier dans la
 première case de saisie et d'appuyer sur l'icône à sa droite.
 
 Les fichiers sont sauvegardés dans le dossier ressources/data.
+
+## Benchmark temps de calcul
+
+Un exécutable permettant de juger des temps de calcul des différents algorithmes
+de calcul des KPPV (tableau et arbre_kd) est mis à disposition.
+
+Afin d'utiliser cet exécutable qui se trouve dans le chemin : `./bin/benchmark`,
+il vous faudra lui donner des arguments, dans l'ordre :
+  - Le nombre de point avec lequel on veut tester les fonctions.
+  - La dimension de ces points.
+  - Le nombre de classe maximum de ces points.
+  - Le mode utilisé (0 pour classique, 1 pour debug)
+
+(Précisons que le mode debug affiche le tableau et l'arbre qui sont obtenus
+durant la fonction).
+
+Exemple, la commande :
+```
+bin/generation_test 15 4 6 1
+```
+
+Cette commande va comparer les fonctions de recherche sur les KPPV avec
+15 points possédants 4 dimensions et disposant au maximum de 6 classes.
+
+La sortie sera le temps d'exécution de chaque fonction.
+
+Le mode debug est activé donc le tableau de point ainsi que l'arbre seront
+affichés.

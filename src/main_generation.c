@@ -3,11 +3,15 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 #include "generation.h"
 #include "erreur.h"
 
 int main(int argc, char **argv){
   int test;
+
+  srand(time(NULL));  /* Initialisation de l'horloge servant au hasard */
+
   if(argc != 5){  /* Vérification du nombre d'argument */
     fprintf(stderr,
             "\nUsage : %s <nbpoint> <dimension> <nbclasse> <nom_fic>\n",

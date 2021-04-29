@@ -3,7 +3,7 @@
 
 /* Renvoie un message d'erreur sur stderr */
 void err_log(char *error){
-  fprintf(stderr, "Erreur, %s", error);
+  fprintf(stderr, "%s", error);
 }
 
 /* Renvoie un message d'erreur sur stderr et interrompt le programme */
