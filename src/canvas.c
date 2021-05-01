@@ -1,5 +1,6 @@
 #include "canvas.h"
 #include "erreur.h"
+#include "math_op.h"
 #include <string.h>
 
 MLV_Canvas init_canvas(MLV_Position pos, bool visibilite){
@@ -101,6 +102,83 @@ void placer_disque(Coord centre, int rayon, MLV_Color col, MLV_Canvas cnvs){
 
 void placer_cercle(Coord centre, int rayon, MLV_Color col, MLV_Canvas cnvs){
   MLV_draw_circle_on_image(centre.x, centre.y, rayon, col, cnvs->img);
+}
+
+void placer_carre(Coord centre, int rayon, MLV_Color col, MLV_Canvas cnvs){
+  MLV_draw_rectangle_on_image(
+    centre.x - rayon, centre.y - rayon,
+    (rayon * 2 + 1), (rayon * 2 + 1), col, cnvs->img
+  );
+}
+
+void placer_carre_plein(
+  Coord centre, int rayon, MLV_Color col, MLV_Canvas cnvs
+){
+  MLV_draw_filled_rectangle_on_image(
+    centre.x - rayon, centre.y - rayon, 
+    (rayon * 2 + 1), (rayon * 2 + 1), col, cnvs->img
+  );
+}
+
+void placer_losange(Coord centre, int rayon, MLV_Color col, MLV_Canvas cnvs){
+  int pts_x[4] = {centre.x, centre.x + rayon, centre.x, centre.x - rayon};
+  int pts_y[4] = {centre.y - rayon, centre.y, centre.y + rayon, centre.y};
+  MLV_draw_polygon_on_image(pts_x, pts_y, 4, col, cnvs->img);
+}
+
+void placer_losange_plein(
+  Coord centre, int rayon, MLV_Color col, MLV_Canvas cnvs
+){
+  int pts_x[4] = {centre.x, centre.x + rayon, centre.x, centre.x - rayon};
+  int pts_y[4] = {centre.y - rayon, centre.y, centre.y + rayon, centre.y};
+  MLV_draw_filled_polygon_on_image(pts_x, pts_y, 4, col, cnvs->img);
+}
+
+void placer_triangle(Coord centre, int rayon, MLV_Color col, MLV_Canvas cnvs){
+  double sqrt3 = 1.73205080757;
+  int pts_x[3] = {
+    centre.x, 
+    centre.x + arrondi(sqrt3 * rayon), 
+    centre.x - arrondi(sqrt3 * rayon)
+  };
+  int pts_y[3] = {centre.y - rayon * 2, centre.y + rayon, centre.y + rayon};
+  MLV_draw_polygon_on_image(pts_x, pts_y, 3, col, cnvs->img);
+}
+
+void placer_triangle_plein(
+  Coord centre, int rayon, MLV_Color col, MLV_Canvas cnvs
+){
+  double sqrt3 = 1.73205080757;
+  int pts_x[3] = {
+    centre.x, 
+    centre.x + arrondi(sqrt3 * rayon), 
+    centre.x - arrondi(sqrt3 * rayon)
+  };
+  int pts_y[3] = {centre.y - rayon * 2, centre.y + rayon, centre.y + rayon};
+  MLV_draw_filled_polygon_on_image(pts_x, pts_y, 3, col, cnvs->img);
+}
+
+void placer_croix(Coord centre, int rayon, MLV_Color col, MLV_Canvas cnvs){
+  int epais = 1;
+  rayon += epais;
+  int pts_x[4] = {
+    centre.x + rayon - epais, centre.x + rayon + epais, 
+    centre.x - rayon + epais, centre.x - rayon - epais
+  };
+  int pts_y[4] = {
+    centre.y - rayon - epais, centre.y - rayon + epais, 
+    centre.y + rayon + epais, centre.y + rayon - epais
+  };
+  int pts_x_inv[4] = {
+    centre.x - rayon - epais, centre.x - rayon + epais, 
+    centre.x + rayon + epais, centre.x + rayon - epais
+  };
+  int pts_y_inv[4] = {
+    centre.y - rayon + epais, centre.y - rayon - epais, 
+    centre.y + rayon - epais, centre.y + rayon + epais
+  };
+  MLV_draw_filled_polygon_on_image(pts_x, pts_y, 4, col, cnvs->img);
+  MLV_draw_filled_polygon_on_image(pts_x_inv, pts_y_inv, 4, col, cnvs->img);
 }
 
 void placer_curseur_texte(MLV_Text texte, MLV_Color col, MLV_Canvas canvas){

@@ -9,6 +9,7 @@
 #include "couleur.h"
 #include "math_op.h"
 
+void graph_kppv_aff_pt_kppv(point pt, MLV_GraphKNN graph_kppv);
 Id_Obj gkppv_ajouter_pt_classe(MLV_Clickable click, Info_Souris souris);
 Id_Obj gkppv_maj_pt(MLV_Clickable click, Info_Souris souris);
 
@@ -146,7 +147,7 @@ void graph_kppv_aff(MLV_GraphKNN graph_kppv){
 
   if(graph_kppv->pts_classes != NULL){
     for (i = 0; i < graph_kppv->pts_classes->taille; i++) {
-      graph_kppv_aff_pt(graph_kppv->pts_classes->tab[i], graph_kppv);
+      graph_kppv_aff_pt(graph_kppv->pts_classes->tab[i], 2, graph_kppv);
     }
   }
 
@@ -159,13 +160,21 @@ void graph_kppv_aff(MLV_GraphKNN graph_kppv){
     } else {
       graph_kppv_declasser_pt(graph_kppv);
     }
-    graph_kppv_aff_pt(*graph_kppv->pt_kppv, graph_kppv);
+    graph_kppv_aff_pt(*graph_kppv->pt_kppv, 4, graph_kppv);
   }
 }
 
-void graph_kppv_aff_pt(point pt, MLV_GraphKNN graph_kppv){
+void graph_kppv_aff_pt(point pt, int taille, MLV_GraphKNN graph_kppv){
+  int type;
+  if (pt.classe != 0){
+    type = pt.classe % 5;
+  } else {
+    type = ROND;
+  }
+  
   graph_placer_point(
-    coord2d_point(pt),
+    coord2d_point(pt), 
+    taille, type,
     gen_couleur(pt.classe),
     graph_kppv->graph2D
   );

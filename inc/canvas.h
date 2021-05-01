@@ -31,6 +31,19 @@ void placer_ellipse_pleine(
 void placer_ellipse(Coord centre, Coord rayon, MLV_Color col, MLV_Canvas cnvs);
 void placer_disque(Coord centre, int rayon, MLV_Color col, MLV_Canvas cnvs);
 void placer_cercle(Coord centre, int rayon, MLV_Color col, MLV_Canvas cnvs);
+void placer_carre(Coord centre, int rayon, MLV_Color col, MLV_Canvas cnvs);
+void placer_carre_plein(
+  Coord centre, int rayon, MLV_Color col, MLV_Canvas cnvs
+);
+void placer_losange(Coord centre, int rayon, MLV_Color col, MLV_Canvas cnvs);
+void placer_losange_plein(
+  Coord centre, int rayon, MLV_Color col, MLV_Canvas cnvs
+);
+void placer_triangle(Coord centre, int rayon, MLV_Color col, MLV_Canvas cnvs);
+void placer_triangle_plein(
+  Coord centre, int rayon, MLV_Color col, MLV_Canvas cnvs
+);
+void placer_croix(Coord centre, int rayon, MLV_Color col, MLV_Canvas cnvs);
 void placer_curseur_texte(MLV_Text texte, MLV_Color col, MLV_Canvas canvas);
 void afficher_canvas(MLV_Canvas canvas);
 

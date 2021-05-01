@@ -385,13 +385,36 @@ void graph_placer_cercle(
 }
 
 void graph_placer_point(
-  Coord_R centre, MLV_Color col, MLV_Graph2D graph
+  Coord_R centre, int taille, Forme type, MLV_Color col, MLV_Graph2D graph
 ){
-  MLV_Color inter = couleur_changer_alpha(0x7f, col);
   Coord c = coord_rtoz(centre, graph->plan, graph->mat_pix);
-  int rayon = 2;
-  placer_disque(c, rayon, inter, graph->surface);
-  placer_cercle(c, rayon, col, graph->surface);
+  switch (type){
+  case LOSANGE:
+    placer_losange_plein(c, taille, col, graph->surface);
+    break;
+
+  case ROND:
+    placer_disque(c, taille, col, graph->surface);
+    placer_cercle(c, taille, col, graph->surface);
+    break;
+  
+  case CARRE:
+    placer_carre_plein(c, taille, col, graph->surface);
+    break;
+
+  case TRIANGLE:
+    placer_triangle_plein(c, taille, col, graph->surface);
+    break;
+  
+  case CROIX:
+    placer_croix(c, taille, col, graph->surface);
+    break;
+  
+  default:
+    placer_disque(c, taille, col, graph->surface);
+    placer_cercle(c, taille, col, graph->surface);
+    break;
+  }
 }
 
 

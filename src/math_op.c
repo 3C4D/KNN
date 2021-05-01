@@ -12,3 +12,7 @@ double log_bin(int n){
 int entier_sup(double x){
   return (int)(ceil(x));
 }
+
+int arrondi(double x){
+  return (int)(round(x));
+}

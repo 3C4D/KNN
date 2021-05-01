@@ -11,6 +11,8 @@
 #include "id_objet.h"
 #include "peripheriques.h"
 
+typedef enum {LOSANGE, ROND, CARRE, TRIANGLE, CROIX} Forme;
+
 typedef struct MLV_CheckBox_s *MLV_CheckBox;
 struct MLV_CheckBox_s {
   MLV_Position placement;
@@ -81,7 +83,7 @@ void graph_placer_cercle(
   Coord_R centre, double rayon, MLV_Color col, MLV_Graph2D graph
 );
 void graph_placer_point(
-  Coord_R centre, MLV_Color col, MLV_Graph2D graph
+  Coord_R centre, int taille, Forme type, MLV_Color col, MLV_Graph2D graph
 );
 
 MLV_FileManager init_gest_fichier(

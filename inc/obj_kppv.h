@@ -42,7 +42,7 @@ void graph_kppv_maj_classe_utilise(int classe, MLV_GraphKNN graph_kppv);
 void graph_kppv_maj_k(int k, MLV_GraphKNN graph_kppv);
 void graph_kppv_cacher_pt(MLV_GraphKNN graph_kppv);
 void graph_kppv_aff(MLV_GraphKNN graph_kppv);
-void graph_kppv_aff_pt(point pt, MLV_GraphKNN graph_kppv);
+void graph_kppv_aff_pt(point pt, int taille, MLV_GraphKNN graph_kppv);
 void graph_kppv_aff_zone_kppv(MLV_GraphKNN graph_kppv);
 void graph_kppv_aff_arbre_kd(
   Coord_R min, Coord_R max, int prof, arbre_kd arbre, MLV_GraphKNN graphe
