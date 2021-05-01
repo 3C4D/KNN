@@ -43,7 +43,7 @@ String List_pop(List list){
 void List_empty_all(List list){
   String tmp_str;
   while ((tmp_str = List_pop(list)) != NULL) {
-    String_free(tmp_str);
+    String_free(&tmp_str);
   }
   list->elem = NULL;
   list->last = -1;

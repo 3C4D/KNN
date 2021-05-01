@@ -71,7 +71,7 @@ void bouton_image(char *chemin, MLV_Button bouton){
   liberer_canvas(&bouton->inactif);
   bouton->actif = canvas_actif;
   bouton->inactif = canvas_inactif;
-  String_free(rep_img);
+  String_free(&rep_img);
 }
 
 Id_Obj bascule_fct_defaut(MLV_Clickable click, Info_Souris souris);
@@ -223,8 +223,8 @@ void bascule_image(char *chemin_a, char *chemin_b, MLV_Toggle bascule){
   bascule->etat_off_a = canvas_a_off;
   bascule->etat_off_b = canvas_b_off;
 
-  String_free(rep_img_a);
-  String_free(rep_img_b);
+  String_free(&rep_img_a);
+  String_free(&rep_img_b);
 }
 
 void chemin_img_inactif(String chemin){
@@ -235,7 +235,7 @@ void chemin_img_inactif(String chemin){
   String_concat_str(chemin, "_inactif");
   String_concat(chemin, extension);
 
-  String_free(extension);
+  String_free(&extension);
 }
 
 

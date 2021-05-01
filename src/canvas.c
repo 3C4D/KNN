@@ -1,5 +1,6 @@
 #include "canvas.h"
 #include "erreur.h"
+#include <string.h>
 
 MLV_Canvas init_canvas(MLV_Position pos, bool visibilite){
   MLV_Canvas canvas = malloc(sizeof(struct MLV_Canvas_s));

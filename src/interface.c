@@ -57,13 +57,7 @@ int lancer_interface() {
   ajouter_canvas(fond, gestionnaire->liste_canvas);
   mise_en_place(grille, gestionnaire);
   ajout_elements(grille, gestionnaire);
-  affichage_debug(gestionnaire);
 
-  MLV_actualise_window();
-  MLV_wait_seconds( 3 );
-
-  affichage_fenetre(gestionnaire);
-  MLV_actualise_window();
   demarrer_interface(gestionnaire);
   MLV_wait_seconds( 3 );
   MLV_free_window();
@@ -216,7 +210,7 @@ void ajout_elements(Grid grille, Manager gest){
       grille_coord(15, 3, grille),
       gest->liste_boite->liste[3]->elements[0]
     ),
-    NULL, ETAT_B
+    NULL, ETAT_A
   );
   bascule_label("Mode Création", "Mode KPPV", bascules[0]);
   charger_bascule(bascules[0], gest);

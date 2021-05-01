@@ -426,7 +426,7 @@ void liberer_gest_fichier(MLV_FileManager *gest_fichier){
     liberer_position(&(*gest_fichier)->placement);
     liberer_saisie(&(*gest_fichier)->fichier);
     liberer_bouton(&(*gest_fichier)->operation);
-    String_free((*gest_fichier)->repertoire);
+    String_free(&(*gest_fichier)->repertoire);
     free(*gest_fichier);
   }
 

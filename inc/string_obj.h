@@ -1,12 +1,15 @@
 #ifndef STRING_OBJ_H
 #define STRING_OBJ_H
 
-struct _String_s{
+#define MIN_STR_LEN 16
+
+struct String_s{
   char *str;
   int length;
+  int max_len;
 };
 
-typedef struct _String_s *String;
+typedef struct String_s *String;
 
 String String_new(const char *str);
 String String_new_empty(int length);
@@ -14,7 +17,7 @@ String String_new_pat(const char *pattern, int count);
 void String_set(String str, const char *new_str);
 void String_set_int(String str, int entier);
 void String_copy(String dest, const String src);
-void String_free(String str);
+void String_free(String *str);
 int String_count(const String str, const char *substr);
 int String_find(const String str, const char *substr);
 int String_find_last(const String str, const char *substr);

@@ -60,7 +60,7 @@ MLV_Text init_texte(int remplissage, MLV_Position pos, MLV_Text_Format format) {
 
 void liberer_texte(MLV_Text *texte){
   if (*texte != NULL) {
-    String_free((*texte)->msg);
+    String_free(&(*texte)->msg);
     liberer_position(&(*texte)->placement);
     liberer_format(&(*texte)->format);
     free(*texte);
@@ -83,7 +83,7 @@ void texte_ajout_remplissage(MLV_Text texte){
   String_concat(espaces, texte->msg);
   String_copy(texte->msg, espaces);
 
-  String_free(espaces);
+  String_free(&espaces);
 }
 
 void texte_suppr_remplissage(MLV_Text texte){
@@ -98,7 +98,7 @@ void modif_texte(char *chaine, MLV_Text texte){
 
   String_copy(texte->msg, msg);
 
-  String_free(msg);
+  String_free(&msg);
 }
 
 void modif_texte_int(int val, MLV_Text texte){
@@ -107,14 +107,14 @@ void modif_texte_int(int val, MLV_Text texte){
   String_set_int(entier, val);
   String_copy(texte->msg, entier);
 
-  String_free(entier);
+  String_free(&entier);
 }
 
 void texte_ajouter_str(char *str, MLV_Text texte){
   String chaine = String_new(str);
   String_concat(texte->msg, chaine);
 
-  String_free(chaine);
+  String_free(&chaine);
 }
 
 void texte_ajouter_int(char *n, MLV_Text texte){

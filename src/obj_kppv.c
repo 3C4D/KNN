@@ -101,7 +101,12 @@ void graph_kppv_maj_k(int k, MLV_GraphKNN graph_kppv){
 }
 
 void graph_kppv_classer_pt(MLV_GraphKNN graph_kppv){
-  int classe_maj = classe_majoritaire(*graph_kppv->tab_kppv);
+  int classe_maj = -1;
+  if (graph_kppv->tab_kppv == NULL){
+    graph_kppv_maj_tab_kppv(graph_kppv);
+  }
+  
+  classe_maj = classe_majoritaire(*graph_kppv->tab_kppv);
   graph_kppv->pt_kppv->classe = classe_maj;
 }
 
