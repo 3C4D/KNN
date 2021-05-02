@@ -121,16 +121,20 @@ void placer_carre_plein(
 }
 
 void placer_losange(Coord centre, int rayon, MLV_Color col, MLV_Canvas cnvs){
-  int pts_x[4] = {centre.x, centre.x + rayon, centre.x, centre.x - rayon};
-  int pts_y[4] = {centre.y - rayon, centre.y, centre.y + rayon, centre.y};
+  double sqrt2 = 1.41421356237;
+  int diag = arrondi(sqrt2 * rayon);
+  int pts_x[4] = {centre.x, centre.x + diag, centre.x, centre.x - diag};
+  int pts_y[4] = {centre.y - diag, centre.y, centre.y + diag, centre.y};
   MLV_draw_polygon_on_image(pts_x, pts_y, 4, col, cnvs->img);
 }
 
 void placer_losange_plein(
   Coord centre, int rayon, MLV_Color col, MLV_Canvas cnvs
 ){
-  int pts_x[4] = {centre.x, centre.x + rayon, centre.x, centre.x - rayon};
-  int pts_y[4] = {centre.y - rayon, centre.y, centre.y + rayon, centre.y};
+  double sqrt2 = 1.41421356237;
+  int diag = arrondi(sqrt2 * rayon);
+  int pts_x[4] = {centre.x, centre.x + diag, centre.x, centre.x - diag};
+  int pts_y[4] = {centre.y - diag, centre.y, centre.y + diag, centre.y};
   MLV_draw_filled_polygon_on_image(pts_x, pts_y, 4, col, cnvs->img);
 }
 
