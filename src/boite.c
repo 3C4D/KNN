@@ -2,7 +2,20 @@
 #include "boite.h"
 #include "erreur.h"
 
-/* Gestion des boîtes */
+/*-----==========Fonctions privées==========-----*/
+/* Calcule les dimentions d'un conteneur dans une boite */
+Coord cont_calc_taille(int remplissage, MLV_Box boite);
+/* Calcule le décalage par rapport à l'origine d'un conteneur dans une boite */
+Coord cont_calc_decalage(MLV_Box boite);
+/* Calcule la taille occupée dans une boite */
+int boite_long_remplie(MLV_Box boite);
+/* Change les dimensions d'un conteneur */
+void def_dimension_cont(MLV_Container cont, Coord dimension);
+/* Change le décalage par rapport à l'origine d'un conteneur */
+void def_decalage_cont(MLV_Container cont, Coord decalage);
+
+/*-----==========Gestion des boîtes==========-----*/
+/* Crée une boite placée en [pos] et de sens [dir] */
 MLV_Box init_boite(BoxDirection dir, MLV_Position pos){
   MLV_Box boite_out = malloc(sizeof(struct MLV_Box_s));
   verif_alloc(boite_out);
@@ -16,6 +29,7 @@ MLV_Box init_boite(BoxDirection dir, MLV_Position pos){
   return boite_out;
 }
 
+/* Libère l'espace occupé par [boite] */
 void liberer_boite(MLV_Box *boite) {
   int i;
   if (*boite != NULL) {
@@ -29,6 +43,8 @@ void liberer_boite(MLV_Box *boite) {
   *boite = NULL;
 }
 
+/* Ajoute le conteneur [cont] dans [boite] 
+qui prend un espace de [remplissage] */
 void ajouter_conteneur(MLV_Container cont, int remplissage, MLV_Box boite){
   Coord tmp_taille = cont_calc_taille(remplissage, boite);
   Coord tmp_decalage = cont_calc_decalage(boite);
@@ -47,6 +63,7 @@ void ajouter_conteneur(MLV_Container cont, int remplissage, MLV_Box boite){
   boite->nb_elems++;
 }
 
+/* Ajoute du remplissge pour espacer les conteneurs */
 void ajouter_remplissage(int remplissage, MLV_Box boite){
   if (boite == NULL) {
     return;
@@ -58,6 +75,8 @@ void ajouter_remplissage(int remplissage, MLV_Box boite){
 Coord cont_calc_taille(int remplissage, MLV_Box boite){
   Coord tmp_coord;
 
+  /* Un conteneur placé dans une boite prend toute la dimension orthogonale
+  au sens de la boite, d'où le code suivant */
   if (boite->dir == VERTICAL) {
     tmp_coord = init_coord(boite->pos->dimension.x, remplissage);
   } else {
@@ -70,6 +89,8 @@ Coord cont_calc_taille(int remplissage, MLV_Box boite){
 Coord cont_calc_decalage(MLV_Box boite){
   Coord tmp_coord;
 
+  /* Bien que non-recommandé il est possible de remplir une boite au dela de
+  sa dimension sur l'axe parallèle au sens */
   if (boite->dir == VERTICAL) {
     tmp_coord = init_coord(
       boite->pos->decalage.x,
@@ -98,6 +119,7 @@ int boite_long_remplie(MLV_Box boite){
   return long_remplie;
 }
 
+/* Affiche la boite (rectangle bleu) sur l'interface */
 void afficher_boite(MLV_Box boite) {
   int i;
   if (boite != NULL) {
@@ -108,7 +130,9 @@ void afficher_boite(MLV_Box boite) {
   }
 }
 
-/* Gestion des conteneurs */
+
+/*-----==========Gestion des conteneurs==========-----*/
+/* Créer un conteneur */
 MLV_Container init_conteneur(
   MLV_Horizontal_position hpos_interne,
   MLV_Vertical_position vpos_interne
@@ -123,10 +147,12 @@ MLV_Container init_conteneur(
   return conteneur_out;
 }
 
+/* Créer un conteneur avec les propriétés de placement centrées */
 MLV_Container init_conteneur_centre(){
   return (init_conteneur(MLV_HORIZONTAL_CENTER, MLV_VERTICAL_CENTER));
 }
 
+/* Libère l'espace occupé par [cont] */
 void liberer_conteneur(MLV_Container *cont){
   if (*cont != NULL) {
     liberer_position(&(*cont)->pos_externe);
@@ -148,10 +174,12 @@ void def_decalage_cont(MLV_Container cont, Coord decalage){
   }
 }
 
+/* Trouve le placement d'un objet dans un conteneur */
 Coord placement_contenu(Coord dimension, MLV_Container cont){
   Coord coord;
   int x, y;
 
+  /* Soit le placement vertical est en haut, en bas ou au milieu */
   if (cont->vpos_interne == MLV_VERTICAL_TOP) {
     y = cont->pos_externe->decalage.y;
   } else if (cont->vpos_interne == MLV_VERTICAL_BOTTOM) {
@@ -166,6 +194,7 @@ Coord placement_contenu(Coord dimension, MLV_Container cont){
     );
   }
 
+  /* Soit le placement horizontal est à gauche, à dorite ou au centre */
   if (cont->hpos_interne == MLV_HORIZONTAL_LEFT) {
     x = cont->pos_externe->decalage.x;
   } else if (cont->hpos_interne == MLV_HORIZONTAL_RIGHT){
@@ -185,8 +214,11 @@ Coord placement_contenu(Coord dimension, MLV_Container cont){
   return coord;
 }
 
+/* Trouve la position d'un objet par rapport à un conteneur */
 MLV_Position position_contenu(Coord dimension, MLV_Container cont){
   MLV_Position pos;
+  /* ATTENTION: Contrairement à la permissivité des boite, un conteneur 
+  n'accepte pas un contenu plus grand que lui */
   if (
     dimension.x > cont->pos_externe->dimension.x ||
     dimension.y > cont->pos_externe->dimension.y
@@ -199,6 +231,7 @@ MLV_Position position_contenu(Coord dimension, MLV_Container cont){
   return pos;
 }
 
+/* Place une boite dans un conteneur */
 MLV_Box placer_boite(Coord dimension, BoxDirection dir, MLV_Container cont){
   MLV_Box boite;
   MLV_Position pos;
@@ -215,6 +248,7 @@ MLV_Box placer_boite(Coord dimension, BoxDirection dir, MLV_Container cont){
   return boite;
 }
 
+/* Affiche le conteneur (rectangle rouge) sur l'interface */
 void afficher_conteneur(MLV_Container cont){
   if (cont != NULL) {
     afficher_position(cont->pos_externe, MLV_COLOR_RED);

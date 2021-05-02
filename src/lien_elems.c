@@ -135,6 +135,5 @@ void maj_elem_compteurs(){
 }
 
 void maj_elem_gkppv(){
-  graph_kppv_maj_tab_kppv(graphes[0]);
   graph_kppv_aff(graphes[0]);
 }

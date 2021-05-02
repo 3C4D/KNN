@@ -103,9 +103,6 @@ void graph_kppv_maj_k(int k, MLV_GraphKNN graph_kppv){
 
 void graph_kppv_classer_pt(MLV_GraphKNN graph_kppv){
   int classe_maj = -1;
-  if (graph_kppv->tab_kppv == NULL){
-    graph_kppv_maj_tab_kppv(graph_kppv);
-  }
   
   classe_maj = classe_majoritaire(*graph_kppv->tab_kppv);
   graph_kppv->pt_kppv->classe = classe_maj;
@@ -152,11 +149,16 @@ void graph_kppv_aff(MLV_GraphKNN graph_kppv){
   }
 
   if(graph_kppv->pt_kppv != NULL && graph_kppv->pt_kppv->classe != -1){
-    if(graph_kppv->option_aff & CERCLE_KPPV){
-      graph_kppv_aff_zone_kppv(graph_kppv);
-    }
-    if (graph_kppv->option_aff & KPPV_DECISION){
-      graph_kppv_classer_pt(graph_kppv);
+    graph_kppv_maj_tab_kppv(graph_kppv);
+    if (graph_kppv->tab_kppv != NULL) {
+      if(graph_kppv->option_aff & CERCLE_KPPV){
+        graph_kppv_aff_zone_kppv(graph_kppv);
+      }
+      if (graph_kppv->option_aff & KPPV_DECISION){
+        graph_kppv_classer_pt(graph_kppv);
+      } else {
+        graph_kppv_declasser_pt(graph_kppv);
+      }
     } else {
       graph_kppv_declasser_pt(graph_kppv);
     }
@@ -183,7 +185,7 @@ void graph_kppv_aff_pt(point pt, int taille, MLV_GraphKNN graph_kppv){
 void graph_kppv_aff_zone_kppv(MLV_GraphKNN graph_kppv){
   point *loin;
 
-  if(graph_kppv->tab_kppv == NULL){
+  if(graph_kppv->tab_kppv == NULL || graph_kppv->tab_kppv->taille == 0){
     return;
   }
 
@@ -248,6 +250,7 @@ void graph_kppv_maj_tab_kppv(MLV_GraphKNN graph_kppv){
     graph_kppv->pt_kppv->classe == -1 ||
     graph_kppv->pts_classes->taille == 0
   ){
+    graph_kppv->tab_kppv = NULL;
     return;
   }
   

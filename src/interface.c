@@ -33,7 +33,7 @@ void demarrer_interface(Manager gest);
 
 
 int lancer_interface() {
-  int echelle = MLV_get_desktop_height() / 2 ;
+  int echelle = MLV_get_desktop_height() / 2;
   Grid grille = init_grille(
     GRILLE_X, GRILLE_Y,
     echelle,

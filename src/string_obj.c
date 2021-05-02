@@ -5,24 +5,13 @@
 #include "math_op.h"
 #include "erreur.h"
 
-/*Un String est une chaîne de caractères dynamique, cette flexibilité est très
-utile pour l'analyse et l'édition de texte*/
-
+/* Calcule la taille maximale adaptée => puissance de 2 supérieure */
 int calc_adap_size(int size);
+/* Change la taille allouée si besoin */
 void String_adapted_size(int new_len, String s);
 
-void print_d(char *str, int n){
-  for (size_t i = 0; i < n; i++){
-    printf("%02x", str[i]);
-  }
-  putchar('\n');
-  for (size_t i = 0; i < n; i++){
-    putchar(str[i]);
-  }
-  putchar('\n');
-}
-
-/*Crée un String à partir d'une chaîne de caractères*/
+/*-----==========Création de String==========-----*/
+/* Crée un nouveau String à partir d'une chaine de caractères */
 String String_new(const char *str){
   int len_str = strlen(str);
   int max_len = calc_adap_size(len_str);
@@ -31,13 +20,15 @@ String String_new(const char *str){
 
   s->str = malloc(sizeof(char) * (max_len + 1));
   verif_alloc((void *)s->str);
-  strcpy(s->str, str);
+  strcpy(s->str, str); /* Copie de la valeur de str dans s->str */
   s->length = len_str;
   s->max_len = max_len;
 
   return s;
 }
 
+/* Crée un nouveau String à partir d'une chaine de caractères
+faisant office de patterne répété [count] fois */
 String String_new_pat(const char *pattern, int count){
   int i;
   int len_str = strlen(pattern) * count;
@@ -47,7 +38,7 @@ String String_new_pat(const char *pattern, int count){
 
   s->str = malloc(sizeof(char) * (max_len + 1));
   verif_alloc((void *)s->str);
-  s->str[0] = '\0';
+  s->str[0] = '\0'; /* s->str = "" => Concaténation immédiate possible */
   for (i = 0; i < count; i++){
     strcat(s->str, pattern);
   }
@@ -57,7 +48,7 @@ String String_new_pat(const char *pattern, int count){
   return s;
 }
 
-/*Crée un String vide*/
+/* Crée un nouveau String vide avec une taille allouée de minimum [length] */
 String String_new_empty(int length){
   int max_len = calc_adap_size(length);
   String s = malloc(sizeof(struct String_s));
@@ -65,11 +56,21 @@ String String_new_empty(int length){
 
   s->str = malloc(sizeof(char) * (max_len + 1));
   verif_alloc((void *)s->str);
-  memset(s->str, 0, max_len + 1);
+  memset(s->str, 0, max_len + 1); /* Initialise l'espace alloué avec des 0s */
   s->length = length;
   s->max_len = max_len;
 
   return s;
+}
+
+/* Libère l'espace mémoire occupé par [*str] */
+void String_free(String *str) {
+  if (*str != NULL){
+    free((*str)->str);
+    free(*str);
+  }
+  
+  *str = NULL;
 }
 
 void String_adapted_size(int new_len, String s){
@@ -82,14 +83,16 @@ void String_adapted_size(int new_len, String s){
 }
 
 int calc_adap_size(int size){
-  if (size <= MIN_STR_LEN){
+  if (size <= MIN_STR_LEN){ /* Minimum imposé */
     return MIN_STR_LEN;
   } else {
+    /* Calcule 2^⎡log2(size)⎤ <=> Puissance de 2 strictement supérieure à size*/
     return (1 << entier_sup(log_bin(size)));
   }
 }
 
-/*(Ré)initilise la valeur d'un String à partir d'une chaîne de caractère*/
+/*-----==========Initialisation de String==========-----*/
+/* Change la valeur de la chaine du String pour [new_str] */
 void String_set(String str, const char *new_str){
   int len_new_str = strlen(new_str);
   String_adapted_size(len_new_str, str);
@@ -98,11 +101,15 @@ void String_set(String str, const char *new_str){
   str->length = len_new_str;
 }
 
-/*(Ré)initilise la valeur d'un String à partir d'un entier*/
+/* Change la valeur de la chaine du String pour la représention de [entier] */
 void String_set_int(String str, int entier){
+  /* Le int le plus long étant -2147483648, soit 11 caractère un buffer de 12
+  char est suffisant */
   char int_buff[12];
   int len_new_str;
+  /* Initialisation du buffer avec des 0s */
   memset(int_buff, 0, 12 * sizeof(char));
+  /* Copie de la représentation de entier dans int_buff */
   sprintf(int_buff, "%d", entier);
   len_new_str = strlen(int_buff);
   String_adapted_size(len_new_str, str);
@@ -111,28 +118,23 @@ void String_set_int(String str, int entier){
   str->length = len_new_str;
 }
 
-/*Crée une copie d'un String*/
+/* Copie la valeur de [src] dans [dest] */
 void String_copy(String dest, const String src){
   dest->length = src->length;
   String_adapted_size(dest->length, dest);
   strcpy(dest->str, src->str);
 }
 
-/*Libère l'espace mémoire occupé par un String*/
-void String_free(String *str) {
-  if (*str != NULL){
-    free((*str)->str);
-    free(*str);
-  }
-  
-  *str = NULL;
-}
-
-/*Compte le nombre d'occurence d'un paterne dans un String*/
+/*-----==========Recherche dans un String==========-----*/
+/* Trouve le nombre d'occurence du paterne [substr] dans le String */
 int String_count(const String str, const char *substr){
   int count = 0;
   char *tmp_str = str->str;
 
+  /* strstr renvoie l'adresse de la 1ere occurence de substr dans tmp_str
+  ou alors renvoie NULL.
+  L'adresse de tmp_str est changée pour celle de l'occurence + 1,
+  ainsi strstr devrat trouver l'occurence suivante au prochain tours */
   while ((tmp_str = strstr(tmp_str, substr))) {
     tmp_str++;
     count ++;
@@ -141,20 +143,25 @@ int String_count(const String str, const char *substr){
   return count;
 }
 
-/*Trouve l'index de la 1ere occurence d'un paterne dans un String*/
+/* Trouve l'index de la 1ere occurence du paterne [substr] dans le String */
 int String_find(const String str, const char *substr){
   int index = -1;
   char *tmp_str = str->str;
 
+  /* strstr renvoie l'adresse de la 1ere occurence de substr dans tmp_str
+  ou alors renvoie NULL. */
   tmp_str = strstr(tmp_str, substr);
 
   if(tmp_str != NULL){
+    /* Pour connaitre l'index, on utilise de l'arthmétique sur les adresses,
+    index = adresse_de_l'occurence - adresse_de_la_chaine */
     index = (int)(tmp_str - str->str);
   }
 
   return index;
 }
 
+/* Trouve l'index de la dernière occurence du paterne [substr] dans le String */
 int String_find_last(const String str, const char *substr){
   int nb_occ = String_count(str, substr);
   int index = String_find_nth(str, substr, nb_occ);
@@ -162,7 +169,7 @@ int String_find_last(const String str, const char *substr){
   return index;
 }
 
-/*Trouve l'index de la nieme occurence d'un paterne dans un String*/
+/* Trouve l'index de la n-ième occurence du paterne [substr] dans le String */
 int String_find_nth(const String str, const char *substr, int occ_num){
   int index = -1, i;
   char *tmp_str = str->str;
@@ -173,8 +180,12 @@ int String_find_nth(const String str, const char *substr, int occ_num){
   }
 
   for (i = 0; i < occ_num; i++) {
+    /* strstr renvoie l'adresse de la 1ere occurence de substr dans tmp_str
+    ou alors renvoie NULL. */
     tmp_str = strstr(tmp_str, substr);
 
+    /* On applique le décalage pour strstr si l'occurence trouvé n'est pas 
+    celle voulu */
     if (i != (occ_num - 1)) {
       tmp_str++;
     }
@@ -187,6 +198,10 @@ int String_find_nth(const String str, const char *substr, int occ_num){
   return index;
 }
 
+/*-----==========Modification de String==========-----*/
+/* Partionne le String [str] en 2 parties,
+[str] contiendrat la partie de longueur [len],
+[split] contiendrat le reste */
 void String_split(int len, String str, String split){
   String cpy = String_new_empty(0);
   
@@ -200,19 +215,21 @@ void String_split(int len, String str, String split){
   String_free(&cpy);
 }
 
-/*Crée une sous-chaine de la chaine du String*/
+/* Récupère dans [str] une sous chaine 
+commençant à [index] et de longueur [length] */
 void String_substr(String str, int index, int length){
   if (index + length > str->length){
     return;
   }
   
   str->length = length;
+  /* Décalage des char de l'index [index] vers l'index 0 */
   memmove(str->str, str->str + index, length);
   str->str[length] = '\0';
   String_adapted_size(length, str);
 }
 
-/*Concatène 2 String*/
+/* Concatène dans [str1] les valeurs de [str1] et [str2] */
 void String_concat(String str1, String str2){
   int concat_len = str1->length + str2->length;
   String_adapted_size(concat_len, str1);
@@ -221,15 +238,16 @@ void String_concat(String str1, String str2){
   strcat(str1->str, str2->str);
 }
 
+/* Concatène dans [str] les valeurs de [str] et [concat] */
 void String_concat_str(String str, char const *concat){
   String conc_str = String_new(concat);
   String_concat(str, conc_str);
   String_free(&conc_str);
 }
 
-/*Remplace un paterne par un autre dans un String*/
+/* Remplace dans [str] le paterne [old] par [new]*/
 void String_replace(String str, const char *old, const char *new) {
-  int ind, len_old = strlen(old);;
+  int ind, len_old = strlen(old);
   String out_str = String_new_empty(0);
   String split_str = String_new_empty(0);
   String_copy(out_str, str); 
