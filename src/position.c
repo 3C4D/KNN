@@ -20,7 +20,7 @@ void liberer_position(MLV_Position *pos) {
   *pos = NULL;
 }
 
-MLV_Position copie_position(MLV_Position pos){
+MLV_Position cp_pos(MLV_Position pos){
   return(init_positon(pos->decalage, pos->dimension ));
 }
 

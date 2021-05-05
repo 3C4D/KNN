@@ -2,6 +2,8 @@
 #include "interactif.h"
 #include "erreur.h"
 
+/*-----==========Gestion des Clickables==========-----*/
+/* Crée un clickable */
 MLV_Clickable init_clickable(MLV_Position pos, Etat etat, Espace esp){
   MLV_Clickable click = malloc(sizeof(struct MLV_Clickable_s));
   verif_alloc((void *)click);
@@ -14,6 +16,7 @@ MLV_Clickable init_clickable(MLV_Position pos, Etat etat, Espace esp){
   return click;
 }
 
+/* Libère l'espace occupé par un Clickable */
 void liberer_clickable(MLV_Clickable *click){
   if (*click != NULL) {
     liberer_position(&(*click)->pos);
@@ -23,18 +26,22 @@ void liberer_clickable(MLV_Clickable *click){
   *click = NULL;
 }
 
+/* (Ré)initialise la fonction d'action du Clickable */
 void click_init_fct(FctClick fct, MLV_Clickable click){
   click->fct = fct;
 }
 
+/* Change le propriétaire du Clickable */
 void click_maj_proprio(void *proprio, MLV_Clickable click){
   click->proprio = proprio;
 }
 
+/* Renvoie le propriétaire d'un Clickable */
 void *click_proprio(MLV_Clickable click){
   return (click->proprio);
 }
 
+/* Lance la fonction d'action d'un Clickable si les conditions sont correctes */
 Id_Obj click_lancer_fct(MLV_Clickable click, Info_Souris souris){
   if (
     (click_est_dedant(souris, click) && click->espace == INTERNE) ||
@@ -48,9 +55,10 @@ Id_Obj click_lancer_fct(MLV_Clickable click, Info_Souris souris){
   return NON_DEFINI;
 }
 
-int click_est_dedant(Info_Souris souris, MLV_Clickable click){
+/* Détermine si un click est actif et à l'intérieur de la zone */
+bool click_est_dedant(Info_Souris souris, MLV_Clickable click){
   if (click->etat == INACTIF) {
-    return 0;
+    return false;
   } else {
     return (
       est_dans_zone(coord_souris(souris), click->pos) &&
@@ -59,9 +67,10 @@ int click_est_dedant(Info_Souris souris, MLV_Clickable click){
   }
 }
 
-int click_est_dehors(Info_Souris souris, MLV_Clickable click){
+/* Détermine si un click est actif et à l'extérieur de la zone */
+bool click_est_dehors(Info_Souris souris, MLV_Clickable click){
   if (click->etat == INACTIF) {
-    return 0;
+    return false;
   } else {
     return (
       !est_dans_zone(coord_souris(souris), click->pos) &&
@@ -70,6 +79,7 @@ int click_est_dehors(Info_Souris souris, MLV_Clickable click){
   }
 }
 
+/* Change l'état d'un Clickable */
 void click_changer_etat(MLV_Clickable click){
   if (click->etat == ACTIF) {
     desactiver_click(click);
@@ -78,22 +88,26 @@ void click_changer_etat(MLV_Clickable click){
   }
 }
 
+/* Désactive un Clickable */
 void desactiver_click(MLV_Clickable click){
   click->etat = INACTIF;
 }
 
+/* Active un Clickable */
 void activer_click(MLV_Clickable click){
   click->etat = ACTIF;
 }
 
-int est_dans_zone(Coord c, MLV_Position pos){
+/* Détermine si une coordonée est dans la zone */
+bool est_dans_zone(Coord c, MLV_Position pos){
   return (
     pos->decalage.x <= c.x && (pos->decalage.x + pos->dimension.x) > c.x &&
     pos->decalage.y <= c.y && (pos->decalage.y + pos->dimension.y) > c.y
   );
 }
 
-
+/*-----==========Gestion des Hoverables==========-----*/
+/* Crée un Hoverable */
 MLV_Hoverable init_hoverable(MLV_Position pos, Etat etat, Espace esp){
   MLV_Hoverable hover = malloc(sizeof(struct MLV_Hoverable_s));
   verif_alloc((void *)hover);
@@ -106,6 +120,7 @@ MLV_Hoverable init_hoverable(MLV_Position pos, Etat etat, Espace esp){
   return hover;
 }
 
+/* Libère l'espace occupé par un Hoverable */
 void liberer_hoverable(MLV_Hoverable *hover){
   if (*hover != NULL) {
     liberer_position(&(*hover)->pos);
@@ -115,18 +130,22 @@ void liberer_hoverable(MLV_Hoverable *hover){
   *hover = NULL;
 }
 
+/* (Ré)initialise la fonction d'action du Hoverable */
 void hover_init_fct_dedans(FctHover fct, MLV_Hoverable hover){
   hover->fct = fct;
 }
 
+/* Change le propriétaire du Hoverable */
 void hover_maj_proprio(void *proprio, MLV_Hoverable hover){
   hover->proprio = proprio;
 }
 
+/* Renvoie le propriétaire d'un Hoverable */
 void *hover_proprio(MLV_Hoverable hover){
   return (hover->proprio);
 }
 
+/* Lance la fonction d'action d'un Hoverable si les conditions sont correctes */
 Id_Obj hover_lancer_fct(MLV_Hoverable hover, Info_Souris souris){
   if (
     (hover_est_dedant(souris, hover) && hover->espace == INTERNE) ||
@@ -140,9 +159,10 @@ Id_Obj hover_lancer_fct(MLV_Hoverable hover, Info_Souris souris){
   return NON_DEFINI;
 }
 
-int hover_est_active(Info_Souris souris, MLV_Hoverable hover){
+/* Détermine si un Hoverable est actif */
+bool hover_est_active(Info_Souris souris, MLV_Hoverable hover){
   if (hover->etat == INACTIF) {
-    return 0;
+    return false;
   } else {
     return (
       est_dans_zone(coord_souris(souris), hover->pos) &&
@@ -151,22 +171,25 @@ int hover_est_active(Info_Souris souris, MLV_Hoverable hover){
   }
 }
 
-int hover_est_dedant(Info_Souris souris, MLV_Hoverable hover){
+/* Détermine si un survol est actif et à l'intérieur de la zone */
+bool hover_est_dedant(Info_Souris souris, MLV_Hoverable hover){
   if (hover->etat == INACTIF) {
-    return 0;
+    return false;
   } else {
     return (est_dans_zone(coord_souris(souris), hover->pos));
   }
 }
 
-int hover_est_dehors(Info_Souris souris, MLV_Hoverable hover){
+/* Détermine si un survol est actif et à l'extérieur de la zone */
+bool hover_est_dehors(Info_Souris souris, MLV_Hoverable hover){
   if (hover->etat == INACTIF) {
-    return 0;
+    return false;
   } else {
     return (!est_dans_zone(coord_souris(souris), hover->pos));
   }
 }
 
+/* Change l'état d'un Hoverable */
 void hover_changer_etat(MLV_Hoverable hover){
   if (hover->etat == ACTIF) {
     hover->etat = INACTIF;
@@ -175,7 +198,8 @@ void hover_changer_etat(MLV_Hoverable hover){
   }
 }
 
-
+/*-----==========Gestion des Keyloggers==========-----*/
+/* Crée un Keylogger */
 MLV_Keylogger init_keylogger(Etat etat){
   MLV_Keylogger keylog = malloc(sizeof(struct MLV_Keylogger_s));
   verif_alloc(keylog);
@@ -186,6 +210,7 @@ MLV_Keylogger init_keylogger(Etat etat){
   return keylog;
 }
 
+/* Libère l'espace occupé par un Keylogger */
 void liberer_keylogger(MLV_Keylogger *keylog){
   if (*keylog != NULL){
     free(*keylog);
@@ -194,18 +219,22 @@ void liberer_keylogger(MLV_Keylogger *keylog){
   *keylog = NULL;
 }
 
+/* (Ré)initialise la fonction d'action du Keylogger */
 void keylog_init_fct(FctKeylog fct, MLV_Keylogger keylog){
   keylog->fct = fct;
 }
 
+/* Change le propriétaire du Keylogger */
 void keylog_maj_proprio(void *proprio, MLV_Keylogger keylog){
   keylog->proprio = proprio;
 }
 
+/* Renvoie le propriétaire d'un Keylogger */
 void *keylog_proprio(MLV_Keylogger keylog){
   return (keylog->proprio);
 }
 
+/* Lance la fonction d'action d'un Keylogger si les conditions sont correctes */
 Id_Obj keylog_lancer_fct(MLV_Keylogger keylog, Info_Clavier clavier){
   if (keylog_est_active(clavier, keylog)){
     if (keylog->fct != NULL){
@@ -218,6 +247,7 @@ Id_Obj keylog_lancer_fct(MLV_Keylogger keylog, Info_Clavier clavier){
   }
 }
 
+/* Détermine si un Keylogger est actif */
 bool keylog_est_active(Info_Clavier clavier, MLV_Keylogger keylog){
   if (keylog->etat == INACTIF) {
     return false;
@@ -226,6 +256,7 @@ bool keylog_est_active(Info_Clavier clavier, MLV_Keylogger keylog){
   }
 }
 
+/* Change l'état d'un Keylogger */
 void keylog_changer_etat(MLV_Keylogger keylog){
   if (keylog->etat == ACTIF) {
     desactiver_keylog(keylog); 
@@ -234,10 +265,12 @@ void keylog_changer_etat(MLV_Keylogger keylog){
   }
 }
 
+/* Désactive un Keylogger */
 void desactiver_keylog(MLV_Keylogger keylog){
   keylog->etat = INACTIF;
 }
 
+/* Active un Keylogger */
 void activer_keylog(MLV_Keylogger keylog){
   keylog->etat = ACTIF;
 }

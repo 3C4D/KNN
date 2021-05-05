@@ -12,7 +12,7 @@ void erreur(char *error){
   exit(-1);
 }
 
-/* Vérifie une allocation (jamais utilisée) */
+/* Vérifie une allocation */
 void verif_alloc(void *ptr){
   if (ptr == NULL) {
     erreur("Erreur: Échec de l'allocation");

@@ -2,7 +2,8 @@
 #include "gestion.h"
 #include "erreur.h"
 
-/* Fonctions sur l'agencement */
+/*-----==========Gestion des Listes de Boites==========-----*/
+/* Crée une liste de Boites */
 Box_List init_liste_boite(){
   Box_List liste_boite = malloc(sizeof(struct Box_List_s));
   verif_alloc((void *)liste_boite);
@@ -13,6 +14,7 @@ Box_List init_liste_boite(){
   return liste_boite;
 }
 
+/* Libère l'espace occupé par la liste de Boites */
 void liberer_liste_boite(Box_List *liste){
   int i;
   if (*liste != NULL) {
@@ -26,6 +28,7 @@ void liberer_liste_boite(Box_List *liste){
   *liste = NULL;
 }
 
+/* Ajoute une boite à la liste de Boites */
 void ajouter_boite(MLV_Box boite, Box_List liste){
   if (liste == NULL || boite == NULL) {
     return;
@@ -40,6 +43,7 @@ void ajouter_boite(MLV_Box boite, Box_List liste){
   liste->nb_boites++;
 }
 
+/* Affiche la liste des Boites */
 void afficher_liste_boite(Box_List liste){
   int i;
   if (liste != NULL) {
@@ -49,7 +53,8 @@ void afficher_liste_boite(Box_List liste){
   }
 }
 
-/* gestion des canvas */
+/*-----==========Gestion des Listes de Canvas==========-----*/
+/* Crée une liste de Canvas */
 Canvas_List init_liste_canvas(){
   Canvas_List liste_canvas = malloc(sizeof(struct Canvas_List_s));
   verif_alloc((void *)liste_canvas);
@@ -60,6 +65,21 @@ Canvas_List init_liste_canvas(){
   return liste_canvas;
 }
 
+/* Libère l'espace occupé par la liste de Canvas */
+void liberer_liste_canvas(Canvas_List *liste){
+  int i;
+  if (*liste != NULL) {
+    for (i = 0; i < (*liste)->nb_canvas; i++) {
+      liberer_canvas(&(*liste)->liste[i]);
+    }
+
+    free(*liste);
+  }
+
+  *liste = NULL;
+}
+
+/* Ajooute un Canvas à la liste */
 void ajouter_canvas(MLV_Canvas canvas, Canvas_List liste) {
   if (canvas == NULL || liste == NULL) {
     return;
@@ -74,6 +94,7 @@ void ajouter_canvas(MLV_Canvas canvas, Canvas_List liste) {
   liste->nb_canvas++;
 }
 
+/* Affiche la liste de Canvas */
 void afficher_liste_canvas(Canvas_List liste){
   int i;
   for (i = 0; i < liste->nb_canvas; i++) {
@@ -83,7 +104,8 @@ void afficher_liste_canvas(Canvas_List liste){
   }
 }
 
-/* zone texte */
+/*-----==========Gestion des Listes de Textes==========-----*/
+/* Crée une liste de Textes */
 Text_List init_liste_texte(){
   Text_List liste_texte = malloc(sizeof(struct Text_List_s));
   verif_alloc((void *)liste_texte);
@@ -94,6 +116,21 @@ Text_List init_liste_texte(){
   return liste_texte;
 }
 
+/* Libère l'espace occupé par la liste de Textes */
+void liberer_liste_texte(Text_List *liste){
+  int i;
+  if (*liste != NULL) {
+    for (i = 0; i < (*liste)->nb_textes; i++) {
+      liberer_texte(&(*liste)->liste[i]);
+    }
+
+    free(*liste);
+  }
+
+  *liste = NULL;
+}
+
+/* Ajoute un Texte à la liste */
 void ajouter_texte(MLV_Text texte, Text_List liste){
   if (texte == NULL || liste == NULL) {
     return;
@@ -108,6 +145,7 @@ void ajouter_texte(MLV_Text texte, Text_List liste){
   liste->nb_textes++;
 }
 
+/* Affiche la liste de Texte */
 void afficher_liste_texte(Text_List liste){
   int i;
   for (i = 0; i < liste->nb_textes; i++) {
@@ -117,7 +155,8 @@ void afficher_liste_texte(Text_List liste){
   }
 }
 
-/* gestion des zone interactive */
+/*-----==========Gestion des Listes de Clickables==========-----*/
+/* Crée une liste de Clickables */
 Click_List init_liste_click(){
   Click_List liste_click = malloc(sizeof(struct Click_List_s));
   verif_alloc((void *)liste_click);
@@ -128,6 +167,21 @@ Click_List init_liste_click(){
   return liste_click;
 }
 
+/* Libère l'espace occupé par la liste de Clickables */
+void liberer_liste_click(Click_List *liste){
+  int i;
+  if (*liste != NULL) {
+    for (i = 0; i < (*liste)->nb_clicks; i++) {
+      liberer_clickable(&(*liste)->liste[i]);
+    }
+
+    free(*liste);
+  }
+
+  *liste = NULL;
+}
+
+/* Ajoute un Clickable à la liste */
 void ajouter_click(MLV_Clickable click, Click_List liste){
   if (click == NULL || liste == NULL) {
     return;
@@ -142,7 +196,8 @@ void ajouter_click(MLV_Clickable click, Click_List liste){
   liste->nb_clicks++;
 }
 
-/* Keylog */
+/*-----==========Gestion des Listes de Keyloggers==========-----*/
+/* Crée une liste de Keyloggers */
 Keylog_List init_liste_keylog(){
   Keylog_List liste_keylog = malloc(sizeof(struct Keylog_List_s));
   verif_alloc((void *)liste_keylog);
@@ -153,6 +208,21 @@ Keylog_List init_liste_keylog(){
   return liste_keylog;
 }
 
+/* Libère l'espace occupé par la liste de Keyloggers */
+void liberer_liste_keylog(Keylog_List *liste){
+  int i;
+  if (*liste != NULL) {
+    for (i = 0; i < (*liste)->nb_keylog; i++) {
+      liberer_keylogger(&(*liste)->liste[i]);
+    }
+
+    free(*liste);
+  }
+
+  *liste = NULL;
+}
+
+/* Ajoute un Keylogger à la liste */
 void ajouter_keylog(MLV_Keylogger keylog, Keylog_List liste){
   if (keylog == NULL || liste == NULL) {
     return;
@@ -167,7 +237,8 @@ void ajouter_keylog(MLV_Keylogger keylog, Keylog_List liste){
   liste->nb_keylog++;
 }
 
-/* Gestionnaire */
+/*-----==========Gestion du Gestionnaire==========-----*/
+/* Crée un gestionnaire */
 Manager init_gestionnaire(){
   Manager gestionnaire = malloc(sizeof(struct Manager_s));
   verif_alloc((void *)gestionnaire);
@@ -180,11 +251,27 @@ Manager init_gestionnaire(){
   return gestionnaire;
 }
 
+/* Libère l'espace mémoire occupé par un gestionnaire */
+void liberer_gestionnaire(Manager *gest){
+  if (*gest != NULL){
+    liberer_liste_boite(&(*gest)->liste_boite);
+    liberer_liste_canvas(&(*gest)->liste_canvas);
+    liberer_liste_texte(&(*gest)->liste_texte);
+    liberer_liste_click(&(*gest)->liste_click);
+    liberer_liste_keylog(&(*gest)->liste_keylog);
+    free(*gest);
+  }
+  
+  *gest = NULL;
+}
+
+/* Affiche les éléments de la fenếtre */
 void affichage_fenetre(Manager gest){
   afficher_liste_canvas(gest->liste_canvas);
   afficher_liste_texte(gest->liste_texte);
 }
 
+/* Affiche les éléments de la fenêtre et les délimitaitons des boites */
 void affichage_debug(Manager gest){
   affichage_fenetre(gest);
   afficher_liste_boite(gest->liste_boite);

@@ -168,6 +168,7 @@ int classe_majoritaire(TabPts tab){
     }
   }
 
+  free(eff_classe);
   /*on retourne la classe maximale*/
   return max;
 }

@@ -20,7 +20,7 @@ MLV_Box init_boite(BoxDirection dir, MLV_Position pos){
   MLV_Box boite_out = malloc(sizeof(struct MLV_Box_s));
   verif_alloc(boite_out);
   boite_out->dir = dir;
-  boite_out->pos = pos;
+  boite_out->pos = cp_pos(pos);
   boite_out->remplissage = 0;
   boite_out->elements = malloc(0);
   verif_alloc(boite_out->elements);

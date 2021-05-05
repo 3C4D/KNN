@@ -6,20 +6,29 @@
 #include "couleur.h"
 #include "erreur.h"
 
+/*-----Fonctions privées-----*/
+/* Ajoute "_inactif" à la fin du nom de l'image */
 void chemin_img_inactif(String chemin);
 
+/*-----==========Gestion des boutons==========-----*/
+/* Crée un bouton */
 MLV_Button init_bouton(MLV_Position pos, FctClick fonction){
   MLV_Button bouton = malloc(sizeof(struct MLV_Button_s));
   verif_alloc((void *)bouton);
+
+  /* Mise en place du clickable */
   bouton->zone = init_clickable(pos, ACTIF, INTERNE);
   click_init_fct(fonction, bouton->zone);
   click_maj_proprio((void *)bouton, bouton->zone);
-  bouton->actif = init_canvas(pos, true);
-  bouton->inactif = init_canvas(pos, false);
+
+  /* Mise en place des canvas */
+  bouton->actif = init_canvas(cp_pos(pos), true);
+  bouton->inactif = init_canvas(cp_pos(pos), false);
 
   return bouton;
 }
 
+/* Libère l'espace occupé par un bouton */
 void liberer_bouton(MLV_Button *bouton){
   if (bouton != NULL) {
     liberer_clickable(&(*bouton)->zone);
@@ -31,39 +40,49 @@ void liberer_bouton(MLV_Button *bouton){
   *bouton = NULL;
 }
 
+/* Change l'état d'un bouton */
 void bouton_changer_etat(MLV_Button bouton){
   click_changer_etat(bouton->zone);
   changer_visibilite(bouton->actif);
   changer_visibilite(bouton->inactif);
 }
 
+/* Désactive le bouton */
 void desactiver_bouton(MLV_Button bouton){
   desactiver_click(bouton->zone);
   canvas_invisible(bouton->actif);
   canvas_visible(bouton->inactif);
 }
 
+/* Active le bouton */
 void activer_bouton(MLV_Button bouton){
   activer_click(bouton->zone);
   canvas_visible(bouton->actif);
   canvas_invisible(bouton->inactif);
 }
 
+/* Défini le label d'un bouton */
 void bouton_label(char *label, MLV_Button bouton){
+  /* Canvas actif */
   couleur_fond_canvas(couleur_hex("39404d"), bouton->actif);
   placer_texte(label, couleur_hex("abb2bf"), bouton->actif);
+
+  /* Canvas inactif */
   couleur_fond_canvas(couleur_hex("5f5f5f"), bouton->inactif);
   placer_texte(label, couleur_hex("9f9f9f"), bouton->inactif);
 }
 
+/* Défini l'image d'un bouton */
 void bouton_image(char *chemin, MLV_Button bouton){
   Coord dec = bouton->actif->placement;
   String rep_img = String_new(chemin);
   
+  /* Canvas actif */
   MLV_Canvas canvas_actif = init_canvas_img(dec, rep_img->str, true);
   redimensionner_canvas(bouton->zone->pos->dimension, canvas_actif);
 
   chemin_img_inactif(rep_img);
+  /* Canvas inactif */
   MLV_Canvas canvas_inactif = init_canvas_img(dec, rep_img->str, false);
   redimensionner_canvas(bouton->zone->pos->dimension, canvas_inactif);
 
@@ -74,25 +93,30 @@ void bouton_image(char *chemin, MLV_Button bouton){
   String_free(&rep_img);
 }
 
+/*-----==========Gestion des bascules==========-----*/
+/* Défini un comportement par défaut de la bascule */
 Id_Obj bascule_fct_defaut(MLV_Clickable click, Info_Souris souris);
 
+/* Crée une bascule */
 MLV_Toggle init_bascule(MLV_Position pos, FctClick fonction, Pose pose) {
   MLV_Toggle bascule = malloc(sizeof(struct MLV_Toggle_s));
   verif_alloc((void *)bascule);
-  bascule->zone = init_clickable(pos, ACTIF, INTERNE);
 
+  /* Mise en place clickable */
+  bascule->zone = init_clickable(pos, ACTIF, INTERNE);
   if (fonction != NULL){
     click_init_fct(fonction, bascule->zone);
   } else {
     click_init_fct(bascule_fct_defaut, bascule->zone);
   }
-  
   click_maj_proprio((void *)bascule, bascule->zone);
+
+  /* Mise en place des canvas */
   bascule->etat = pose;
-  bascule->etat_on_a = init_canvas(pos, false);
-  bascule->etat_on_b = init_canvas(pos, false);
-  bascule->etat_off_a = init_canvas(pos, false);
-  bascule->etat_off_b = init_canvas(pos, false);
+  bascule->etat_on_a = init_canvas(cp_pos(pos), false);
+  bascule->etat_on_b = init_canvas(cp_pos(pos), false);
+  bascule->etat_off_a = init_canvas(cp_pos(pos), false);
+  bascule->etat_off_b = init_canvas(cp_pos(pos), false);
 
   if (pose == ETAT_A) {
     changer_visibilite(bascule->etat_on_a);
@@ -103,6 +127,7 @@ MLV_Toggle init_bascule(MLV_Position pos, FctClick fonction, Pose pose) {
   return bascule;
 }
 
+/* Libère l'espace occupé par une bascule */
 void liberer_bascule(MLV_Toggle *bascule){
   if (*bascule != NULL) {
     liberer_clickable(&(*bascule)->zone);
@@ -123,6 +148,7 @@ Id_Obj bascule_fct_defaut(MLV_Clickable click, Info_Souris souris){
   return TOGGLE;
 }
 
+/* Change l'état de la bascule */
 void bascule_changer_etat(MLV_Toggle bascule){
   click_changer_etat(bascule->zone);
   if (bascule->etat == ETAT_A) {
@@ -134,6 +160,7 @@ void bascule_changer_etat(MLV_Toggle bascule){
   }
 }
 
+/* Désactive la bascule */
 void desactiver_bascule(MLV_Toggle bascule){
   desactiver_click(bascule->zone);
   if (bascule->etat == ETAT_A) {
@@ -145,6 +172,7 @@ void desactiver_bascule(MLV_Toggle bascule){
   }
 }
 
+/* Active la bascule */
 void activer_bascule(MLV_Toggle bascule){
   activer_click(bascule->zone);
   if (bascule->etat == ETAT_A) {
@@ -156,6 +184,7 @@ void activer_bascule(MLV_Toggle bascule){
   }
 }
 
+/* Défini la pose d'une bascule */
 void bascule_pose(Pose pose, MLV_Toggle bascule){
   bascule->etat = pose;
 
@@ -168,6 +197,7 @@ void bascule_pose(Pose pose, MLV_Toggle bascule){
   } 
 }
 
+/* Change la pose d'une bascule */
 void bascule_changer_pose(MLV_Toggle bascule){
   if (bascule->etat == ETAT_A) {
     bascule_pose(ETAT_B, bascule);
@@ -176,39 +206,52 @@ void bascule_changer_pose(MLV_Toggle bascule){
   }
 }
 
+/* Défini les labels d'une bascule */
 void bascule_label(char *label_a, char *label_b, MLV_Toggle bascule){
+  /* Canvas Etat_A actif */
   couleur_fond_canvas(couleur_hex("39404d"), bascule->etat_on_a);
   placer_texte(label_a, couleur_hex("61afef"), bascule->etat_on_a);
+
+  /* Canvas Etat_B actif */
   couleur_fond_canvas(couleur_hex("39404d"), bascule->etat_on_b);
   placer_texte(label_b, couleur_hex("e06c75"), bascule->etat_on_b);
 
+  /* Canvas Etat_A inactif */
   couleur_fond_canvas(couleur_hex("5f5f5f"), bascule->etat_off_a);
   placer_texte(label_a, couleur_hex("9f9f9f"), bascule->etat_off_a);
+
+  /* Canvas Etat_B inactif */
   couleur_fond_canvas(couleur_hex("5f5f5f"), bascule->etat_off_b);
   placer_texte(label_b, couleur_hex("9f9f9f"), bascule->etat_off_b);
 }
 
+/* Défini les images d'une bascule */
 void bascule_image(char *chemin_a, char *chemin_b, MLV_Toggle bascule){
   Coord dec = bascule->etat_on_a->placement;
   String rep_img_a = String_new(chemin_a);
   String rep_img_b = String_new(chemin_b);
 
+  /* Canvas Etat_A actif */
   MLV_Canvas canvas_a_on = init_canvas_img(
     dec, rep_img_a->str, est_visible(bascule->etat_on_a)
   );
   redimensionner_canvas(bascule->zone->pos->dimension, canvas_a_on);
+
+  /* Canvas Etat_B actif */
   MLV_Canvas canvas_b_on = init_canvas_img(
     dec, rep_img_b->str, est_visible(bascule->etat_on_b)
   );
   redimensionner_canvas(bascule->zone->pos->dimension, canvas_b_on);
 
   chemin_img_inactif(rep_img_a);
+  /* Canvas Etat_A inactif */
   MLV_Canvas canvas_a_off = init_canvas_img(
     dec, rep_img_a->str, est_visible(bascule->etat_off_a)
   );
   redimensionner_canvas(bascule->zone->pos->dimension, canvas_a_off);
 
   chemin_img_inactif(rep_img_b);
+  /* Canvas Etat_B inactif */
   MLV_Canvas canvas_b_off = init_canvas_img(
     dec, rep_img_b->str, est_visible(bascule->etat_off_b)
   );
@@ -238,17 +281,23 @@ void chemin_img_inactif(String chemin){
   String_free(&extension);
 }
 
-
+/*-----==========Gestion des saisies==========-----*/
+/* Action effectué durant la saisie */
 Id_Obj saisie_en_cours(MLV_Keylogger keylog, Info_Clavier clavier);
+/* Action effectué au début de la saisie */
 Id_Obj debut_saisie(MLV_Clickable click, Info_Souris souris);
+/* Action effectué en fin de saisie */
 Id_Obj saisie_finie(MLV_Clickable click, Info_Souris souris);
 
+/* Crée une saisie */
 MLV_Input init_saisie(MLV_Position pos, FctKeylog en_cours, FctClick fini){
   MLV_Input saisie = malloc(sizeof(struct MLV_Input_s));
   verif_alloc(saisie);
 
   saisie->fond = init_canvas(pos, true);
   couleur_fond_canvas(couleur_hex("39404d"), saisie->fond);
+
+  /* Mise en place du keylogger */
   saisie->keylog = init_keylogger(INACTIF);
   if (en_cours != NULL){
     keylog_init_fct(en_cours, saisie->keylog);
@@ -256,11 +305,16 @@ MLV_Input init_saisie(MLV_Position pos, FctKeylog en_cours, FctClick fini){
     keylog_init_fct(saisie_en_cours, saisie->keylog);
   }
   keylog_maj_proprio((void *)saisie, saisie->keylog);
-  saisie->texte = init_texte(2, pos, init_format_defaut());
-  saisie->zone = init_clickable(pos, ACTIF, INTERNE);
+
+  /* Mise en place du texte */
+  saisie->texte = init_texte(2, cp_pos(pos), init_format_defaut());
+
+  /* Mise en place des clickables */
+  saisie->zone = init_clickable(cp_pos(pos), ACTIF, INTERNE);
   click_maj_proprio((void *)saisie, saisie->zone);
-  click_init_fct(debut_saisie, saisie->zone);
-  saisie->sortie = init_clickable(pos, ACTIF, EXTERNE);
+  click_init_fct(debut_saisie, saisie->zone);\
+
+  saisie->sortie = init_clickable(cp_pos(pos), ACTIF, EXTERNE);
   if (fini != NULL){
     click_init_fct(fini, saisie->sortie);
   } else {
@@ -271,6 +325,7 @@ MLV_Input init_saisie(MLV_Position pos, FctKeylog en_cours, FctClick fini){
   return saisie;
 }
 
+/* Libère l'espace occupé par la saisie */
 void liberer_saisie(MLV_Input *saisie){
   if (*saisie != NULL){
     liberer_canvas(&(*saisie)->fond);
@@ -283,6 +338,7 @@ void liberer_saisie(MLV_Input *saisie){
   *saisie = NULL;
 }
 
+/* Désactive la saisie */
 void desactiver_saisie(MLV_Input saisie){
   desactiver_click(saisie->zone);
   desactiver_click(saisie->sortie);
@@ -292,6 +348,7 @@ void desactiver_saisie(MLV_Input saisie){
   texte_changer_couleur(couleur_hex("9f9f9f"), saisie->texte);
 }
 
+/* Active la saisie */
 void activer_saisie(MLV_Input saisie){
   activer_click(saisie->zone);
   activer_click(saisie->sortie);
@@ -328,10 +385,12 @@ Id_Obj saisie_en_cours(MLV_Keylogger keylog, Info_Clavier clavier){
   char *carac = NULL;
 
   switch (clavier->touche){
-  case MLV_KEYBOARD_RETURN:
+  case MLV_KEYBOARD_RETURN: 
+    /* La touche entrée lance la fonction de fin de saisie */
     return ((saisie->sortie->fct)(saisie->sortie, clavier->parent->souris));
 
   case MLV_KEYBOARD_BACKSPACE:
+    /* La touche backspace supprime le dernier caractère de la saisie */
     texte_suppr_char(saisie->texte);
     break;
   
@@ -340,6 +399,7 @@ Id_Obj saisie_en_cours(MLV_Keylogger keylog, Info_Clavier clavier){
     texte_ajouter_str(carac, saisie->texte);
   }
 
+  /* On replace le curseur */
   couleur_fond_canvas(couleur_hex("39404d"), saisie->fond);
   placer_curseur_texte(
     saisie->texte, couleur_hex("abb2bf"), saisie->fond

@@ -2,7 +2,7 @@
 Module de création et gestion de chaine de caractères variables
 Permet une plus grande flexibilité dans l'utilisation des chaine
 avec des foncitons inspirée par  celles présentes par défaut 
-dansdes langages comme Java ou Python.
+dans des langages comme Java ou Python.
 
 Ce module fut crée le 25 Février 2021 par Soam LE DORTZ
 */

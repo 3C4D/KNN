@@ -1,3 +1,8 @@
+/*
+Les Id_Obj permettent d'identifier quel genre d'objet est utilisé dans une 
+fonction et donc de pouvoir prendre des decisions adequate (cf. lien_elem.c)
+*/
+
 #ifndef ID_OBJ_H_
 #define ID_OBJ_H_
 

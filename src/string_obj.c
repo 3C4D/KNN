@@ -5,6 +5,7 @@
 #include "math_op.h"
 #include "erreur.h"
 
+/*-----Fonctions privées-----*/
 /* Calcule la taille maximale adaptée => puissance de 2 supérieure */
 int calc_adap_size(int size);
 /* Change la taille allouée si besoin */

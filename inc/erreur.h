@@ -7,7 +7,7 @@ void err_log(char *error);
 /* Renvoie un message d'erreur sur stderr et interrompt le programme */
 void erreur(char *error);
 
-/* Vérifie une allocation (jamais utilisée) */
+/* Vérifie une allocation */
 void verif_alloc(void *ptr);
 
 #endif

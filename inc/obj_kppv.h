@@ -1,3 +1,8 @@
+/*
+Ce module implémente les graphiques ad-hoc à l'utilisation des KPPV
+Il fait ainsi la liaison entre l'interface et la partie logique
+*/
+
 #ifndef OBJ_KPPV_H_
 #define OBJ_KPPV_H_
 
@@ -7,6 +12,7 @@
 #include "arbre.h"
 #include "id_objet.h"
 
+/* Drapeaux pour les options d'affichage */
 typedef enum {
   AXE = 0x01,
   GRILLE = 0x02,
@@ -18,42 +24,65 @@ typedef enum {
 
 typedef struct MLV_GraphKNN_s *MLV_GraphKNN;
 struct MLV_GraphKNN_s {
-  MLV_Position placement;
-  MLV_Clickable curseur;
-  MLV_Graph2D graph2D;
-  TabPts *pts_classes;
-  TabPts *tab_kppv;
-  arbre_kd arbre;
-  point *pt_kppv;
-  int pts_ajoutes;
-  int classe_util;
-  int k;
-  char option_aff;
+  MLV_Position placement; /* Placement absolu du graph kppv */
+  MLV_Clickable curseur; /* Detecteur de click sur le graphique */
+  MLV_Graph2D graph2D; /* Graphique affiché */
+  TabPts *pts_classes; /* Tableau des points classés */
+  TabPts *tab_kppv; /* Tableau des KPPV du point pt_kppv */
+  arbre_kd arbre; /* Arbre de recherche */
+  point *pt_kppv; /* Point de recherche */
+  int pts_ajoutes; /* Nombre de points ajoutés */
+  int classe_util; /* Classe utilisée pour le placement des points */
+  int k; /* Constante K */
+  char option_aff; /* Options d'affichage */
 };
 
+/*-----==========Gestion du GraphKPPV==========-----*/
+/* Crée un GraphKPPV */
 MLV_GraphKNN init_graph_kppv(MLV_Position pos);
+/* Libère l'espace occupé par le GraphKPPV */
 void liberer_graph_kppv(MLV_GraphKNN *graph_kppv);
+
+/*-----Gestion du tableau de point-----*/
+/* Ajoute un tableau de points au GraphKPPV */
 void graph_kppv_ajouter_tab_pts(TabPts *tab_pts, MLV_GraphKNN graph_kppv);
+/* Importe, depuis un fichier, un tableau de points au GraphKPPV */
 void graph_kppv_import_tab_pts(char *fichier, MLV_GraphKNN graph_kppv);
+/* Exporte, dans un ficher, le tableau de points contenu dans le GraphKPPV */
 void graph_kppv_export_tab_pts(char *fichier, MLV_GraphKNN graph_kppv);
+
+/*-----Options d'affichage-----*/
+/* Ajoute une option d'affichage */
 void graph_kppv_ajouter_opt_aff(char opt, MLV_GraphKNN graph_kppv);
+/* Supprime une option d'affichage */
 void graph_kppv_suppr_opt_aff(char opt, MLV_GraphKNN graph_kppv);
+
+/*-----Valeurs utilisées-----*/
+/* Change la classe utilisée pour le mode création */
 void graph_kppv_maj_classe_utilise(int classe, MLV_GraphKNN graph_kppv);
+/* Change le K utilisé */
 void graph_kppv_maj_k(int k, MLV_GraphKNN graph_kppv);
+
+/*-----Affichage-----*/
+/* Cache le point de recherche KPPV */
 void graph_kppv_cacher_pt(MLV_GraphKNN graph_kppv);
+/* Affiche le GraphKPPV */
 void graph_kppv_aff(MLV_GraphKNN graph_kppv);
-void graph_kppv_aff_pt(point pt, int taille, MLV_GraphKNN graph_kppv);
-void graph_kppv_aff_zone_kppv(MLV_GraphKNN graph_kppv);
-void graph_kppv_aff_arbre_kd(
-  Coord_R min, Coord_R max, int prof, arbre_kd arbre, MLV_GraphKNN graphe
-);
+
+/*-----Mises à jour des composants-----*/
+/* Met à jour le tableau des KPPV */
 void graph_kppv_maj_tab_kppv(MLV_GraphKNN graph_kppv);
+/* Met à jour l'arbre de recherche */
 void graph_kppv_maj_arbre(MLV_GraphKNN graph_kppv);
-void graph_kppv_nettoyage_tab_pt(MLV_GraphKNN graph_kppv);
+
+/*-----Gestions des points-----*/
+/* Supprime le dernier point ajouté */
 void graph_kppv_suppr_pt_ajoute(MLV_GraphKNN graph_kppv);
+/* Supprime tous les points ajoutés */
 void graph_kppv_reinit_pt(MLV_GraphKNN graph_kppv);
-Coord_R coord2d_point(point pt);
+/* Ajoute un point dans le tableau des points classés */
 Id_Obj gkppv_ajouter_pt_classe(MLV_Clickable click, Info_Souris souris);
+/* Change le point kppv de recherche */
 Id_Obj gkppv_maj_pt(MLV_Clickable click, Info_Souris souris);
 
 #endif
