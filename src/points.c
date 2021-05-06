@@ -140,11 +140,14 @@ int classe_majoritaire(TabPts tab){
 
   /*on alloue à un tableau autant de cases que le tableau possède de classes*/
   /*ce tableau repertoriera l'effectif des classes dans le tableau*/
-  eff_classe = (int *)calloc(0, tab.nbclasse * sizeof(int));
+
+  eff_classe = (int *)malloc(tab.nbclasse * sizeof(int));
   /*on vérifie l'allocation*/
-  if(eff_classe == NULL){
-    erreur("Erreur d'allocation dans la fonction classe_majoritaire");
+  verif_alloc(eff_classe);
+  for(i = 0; i < tab.nbclasse; i++){  /* Initialisation */
+    eff_classe[i] = 0;
   }
+
 
   /*ici on part du postulat que si il y a 5 classes, les classes vont de
     1 à 5*/
@@ -168,7 +171,7 @@ int classe_majoritaire(TabPts tab){
     }
   }
 
-  free(eff_classe);
+  free(eff_classe); /* On libère le tableau d'effectif */
   /*on retourne la classe maximale*/
   return max;
 }
