@@ -106,7 +106,7 @@ il vous faudra lui donner des arguments, dans l'ordre :
 (Précisons que le mode debug affiche le tableau et l'arbre qui sont obtenus
 durant la fonction).
 
-Exemple, la commande :
+Exemple, la commande:
 ```
 bin/generation_test 15 4 6 1
 ```
