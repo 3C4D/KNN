@@ -118,3 +118,7 @@ La sortie sera le temps d'exécution de chaque fonction.
 
 Le mode debug est activé donc le tableau de point ainsi que l'arbre seront
 affichés.
+
+## Crédits
+
+Soam LeDortz - Enzo Cadoni
